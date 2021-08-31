@@ -12,6 +12,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema sgpi_db
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `sgpi_db` DEFAULT CHARACTER SET utf8 ;
+CREATE USER 'sgpi_db'@'%' IDENTIFIED BY 'SGPI2021';
+GRANT ALL PRIVILEGES ON `sgpi_db`.* TO 'sgpi_db'@'%';
+FLUSH PRIVILEGES;
 USE `sgpi_db` ;
 
 -- -----------------------------------------------------
