@@ -1,0 +1,220 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.usbbog.sgpi.model;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+/**
+ *
+ * @author 57310
+ */
+@Entity
+@Table(catalog = "sgpi_db", schema = "")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Semillero.findAll", query = "SELECT s FROM Semillero s")
+    , @NamedQuery(name = "Semillero.findById", query = "SELECT s FROM Semillero s WHERE s.id = :id")
+    , @NamedQuery(name = "Semillero.findByNombre", query = "SELECT s FROM Semillero s WHERE s.nombre = :nombre")
+    , @NamedQuery(name = "Semillero.findByDescripcion", query = "SELECT s FROM Semillero s WHERE s.descripcion = :descripcion")
+    , @NamedQuery(name = "Semillero.findByFechaFun", query = "SELECT s FROM Semillero s WHERE s.fechaFun = :fechaFun")})
+public class Semillero implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private Integer id;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String nombre;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String descripcion;
+    @Basic(optional = false)
+    @Column(name = "fecha_fun", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fechaFun;
+    @ManyToMany(mappedBy = "semilleros")
+    private List<Programa> programas;
+    @OneToMany(mappedBy = "semillero")
+    private List<Proyecto> proyectoList;
+    @JoinColumn(name = "grupo_investigacion", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private GrupoInvestigacion grupoInvestigacion;
+    @JoinColumn(name = "linea_investigacion", referencedColumnName = "nombre", nullable = false)
+    @ManyToOne(optional = false)
+    private LineaInvestigacion lineaInvestigacion;
+    @JoinColumn(name = "lider_semillero", referencedColumnName = "cedula", nullable = false)
+    @ManyToOne(optional = false)
+    private Usuario liderSemillero;
+    @OneToMany(mappedBy = "semilleroId")
+    private List<Usuario> usuarioList;
+
+    public Semillero() {
+    }
+
+    public Semillero(Integer id) {
+        this.id = id;
+    }
+
+    public Semillero(Integer id, String nombre, String descripcion, Date fechaFun) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.fechaFun = fechaFun;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Date getFechaFun() {
+        return fechaFun;
+    }
+
+    public void setFechaFun(Date fechaFun) {
+        this.fechaFun = fechaFun;
+    }
+
+    @XmlTransient
+    public List<Programa> getProgramas() {
+        return programas;
+    }
+
+    public void setProgramas(List<Programa> programas) {
+        this.programas = programas;
+    }
+
+    @XmlTransient
+    public List<Proyecto> getProyectoList() {
+        return proyectoList;
+    }
+
+    public void setProyectoList(List<Proyecto> proyectoList) {
+        this.proyectoList = proyectoList;
+    }
+
+    public GrupoInvestigacion getGrupoInvestigacion() {
+        return grupoInvestigacion;
+    }
+
+    public void setGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
+        this.grupoInvestigacion = grupoInvestigacion;
+    }
+    
+
+    public LineaInvestigacion getLineaInvestigacion() {
+        return lineaInvestigacion;
+    }
+
+    public void setLineaInvestigacion(LineaInvestigacion lineaInvestigacion) {
+        this.lineaInvestigacion = lineaInvestigacion;
+    }
+
+    public Usuario getLiderSemillero() {
+        return liderSemillero;
+    }
+
+    public void setLiderSemillero(Usuario liderSemillero) {
+        this.liderSemillero = liderSemillero;
+    }
+
+    @XmlTransient
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Semillero)) {
+            return false;
+        }
+        Semillero other = (Semillero) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "co.edu.usbbog.sgpi.model.Semillero[ id=" + id + " ]";
+    }
+
+	public Programa addPrograma(Programa programa) {
+		getProgramas().add(programa);
+		programa.addSemillero(this);	
+		return programa;
+	}
+
+	public Programa removePrograma(Programa programa) {
+		getProgramas().remove(programa);
+		programa.removeSemillero(this);
+		return programa;
+		
+	}
+
+	public Programa removeSemillero(Programa programa) {
+		getProgramas().remove(programa);
+		programa.removeSemillero(null);
+		return programa;
+		
+	}
+
+	
+
+	
+    
+}

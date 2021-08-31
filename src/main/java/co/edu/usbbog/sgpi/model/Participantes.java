@@ -1,0 +1,149 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.usbbog.sgpi.model;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author 57310
+ */
+@Entity
+@Table(catalog = "sgpi_db", schema = "")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Participantes.findAll", query = "SELECT p FROM Participantes p")
+    , @NamedQuery(name = "Participantes.findByUsuario", query = "SELECT p FROM Participantes p WHERE p.participantesPK.usuario = :usuario")
+    , @NamedQuery(name = "Participantes.findByProyecto", query = "SELECT p FROM Participantes p WHERE p.participantesPK.proyecto = :proyecto")
+    , @NamedQuery(name = "Participantes.findByFechaInicio", query = "SELECT p FROM Participantes p WHERE p.participantesPK.fechaInicio = :fechaInicio")
+    , @NamedQuery(name = "Participantes.findByFechaFin", query = "SELECT p FROM Participantes p WHERE p.fechaFin = :fechaFin")
+    , @NamedQuery(name = "Participantes.findByEstado", query = "SELECT p FROM Participantes p WHERE p.estado = :estado")
+    , @NamedQuery(name = "Participantes.findByRol", query = "SELECT p FROM Participantes p WHERE p.rol = :rol")})
+public class Participantes implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected ParticipantesPK participantesPK;
+    @Column(name = "fecha_fin")
+    @Temporal(TemporalType.DATE)
+    private Date fechaFin;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String estado;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String rol;
+    @JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Proyecto proyecto1;
+    @JoinColumn(name = "usuario", referencedColumnName = "cedula", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Usuario usuario1;
+
+    public Participantes() {
+    }
+
+    public Participantes(ParticipantesPK participantesPK) {
+        this.participantesPK = participantesPK;
+    }
+
+    public Participantes(ParticipantesPK participantesPK, String estado, String rol) {
+        this.participantesPK = participantesPK;
+        this.estado = estado;
+        this.rol = rol;
+    }
+
+    public Participantes(String usuario, int proyecto, Date fechaInicio) {
+        this.participantesPK = new ParticipantesPK(usuario, proyecto, fechaInicio);
+    }
+
+    public ParticipantesPK getParticipantesPK() {
+        return participantesPK;
+    }
+
+    public void setParticipantesPK(ParticipantesPK participantesPK) {
+        this.participantesPK = participantesPK;
+    }
+
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public Proyecto getProyecto1() {
+        return proyecto1;
+    }
+
+    public void setProyecto1(Proyecto proyecto1) {
+        this.proyecto1 = proyecto1;
+    }
+
+    public Usuario getUsuario1() {
+        return usuario1;
+    }
+
+    public void setUsuario1(Usuario usuario1) {
+        this.usuario1 = usuario1;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (participantesPK != null ? participantesPK.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Participantes)) {
+            return false;
+        }
+        Participantes other = (Participantes) object;
+        if ((this.participantesPK == null && other.participantesPK != null) || (this.participantesPK != null && !this.participantesPK.equals(other.participantesPK))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "co.edu.usbbog.sgpi.model.Participantes[ participantesPK=" + participantesPK + " ]";
+    }
+    
+}

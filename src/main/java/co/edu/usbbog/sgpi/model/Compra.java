@@ -1,0 +1,211 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.usbbog.sgpi.model;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author 57310
+ */
+@Entity
+@Table(catalog = "sgpi_db", schema = "")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Compra.findAll", query = "SELECT c FROM Compra c")
+    , @NamedQuery(name = "Compra.findById", query = "SELECT c FROM Compra c WHERE c.id = :id")
+    , @NamedQuery(name = "Compra.findByFechaSolicitud", query = "SELECT c FROM Compra c WHERE c.fechaSolicitud = :fechaSolicitud")
+    , @NamedQuery(name = "Compra.findByNombre", query = "SELECT c FROM Compra c WHERE c.nombre = :nombre")
+    , @NamedQuery(name = "Compra.findByTipo", query = "SELECT c FROM Compra c WHERE c.tipo = :tipo")
+    , @NamedQuery(name = "Compra.findByCodigoCompra", query = "SELECT c FROM Compra c WHERE c.codigoCompra = :codigoCompra")
+    , @NamedQuery(name = "Compra.findByValor", query = "SELECT c FROM Compra c WHERE c.valor = :valor")
+    , @NamedQuery(name = "Compra.findByFechaCompra", query = "SELECT c FROM Compra c WHERE c.fechaCompra = :fechaCompra")
+    , @NamedQuery(name = "Compra.findByEstado", query = "SELECT c FROM Compra c WHERE c.estado = :estado")
+    , @NamedQuery(name = "Compra.findByLink", query = "SELECT c FROM Compra c WHERE c.link = :link")
+    , @NamedQuery(name = "Compra.findByDescripcion", query = "SELECT c FROM Compra c WHERE c.descripcion = :descripcion")})
+public class Compra implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private Integer id;
+    @Basic(optional = false)
+    @Column(name = "fecha_solicitud", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fechaSolicitud;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String nombre;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String tipo;
+    @Column(name = "codigo_compra", length = 45)
+    private String codigoCompra;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(precision = 22)
+    private Double valor;
+    @Column(name = "fecha_compra")
+    @Temporal(TemporalType.DATE)
+    private Date fechaCompra;
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private int estado;
+    @Column(length = 45)
+    private String link;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String descripcion;
+    @JoinColumn(name = "presupuesto", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Presupuesto presupuesto;
+
+    public Compra() {
+    }
+
+    public Compra(Integer id) {
+        this.id = id;
+    }
+
+    public Compra(Integer id, Date fechaSolicitud, String nombre, String tipo, int estado, String descripcion) {
+        this.id = id;
+        this.fechaSolicitud = fechaSolicitud;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.estado = estado;
+        this.descripcion = descripcion;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getFechaSolicitud() {
+        return fechaSolicitud;
+    }
+
+    public void setFechaSolicitud(Date fechaSolicitud) {
+        this.fechaSolicitud = fechaSolicitud;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getCodigoCompra() {
+        return codigoCompra;
+    }
+
+    public void setCodigoCompra(String codigoCompra) {
+        this.codigoCompra = codigoCompra;
+    }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    public Date getFechaCompra() {
+        return fechaCompra;
+    }
+
+    public void setFechaCompra(Date fechaCompra) {
+        this.fechaCompra = fechaCompra;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Presupuesto getPresupuesto() {
+        return presupuesto;
+    }
+
+    public void setPresupuesto(Presupuesto presupuesto) {
+        this.presupuesto = presupuesto;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Compra)) {
+            return false;
+        }
+        Compra other = (Compra) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "co.edu.usbbog.sgpi.model.Compra[ id=" + id + " ]";
+    }
+
+
+	
+    
+}

@@ -1,0 +1,221 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.usbbog.sgpi.model;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+/**
+ *
+ * @author 57310
+ */
+@Entity
+@Table(name = "grupo_investigacion", catalog = "sgpi_db", schema = "")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "GrupoInvestigacion.findAll", query = "SELECT g FROM GrupoInvestigacion g")
+    , @NamedQuery(name = "GrupoInvestigacion.findById", query = "SELECT g FROM GrupoInvestigacion g WHERE g.id = :id")
+    , @NamedQuery(name = "GrupoInvestigacion.findByNombre", query = "SELECT g FROM GrupoInvestigacion g WHERE g.nombre = :nombre")
+    , @NamedQuery(name = "GrupoInvestigacion.findByFechaFun", query = "SELECT g FROM GrupoInvestigacion g WHERE g.fechaFun = :fechaFun")
+    , @NamedQuery(name = "GrupoInvestigacion.findByCategoria", query = "SELECT g FROM GrupoInvestigacion g WHERE g.categoria = :categoria")
+    , @NamedQuery(name = "GrupoInvestigacion.findByFechaCat", query = "SELECT g FROM GrupoInvestigacion g WHERE g.fechaCat = :fechaCat")})
+public class GrupoInvestigacion implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private Integer id;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String nombre;
+    @Basic(optional = false)
+    @Column(name = "fecha_fun", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fechaFun;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String categoria;
+    @Basic(optional = false)
+    @Column(name = "fecha_cat", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fechaCat;
+    @JoinTable(name = "grupo_inv_lineas_inv", joinColumns = {
+        @JoinColumn(name = "grupo_investigacion", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "linea_investigacion", referencedColumnName = "nombre", nullable = false)})
+    @ManyToMany
+    private List<LineaInvestigacion> lineasInvestigacion;
+    @JoinTable(name = "programas_grupos_inv", joinColumns = {
+        @JoinColumn(name = "grupo_investigacion", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "programa", referencedColumnName = "id", nullable = false)})
+    @ManyToMany
+    private List<Programa> programas;
+    @JoinColumn(name = "director_grupo", referencedColumnName = "cedula", nullable = false)
+    @ManyToOne(optional = false)
+    private Usuario directorGrupo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoInvestigacion")
+    private List<Semillero> semilleros;
+
+    public GrupoInvestigacion() {
+    }
+
+    public GrupoInvestigacion(Integer id) {
+        this.id = id;
+    }
+
+    public GrupoInvestigacion(Integer id, String nombre, Date fechaFun, String categoria, Date fechaCat) {
+        this.id = id;
+        this.nombre = nombre;
+        this.fechaFun = fechaFun;
+        this.categoria = categoria;
+        this.fechaCat = fechaCat;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Date getFechaFun() {
+        return fechaFun;
+    }
+
+    public void setFechaFun(Date fechaFun) {
+        this.fechaFun = fechaFun;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public Date getFechaCat() {
+        return fechaCat;
+    }
+
+    public void setFechaCat(Date fechaCat) {
+        this.fechaCat = fechaCat;
+    }
+
+    @XmlTransient
+    public List<LineaInvestigacion> getLineasInvestigacion() {
+        return lineasInvestigacion;
+    }
+
+    public void setLineasInvestigacion(List<LineaInvestigacion> lineasInvestigacion) {
+        this.lineasInvestigacion = lineasInvestigacion;
+    }
+    public LineaInvestigacion addLineaInvestigacion(LineaInvestigacion lineaInvestigacion) {
+    	getLineasInvestigacion().add(lineaInvestigacion);
+    	lineaInvestigacion.addGrupoInvestigacion(this);
+    	
+    	return lineaInvestigacion;
+    }
+    public LineaInvestigacion removeLineaInvestigacion(LineaInvestigacion lineaInvestigacion) {
+		getLineasInvestigacion().remove(lineaInvestigacion);
+		lineaInvestigacion.removeGrupoInvestigacion(this);
+		return lineaInvestigacion;
+	}
+    
+
+    @XmlTransient
+    public List<Programa> getProgramas() {
+        return programas;
+    }
+
+    public void setProgramas(List<Programa> programas) {
+        this.programas = programas;
+    }
+    public Programa addPrograma(Programa programa) {
+    	getProgramas().add(programa);
+    	programa.addGrupoInvestigacion(this);
+    	return programa;
+    }
+    public Programa removePrograma(Programa programa) {
+    	getProgramas().add(programa);
+    	programa.removeGrupoInvestigacion(this);
+    	return programa;
+    }
+    public Usuario getDirectorGrupo() {
+        return directorGrupo;
+    }
+
+    public void setDirectorGrupo(Usuario directorGrupo) {
+        this.directorGrupo = directorGrupo;
+    }
+
+    @XmlTransient
+    public List<Semillero> getSemilleros() {
+        return semilleros;
+    }
+
+    public void setSemilleros(List<Semillero> semilleros) {
+        this.semilleros = semilleros;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof GrupoInvestigacion)) {
+            return false;
+        }
+        GrupoInvestigacion other = (GrupoInvestigacion) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "co.edu.usbbog.sgpi.model.GrupoInvestigacion[ id=" + id + " ]";
+    }
+
+
+
+
+
+	
+}
