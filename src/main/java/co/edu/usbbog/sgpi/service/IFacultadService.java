@@ -1,5 +1,11 @@
 package co.edu.usbbog.sgpi.service;
 
-public interface IFacultadService {
+import java.util.List;
 
+import co.edu.usbbog.sgpi.model.Facultad;
+
+
+
+public interface IFacultadService {
+	public List<Facultad> todasLasFacultades();
 }

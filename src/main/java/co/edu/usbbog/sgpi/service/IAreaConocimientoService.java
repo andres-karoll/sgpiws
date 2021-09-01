@@ -1,5 +1,10 @@
 package co.edu.usbbog.sgpi.service;
 
-public interface IAreaConocimientoService {
+import java.util.List;
 
+import co.edu.usbbog.sgpi.model.AreaConocimiento;
+
+public interface IAreaConocimientoService {
+	
+		public List<AreaConocimiento> todasLasAreas();
 }
