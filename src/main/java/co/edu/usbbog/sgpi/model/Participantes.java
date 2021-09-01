@@ -20,6 +20,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -54,7 +56,7 @@ public class Participantes implements Serializable {
     private Proyecto proyecto1;
     @JoinColumn(name = "usuario", referencedColumnName = "cedula", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Usuario usuario1;
+    private Usuario usuario1;//duda
 
     public Participantes() {
     }
@@ -145,5 +147,17 @@ public class Participantes implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Participantes[ participantesPK=" + participantesPK + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject paticipantesJson=new JSONObject();
+    	paticipantesJson.put("fecha_fin",this.getFechaFin());
+    	paticipantesJson.put("estado",this.getEstado());
+    	paticipantesJson.put("rol",this.getRol());
+    	return paticipantesJson;
+    }
+
+/*	public Usuario addUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		getUsuario1().add
+		return usuario;
+	}*/
 }

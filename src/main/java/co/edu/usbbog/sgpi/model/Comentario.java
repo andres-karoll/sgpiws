@@ -20,6 +20,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -157,5 +159,16 @@ public class Comentario implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Comentario[ id=" + id + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject comentarioJson=new JSONObject();
+    	comentarioJson.put("id",this.getId());
+    	comentarioJson.put("comentario",this.getComentario());
+    	comentarioJson.put("calificacion",this.getCalificacion());
+    	comentarioJson.put("fase",this.getFase());
+    	comentarioJson.put("nivel",this.getNivel());
+    	comentarioJson.put("fecha",this.getFecha());
+    	comentarioJson.put("producto_id",this.getProductoId());
+    	return comentarioJson;
+    	
+    }
 }

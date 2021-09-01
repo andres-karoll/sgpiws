@@ -13,6 +13,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -99,6 +101,13 @@ public class ParticipantesPK implements Serializable {
     @Override
     public String toString() {
         return "co.edu.usbbog.sgpi.model.ParticipantesPK[ usuario=" + usuario + ", proyecto=" + proyecto + ", fechaInicio=" + fechaInicio + " ]";
+    }
+    public JSONObject toJson() {
+    	JSONObject paticipantesPKJson=new JSONObject();
+    	paticipantesPKJson.put("usuario",this.getUsuario());
+    	paticipantesPKJson.put("proyecto",this.getProyecto());
+    	paticipantesPKJson.put("fecha_inicio",this.getFechaInicio());
+    	return paticipantesPKJson;
     }
     
 }

@@ -24,6 +24,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -57,7 +59,7 @@ public class Semillero implements Serializable {
     @ManyToMany(mappedBy = "semilleros")
     private List<Programa> programas;
     @OneToMany(mappedBy = "semillero")
-    private List<Proyecto> proyectoList;
+    private List<Proyecto> proyectos;
     @JoinColumn(name = "grupo_investigacion", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private GrupoInvestigacion grupoInvestigacion;
@@ -68,7 +70,7 @@ public class Semillero implements Serializable {
     @ManyToOne(optional = false)
     private Usuario liderSemillero;
     @OneToMany(mappedBy = "semilleroId")
-    private List<Usuario> usuarioList;
+    private List<Usuario> usuarios;
 
     public Semillero() {
     }
@@ -124,14 +126,25 @@ public class Semillero implements Serializable {
     public void setProgramas(List<Programa> programas) {
         this.programas = programas;
     }
+    public Programa addPrograma(Programa programa) {
+		getProgramas().add(programa);
+		programa.addSemillero(this);	
+		return programa;
+	}
 
+	public Programa removePrograma(Programa programa) {
+		getProgramas().remove(programa);
+		programa.removeSemillero(this);
+		return programa;
+		
+	}
     @XmlTransient
-    public List<Proyecto> getProyectoList() {
-        return proyectoList;
+    public List<Proyecto> getProyectos() {
+        return proyectos;
     }
 
-    public void setProyectoList(List<Proyecto> proyectoList) {
-        this.proyectoList = proyectoList;
+    public void setProyectos(List<Proyecto> proyectos) {
+        this.proyectos = proyectos;
     }
 
     public GrupoInvestigacion getGrupoInvestigacion() {
@@ -160,12 +173,12 @@ public class Semillero implements Serializable {
     }
 
     @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
+    public List<Usuario> getUsuarios() {
+        return usuarios;
     }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
 
     @Override
@@ -192,26 +205,50 @@ public class Semillero implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Semillero[ id=" + id + " ]";
     }
+    public JSONObject toJson() {
+    	JSONObject semilleroJson=new JSONObject();
+    	semilleroJson.put("id",this.getId());
+    	semilleroJson.put("nombre",this.getNombre());
+    	semilleroJson.put("descripcion",this.getDescripcion());
+    	semilleroJson.put("fecha_fun",this.getFechaFun());
+    	return semilleroJson;
+    }
 
-	public Programa addPrograma(Programa programa) {
-		getProgramas().add(programa);
-		programa.addSemillero(this);	
-		return programa;
+	public Usuario addUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		getUsuarios().add(usuario);
+		usuario.addsemillero(this);
+		return usuario;
+	}
+	public Usuario removeUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		getUsuarios().remove(usuario);
+		usuario.removesemillero(this);
+		return usuario;
+	}
+    
+	/*public LineaInvestigacion addLineaInvestigacion(LineaInvestigacion lineaInvestigacion) {
+		// TODO Auto-generated method stub}
+		getLineaInvestigacion().addLineaInvestigacion(lineaInvestigacion);
+		lineaInvestigacion.addSemillero(this);
+		return lineaInvestigacion;
+	}*/
+
+	
+
+	
+    /*
+	public GrupoInvestigacion addGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
+		getGrupoInvestigacion().addSemillero(grupoInvestigacion);
+		grupoInvestigacion.addSemillero(this);
+		return grupoInvestigacion;
 	}
 
-	public Programa removePrograma(Programa programa) {
-		getProgramas().remove(programa);
-		programa.removeSemillero(this);
-		return programa;
-		
-	}
-
-	public Programa removeSemillero(Programa programa) {
-		getProgramas().remove(programa);
-		programa.removeSemillero(null);
-		return programa;
-		
-	}
+	public GrupoInvestigacion removeGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
+		getGrupoInvestigacion().removeSemillero(grupoInvestigacion);
+		grupoInvestigacion.removeSemillero(null);
+		return grupoInvestigacion;
+	}*/
 
 	
 

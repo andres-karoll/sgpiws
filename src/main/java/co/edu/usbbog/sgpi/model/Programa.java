@@ -23,6 +23,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -58,7 +60,7 @@ public class Programa implements Serializable {
     @ManyToOne(optional = false)
     private Usuario director;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "programa")
-    private List<Materia> materiaList;
+    private List<Materia> materias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "programaId")
     private List<Usuario> usuarioList;
 
@@ -145,13 +147,18 @@ public class Programa implements Serializable {
     }
 
     @XmlTransient
-    public List<Materia> getMateriaList() {
-        return materiaList;
+    public List<Materia> getMaterias() {
+        return materias;
     }
 
-    public void setMateriaList(List<Materia> materiaList) {
-        this.materiaList = materiaList;
+    public void setMaterias(List<Materia> materiaList) {
+        this.materias = materiaList;
     }
+    /*public Materia addMateria(Materia materia) {
+    	getMaterias().add(materia);
+    	materia.addPrograma(this);
+    	return materia;
+    }*/
 
     @XmlTransient
     public List<Usuario> getUsuarioList() {
@@ -186,6 +193,27 @@ public class Programa implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Programa[ id=" + id + " ]";
     }
+
+    public JSONObject toJson() {
+    	JSONObject programaJson=new JSONObject();
+    	programaJson.put("id",this.getId());
+    	programaJson.put("nombre",this.getNombre());
+    	
+    	return programaJson;
+    }
+
+	public Usuario addUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		getUsuarioList().add(usuario);
+		usuario.addPrograma(this);
+		return usuario;
+	}
+	public Usuario removeUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		getUsuarioList().remove(usuario);
+		usuario.removePrograma(this);
+		return usuario;
+	}
 
 	
 

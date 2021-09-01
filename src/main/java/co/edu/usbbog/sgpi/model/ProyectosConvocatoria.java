@@ -17,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -116,5 +118,19 @@ public class ProyectosConvocatoria implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.ProyectosConvocatoria[ proyectosConvocatoriaPK=" + proyectosConvocatoriaPK + " ]";
     }
+    public JSONObject toJson() {
+    	JSONObject proyectosConovocatoriaJson=new JSONObject();
+    	proyectosConovocatoriaJson.put("id_proyecto",this.getIdProyecto());
+    	proyectosConovocatoriaJson.put("convocatoria",this.getConvocatoria1());
+    	return proyectosConovocatoriaJson;
+    }
+
+	/*public Proyecto addProyecto(Proyecto proyecto) {
+		// TODO Auto-generated method stub
+		getProyecto().addProyectosConvocatoria(proyecto);
+		proyecto.addProyectosConvocatoria(this);
+		return proyecto;
+		
+	}*/
     
 }

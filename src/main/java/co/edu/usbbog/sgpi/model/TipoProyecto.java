@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -41,7 +43,7 @@ public class TipoProyecto implements Serializable {
     @Column(nullable = false, length = 100)
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoProyecto")
-    private List<Proyecto> proyectoList;
+    private List<Proyecto> proyectos;
 
     public TipoProyecto() {
     }
@@ -72,14 +74,18 @@ public class TipoProyecto implements Serializable {
     }
 
     @XmlTransient
-    public List<Proyecto> getProyectoList() {
-        return proyectoList;
+    public List<Proyecto> getProyectos() {
+        return proyectos;
     }
 
-    public void setProyectoList(List<Proyecto> proyectoList) {
-        this.proyectoList = proyectoList;
+    public void setProyectos(List<Proyecto> proyectos) {
+        this.proyectos = proyectos;
     }
-
+    /*public Proyecto addproyecto(Proyecto proyecto) {
+    	getProyectos().add(proyecto);
+    	proyecto.addTipoProyecto(this);
+    	return proyecto;
+    }*/
     @Override
     public int hashCode() {
         int hash = 0;
@@ -104,5 +110,10 @@ public class TipoProyecto implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.TipoProyecto[ nombre=" + nombre + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject tipoProyectoJson=new JSONObject();
+    	tipoProyectoJson.put("nombre",this.getNombre());
+    	tipoProyectoJson.put("descripcion",this.getDescripcion());    
+    	return tipoProyectoJson;
+    }
 }

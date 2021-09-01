@@ -23,6 +23,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -50,7 +52,7 @@ public class LineaInvestigacion implements Serializable {
     @ManyToMany(mappedBy = "lineasInvestigacion")
     private List<GrupoInvestigacion> gruposInvestigacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaInvestigacion")
-    private List<Semillero> semilleroList;
+    private List<Semillero> semilleros;
 
     public LineaInvestigacion() {
     }
@@ -110,13 +112,18 @@ public class LineaInvestigacion implements Serializable {
 	}
 
     @XmlTransient
-    public List<Semillero> getSemilleroList() {
-        return semilleroList;
+    public List<Semillero> getSemilleros() {
+        return semilleros;
     }
 
-    public void setSemilleroList(List<Semillero> semilleroList) {
-        this.semilleroList = semilleroList;
+    public void setSemilleros(List<Semillero> semillerow) {
+        this.semilleros = semillerow;
     }
+    /*public Semillero addSemillero(Semillero semillero) {
+    	getSemilleroList().add(semillero);
+    	semillero.addLineaInvestigacion(this);
+    	return semillero;
+    }*/
 
     @Override
     public int hashCode() {
@@ -142,7 +149,13 @@ public class LineaInvestigacion implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.LineaInvestigacion[ nombre=" + nombre + " ]";
     }
-
-	
+    public JSONObject toJson() {
+    	JSONObject lineaInvestigacionJson=new JSONObject();
+    	lineaInvestigacionJson.put("nombre",this.getNombre());
+    	lineaInvestigacionJson.put("descripcion",this.getDescripcion());
+    	lineaInvestigacionJson.put("fecha",this.getFecha());
+    	return lineaInvestigacionJson;
+    	
+    }
 	
 }

@@ -27,6 +27,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -108,11 +110,11 @@ public class Proyecto implements Serializable {
     @ManyToOne(optional = false)
     private TipoProyecto tipoProyecto;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
-    private List<ProyectosConvocatoria> proyectosConvocatoriaList;
+    private List<ProyectosConvocatoria> proyectosConvocatoria;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
     private List<Producto> productos;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
-    private List<Participaciones> participacionesList;
+    private List<Participaciones> participaciones;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
     private List<Presupuesto> presupuestos;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto1")
@@ -327,13 +329,18 @@ public class Proyecto implements Serializable {
     }
 
     @XmlTransient
-    public List<ProyectosConvocatoria> getProyectosConvocatoriaList() {
-        return proyectosConvocatoriaList;
+    public List<ProyectosConvocatoria> getProyectosConvocatoria() {
+        return proyectosConvocatoria;
     }
 
-    public void setProyectosConvocatoriaList(List<ProyectosConvocatoria> proyectosConvocatoriaList) {
-        this.proyectosConvocatoriaList = proyectosConvocatoriaList;
+    public void setProyectosConvocatoriaList(List<ProyectosConvocatoria> proyectosConvocatoria) {
+        this.proyectosConvocatoria = proyectosConvocatoria;
     }
+    /*public ProyectosConvocatoria addProyectosConvocatoria(ProyectosConvocatoria proyectosConvocatoria) {
+    	getProyectosConvocatoria().add(proyectosConvocatoria);
+    	proyectosConvocatoria.addProyecto(this);
+    	return proyectosConvocatoria;
+    }*/
 
     @XmlTransient
     public List<Producto> getProductos() {
@@ -345,13 +352,19 @@ public class Proyecto implements Serializable {
     }
 
     @XmlTransient
-    public List<Participaciones> getParticipacionesList() {
-        return participacionesList;
+    public List<Participaciones> getParticipaciones() {
+        return participaciones;
     }
 
-    public void setParticipacionesList(List<Participaciones> participacionesList) {
-        this.participacionesList = participacionesList;
+    public void setParticipaciones(List<Participaciones> participaciones) {
+        this.participaciones = participaciones;
     }
+    /*public Participaciones addParticipaciones(Participaciones participaciones) {
+    	getParticipaciones().add(participaciones);
+    	participaciones.addProyectos(this);
+    	return participaciones;
+    }*/
+    
 
     @XmlTransient
     public List<Presupuesto> getPresupuestos() {
@@ -396,7 +409,30 @@ public class Proyecto implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Proyecto[ id=" + id + " ]";
     }
+    public JSONObject toJson() {
+    	JSONObject proyectoJson=new JSONObject();
+    	proyectoJson.put("id",this.getId());
+    	proyectoJson.put("titulo",this.getTitulo());
+    	proyectoJson.put("estado",this.getEstado());
+    	proyectoJson.put("descripcion",this.getDescripcion());
+    	proyectoJson.put("fecha_inicio",this.getFechaInicio());
+    	proyectoJson.put("fecha_fin",this.getFechaFin());
+    	proyectoJson.put("retroalimentacion_final",this.getRetroalimentacionFinal());
+    	proyectoJson.put("visibilidad",this.getVisibilidad());
+    	proyectoJson.put("ciudad",this.getCiudad());
+    	proyectoJson.put("metodologia",this.getMetodologia());
+    	proyectoJson.put("conclusiones",this.getConclusiones());
+    	proyectoJson.put("justificacion",this.getJustificacion());
+    	
+    	return proyectoJson;
+    }
 
+	/*public TipoProyecto addTipoProyecto(TipoProyecto tipoProyecto) {
+		// TODO Auto-generated method stub
+		getTipoProyecto().addproyecto(tipoProyecto);
+		tipoProyecto.addproyecto(this);
+		return tipoProyecto;
+	}*/
 
 	
     

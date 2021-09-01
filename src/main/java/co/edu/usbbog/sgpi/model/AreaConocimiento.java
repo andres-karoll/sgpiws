@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -109,7 +111,6 @@ public class AreaConocimiento implements Serializable {
     }
     public Proyecto addProyecto(Proyecto proyecto) {
     	getProyectos().add(proyecto);    	
-    	
     	proyecto.addAreaConocimiento(this);    	
     	return proyecto;
     }
@@ -142,5 +143,13 @@ public class AreaConocimiento implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.AreaConocimiento[ id=" + id + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject areaConocimientoJson=new JSONObject();
+    	areaConocimientoJson.put("id",this.getId());
+    	areaConocimientoJson.put("nombre",this.getNombre());
+    	areaConocimientoJson.put("gran_area",this.getGranArea());
+    	areaConocimientoJson.put("descripcion",this.getDescripcion());
+    	return areaConocimientoJson;
+    	
+    }
 }

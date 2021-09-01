@@ -20,6 +20,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -204,7 +206,22 @@ public class Compra implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Compra[ id=" + id + " ]";
     }
+    public JSONObject toJson() {
+    	JSONObject compraJson=new JSONObject();
+    	compraJson.put("id",this.getId());
+    	compraJson.put("fecha_solicitud",this.getFechaSolicitud());
+    	compraJson.put("nombre",this.getNombre());
+    	compraJson.put("tipo",this.getTipo());
+    	compraJson.put("codigo_compra",this.getCodigoCompra());
+    	compraJson.put("valor",this.getValor());
+    	compraJson.put("fecha_compra",this.getFechaCompra());
+    	compraJson.put("estado",this.getEstado());
+    	compraJson.put("link",this.getLink());
+    	compraJson.put("descripcion",this.getDescripcion());
 
+    	return compraJson;
+    	
+    }
 
 	
     

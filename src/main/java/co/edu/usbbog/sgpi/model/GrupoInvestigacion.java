@@ -26,6 +26,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -187,6 +189,16 @@ public class GrupoInvestigacion implements Serializable {
     public void setSemilleros(List<Semillero> semilleros) {
         this.semilleros = semilleros;
     }
+    /*public Semillero addSemillero(Semillero semillero) {
+    	getSemilleros().add(semillero);
+    	semillero.addGrupoInvestigacion(this);
+    	return semillero;
+    }
+    public Semillero removeSemillero(Semillero semillero) {
+    	getSemilleros().remove(semillero);
+    	semillero.removeGrupoInvestigacion(this);
+    	return semillero;
+    }*/
 
     @Override
     public int hashCode() {
@@ -212,6 +224,25 @@ public class GrupoInvestigacion implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.GrupoInvestigacion[ id=" + id + " ]";
     }
+    public JSONObject toJson() {
+    	JSONObject grupoInvestigacionJson=new JSONObject();
+    	grupoInvestigacionJson.put("id",this.getId());
+    	grupoInvestigacionJson.put("nombre",this.getNombre());
+    	grupoInvestigacionJson.put("fecha_fun",this.getFechaFun());
+    	grupoInvestigacionJson.put("categoria",this.getCategoria());
+    	grupoInvestigacionJson.put("fecha_cat",this.getFechaCat());
+    	
+    	return grupoInvestigacionJson;
+    	
+    }
+
+	/*public Usuario addUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		getDirectorGrupo().add
+		
+		return usuario;
+	}*/
+	
 
 
 

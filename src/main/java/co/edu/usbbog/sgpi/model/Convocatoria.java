@@ -23,6 +23,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -75,7 +77,7 @@ public class Convocatoria implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoria1")
     private List<ProyectosConvocatoria> proyectosConvocatorias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoriaId")
-    private List<DetalleConvocatoria> detalleConvocatoriaList;
+    private List<DetalleConvocatoria> detallesConvocatoria;
 
     public Convocatoria() {
     }
@@ -185,13 +187,18 @@ public class Convocatoria implements Serializable {
     	return proyectosConvocatoria;
     }
     @XmlTransient
-    public List<DetalleConvocatoria> getDetalleConvocatoriaList() {
-        return detalleConvocatoriaList;
+    public List<DetalleConvocatoria> getDetallesConvocatoria() {
+        return detallesConvocatoria;
     }
 
-    public void setDetalleConvocatoriaList(List<DetalleConvocatoria> detalleConvocatoriaList) {
-        this.detalleConvocatoriaList = detalleConvocatoriaList;
+    public void setDetallesConvocatoria(List<DetalleConvocatoria> detallesConvocatoria) {
+        this.detallesConvocatoria = detallesConvocatoria;
     }
+    /*public DetalleConvocatoria addDetalleConvocatoria(DetalleConvocatoria detalleConvocatoria) {
+    	getDetallesConvocatoria().add(detalleConvocatoria);
+    	detalleConvocatoria.addConvocatoria(this);
+    	return detalleConvocatoria;
+    }*/
 
     @Override
     public int hashCode() {
@@ -217,5 +224,18 @@ public class Convocatoria implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Convocatoria[ id=" + id + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject convocatoriaJson=new JSONObject();
+    	convocatoriaJson.put("id",this.getId());
+    	convocatoriaJson.put("nombre_convocatoria",this.getNombreConvocatoria());
+    	convocatoriaJson.put("fecha_inicio",this.getFechaInicio());
+    	convocatoriaJson.put("fecha_final",this.getFechaFinal());
+    	convocatoriaJson.put("contexto",this.getContexto());
+    	convocatoriaJson.put("numero_productos",this.getNumeroProductos());
+    	convocatoriaJson.put("estado",this.getEstado());
+    	convocatoriaJson.put("tipo",this.getTipo());
+    	convocatoriaJson.put("entidad",this.getEntidad());
+    	return convocatoriaJson;
+    	
+    }
 }

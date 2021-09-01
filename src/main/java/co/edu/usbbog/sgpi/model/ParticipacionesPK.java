@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -79,6 +81,12 @@ public class ParticipacionesPK implements Serializable {
     @Override
     public String toString() {
         return "co.edu.usbbog.sgpi.model.ParticipacionesPK[ eventoId=" + eventoId + ", proyectoIdProyecto=" + proyectoIdProyecto + " ]";
+    }
+    public JSONObject toJson() {
+    	JSONObject participacionesPKJson=new JSONObject();
+    	participacionesPKJson.put("evento_id",this.getEventoId());
+    	participacionesPKJson.put("proyecto_id_proyecto",this.getProyectoIdProyecto());
+    	return participacionesPKJson;
     }
     
 }

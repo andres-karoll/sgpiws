@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -144,5 +146,12 @@ public class Producto implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Producto[ id=" + id + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject productoJson=new JSONObject();
+    	productoJson.put("id",this.getId());
+    	productoJson.put("titulo_producto",this.getTituloProducto());
+    	productoJson.put("tipo_producto",this.getTipoProducto());
+    	productoJson.put("url_repo",this.getUrlRepo());
+    	return productoJson;
+    }
 }

@@ -20,6 +20,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -131,5 +133,17 @@ public class Participaciones implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Participaciones[ participacionesPK=" + participacionesPK + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject participacionesJson=new JSONObject();
+    	participacionesJson.put("fecha_part",this.getFechaPart());
+    	participacionesJson.put("reconocimientos",this.getReconocimientos());
+    	return participacionesJson;
+    }
+
+	/*public Proyecto addProyectos(Proyecto proyecto) {
+		// TODO Auto-generated method stub
+		getProyecto().addProyecto(proyecto);
+		proyecto.addParticipaciones(this);
+		return proyecto;
+	}*/
 }

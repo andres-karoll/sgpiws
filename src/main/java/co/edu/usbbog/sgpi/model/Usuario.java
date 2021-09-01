@@ -74,16 +74,16 @@ public class Usuario implements Serializable {
     private String visiblidad;
     @Column(name = "correo_personal", length = 45)
     private String correoPersonal;
-    @ManyToMany(mappedBy = "usuarioList")
-    private List<TipoUsuario> tipoUsuarioList;
+    @ManyToMany(mappedBy = "usuarios")
+    private List<TipoUsuario> tiposUsuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "directorGrupo")
-    private List<GrupoInvestigacion> grupoInvestigacionList;
+    private List<GrupoInvestigacion> gruposInvestigacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "director")
-    private List<Programa> programaList;
+    private List<Programa> programas;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "profesor")
     private List<Clase> clases;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "liderSemillero")
-    private List<Semillero> semilleroList;
+    private List<Semillero> semilleros;
     @JoinColumn(name = "programa_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Programa programaId;
@@ -91,11 +91,11 @@ public class Usuario implements Serializable {
     @ManyToOne
     private Semillero semilleroId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "coorInv")
-    private List<Facultad> facultadList;
+    private List<Facultad> facultadList;//duda
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "decano")
-    private List<Facultad> facultadList1;
+    private List<Facultad> facultadList1;//duda
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario1")
-    private List<Participantes> participantesList;
+    private List<Participantes> participantes;
 
     public Usuario() {
     }
@@ -187,31 +187,54 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<TipoUsuario> getTipoUsuarioList() {
-        return tipoUsuarioList;
+    public List<TipoUsuario> getTiposUsuario() {
+        return tiposUsuario;
     }
 
-    public void setTipoUsuarioList(List<TipoUsuario> tipoUsuarioList) {
-        this.tipoUsuarioList = tipoUsuarioList;
+    public void setTiposUsuario(List<TipoUsuario> tiposUsuario) {
+        this.tiposUsuario = tiposUsuario;
     }
-
+    public TipoUsuario addTipoUsuario(TipoUsuario tipoUsuario) {
+    	getTiposUsuario().add(tipoUsuario);
+    	tipoUsuario.addUsuario(this);
+    	return tipoUsuario;
+    }
+    public TipoUsuario removeTipoUsuario(TipoUsuario tipoUsuario) {
+    	getTiposUsuario().remove(tipoUsuario);
+    	tipoUsuario.removeUsuario(null);
+    	return tipoUsuario;
+    }
     @XmlTransient
-    public List<GrupoInvestigacion> getGrupoInvestigacionList() {
-        return grupoInvestigacionList;
+    public List<GrupoInvestigacion> getGruposInvestigacion() {
+        return gruposInvestigacion;
     }
 
-    public void setGrupoInvestigacionList(List<GrupoInvestigacion> grupoInvestigacionList) {
-        this.grupoInvestigacionList = grupoInvestigacionList;
+    public void setGruposInvestigacion(List<GrupoInvestigacion> grupoInvestigacionList) {
+        this.gruposInvestigacion = grupoInvestigacionList;
     }
-
+    /*public GrupoInvestigacion addGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
+    	getGruposInvestigacion().add(grupoInvestigacion);
+    	grupoInvestigacion.addUsuario(this);
+    	return grupoInvestigacion;
+    }*/
     @XmlTransient
-    public List<Programa> getProgramaList() {
-        return programaList;
+    public List<Programa> getProgramas() {
+        return programas;
     }
 
-    public void setProgramaList(List<Programa> programaList) {
-        this.programaList = programaList;
+    public void setProgramas(List<Programa> programaList) {
+        this.programas = programaList;
     }
+    public Programa addPrograma(Programa programa) {
+    	getProgramas().add(programa);
+    	programa.addUsuario(this);
+    	return programa;
+    } 
+    public Programa removePrograma(Programa programa) {
+    	getProgramas().remove(programa);
+    	programa.removeUsuario(null);
+    	return programa;
+    } 
 
     @XmlTransient
     public List<Clase> getClases() {
@@ -233,14 +256,23 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Semillero> getSemilleroList() {
-        return semilleroList;
+    public List<Semillero> getSemilleros() {
+        return semilleros;
     }
 
-    public void setSemilleroList(List<Semillero> semilleroList) {
-        this.semilleroList = semilleroList;
+    public void setSemilleros(List<Semillero> semilleroList) {
+        this.semilleros = semilleroList;
     }
-
+    public Semillero addsemillero(Semillero semillero) {
+    	getSemilleros().add(semillero);
+    	semillero.addUsuario(this);
+    	return semillero;
+    }
+    public Semillero removesemillero(Semillero semillero) {
+    	getSemilleros().remove(semillero);
+    	semillero.removeUsuario(null);
+    	return semillero;
+    }
     public Programa getProgramaId() {
         return programaId;
     }
@@ -276,13 +308,18 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Participantes> getParticipantesList() {
-        return participantesList;
+    public List<Participantes> getParticipantes() {
+        return participantes;
     }
 
-    public void setParticipantesList(List<Participantes> participantesList) {
-        this.participantesList = participantesList;
+    public void setParticipantes(List<Participantes> participantes) {
+        this.participantes = participantes;
     }
+    /*public Participantes participantes(Participantes participantes) {
+    	getParticipantes().add(participantes);
+    	participantes.addUsuario(this);
+    	return participantes;
+    }*/
 
     @Override
     public int hashCode() {
@@ -306,7 +343,14 @@ public class Usuario implements Serializable {
     public JSONObject toJson() {
     	JSONObject usuarioJson=new JSONObject();
     	usuarioJson.put("cedula",this.getCedula());
-    	
+    	usuarioJson.put("cod_Universitario",this.getCodUniversitario());
+    	usuarioJson.put("correo_est",this.getCorreoEst());
+    	usuarioJson.put("contrasena",this.getCedula());
+    	usuarioJson.put("nombres",this.getNombres());
+    	usuarioJson.put("apellidos",this.getApellidos());
+    	usuarioJson.put("telefono",this.getTelefono());
+    	usuarioJson.put("visbilidad",this.getVisiblidad());
+    	usuarioJson.put("correo_personal",this.getCorreoPersonal());
     	return usuarioJson;
     	
     }

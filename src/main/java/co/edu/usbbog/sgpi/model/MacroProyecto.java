@@ -24,6 +24,8 @@ import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -171,6 +173,17 @@ public class MacroProyecto implements Serializable {
     @Override
     public String toString() {
         return "co.edu.usbbog.sgpi.model.MacroProyecto[ id=" + id + " ]";
+    }
+    public JSONObject toJson() {
+    	JSONObject macroProyectoJson=new JSONObject();
+    	macroProyectoJson.put("id",this.getId());
+    	macroProyectoJson.put("nombre",this.getNombre());
+    	macroProyectoJson.put("descripcion",this.getDescripcion());
+    	macroProyectoJson.put("fecha_inicio",this.getFechaInicio());
+    	macroProyectoJson.put("fecha_fin",this.getFechaFin());
+    	macroProyectoJson.put("estado",this.getEstado());
+    	return macroProyectoJson;
+    	
     }
     
 }

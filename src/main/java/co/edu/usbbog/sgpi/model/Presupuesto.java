@@ -25,6 +25,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -148,7 +150,14 @@ public class Presupuesto implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Presupuesto[ id=" + id + " ]";
     }
-
+    public JSONObject toJson() {
+    	JSONObject presupuestoJson=new JSONObject();
+    	presupuestoJson.put("id",this.getId());
+    	presupuestoJson.put("monto",this.getMonto());
+    	presupuestoJson.put("fecha",this.getFecha());
+    	presupuestoJson.put("descripcion",this.getDescripcion());
+    	return presupuestoJson;
+    }
 	
     
 }

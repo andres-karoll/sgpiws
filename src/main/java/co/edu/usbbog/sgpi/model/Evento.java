@@ -22,6 +22,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -177,5 +179,15 @@ public class Evento implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Evento[ id=" + id + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject eventoJson=new JSONObject();
+    	eventoJson.put("id",this.getId());
+    	eventoJson.put("nombre",this.getNombre());
+    	eventoJson.put("fecha",this.getFecha());
+    	eventoJson.put("entidad",this.getEntidad());
+    	eventoJson.put("sitio_web",this.getSitioWeb());
+    	eventoJson.put("url_memoria",this.getUrlMemoria());
+    	return eventoJson;
+    	
+    }
 }

@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -154,7 +156,22 @@ public class Clase implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Clase[ numero=" + numero + " ]";
     }
+    public JSONObject toJson() {
+    	JSONObject claseJson=new JSONObject();
+    	claseJson.put("numero",this.getNumero());
+    	claseJson.put("nombre",this.getNombre());
+    	claseJson.put("semestre",this.getSemestre());
+    	claseJson.put("materia",this.getMateria());
+    	claseJson.put("profesor",this.getProfesor());
+       	return claseJson;
+    	
+    }
 
-	
+	/*public Materia addMateria(Materia materia) {
+		getMateria().addClase(materia);
+		
+		return materia;
+	}
+	*/
     
 }
