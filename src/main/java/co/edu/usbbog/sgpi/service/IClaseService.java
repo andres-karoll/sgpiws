@@ -11,6 +11,4 @@ public interface IClaseService {
 	public List<Clase> clasesPorProfesor(Usuario profesor);
 	public List<Clase> clasesPorMateria(Materia materia);
 	
-	/*public boolean asignarProfesor(Usuario profesor);
-	public boolean asignarMateria(Materia materia);*/
 }

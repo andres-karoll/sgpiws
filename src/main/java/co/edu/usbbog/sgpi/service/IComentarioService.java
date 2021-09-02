@@ -10,5 +10,4 @@ public interface IComentarioService {
 	public boolean eliminarComentario(int id);
 	public boolean crearComentario(Comentario comentario);
 	
-	//public boolean asignarProducto (Producto producto);
 }

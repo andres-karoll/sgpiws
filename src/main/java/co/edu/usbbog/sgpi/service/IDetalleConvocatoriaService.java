@@ -9,5 +9,4 @@ public interface IDetalleConvocatoriaService {
 	public List<DetalleConvocatoria> detalleConvocatoriaPorConvocatoria(Convocatoria convocatoria);
 	public boolean eliminarDetalleConvocatoria(int id);
 	public boolean crearDetalleConvocatoria(DetalleConvocatoria detalleConvocatoria);
-
 }

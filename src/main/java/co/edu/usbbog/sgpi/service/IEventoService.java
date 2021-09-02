@@ -8,6 +8,4 @@ public interface IEventoService {
 	public List<Evento> todosLosEventos();
 	public boolean eliminarEvento(int id);
 	public boolean crearEvento(Evento evento);
-	
-	
 }
