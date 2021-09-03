@@ -194,11 +194,16 @@ public class Convocatoria implements Serializable {
     public void setDetallesConvocatoria(List<DetalleConvocatoria> detallesConvocatoria) {
         this.detallesConvocatoria = detallesConvocatoria;
     }
-    /*public DetalleConvocatoria addDetalleConvocatoria(DetalleConvocatoria detalleConvocatoria) {
+    public DetalleConvocatoria addDetalleConvocatoria(DetalleConvocatoria detalleConvocatoria) {
     	getDetallesConvocatoria().add(detalleConvocatoria);
-    	detalleConvocatoria.addConvocatoria(this);
+    	detalleConvocatoria.setConvocatoriaId(this);
     	return detalleConvocatoria;
-    }*/
+    }
+    public DetalleConvocatoria removeDetalleConvocatoria(DetalleConvocatoria detalleConvocatoria) {
+    	getDetallesConvocatoria().remove(detalleConvocatoria);
+    	detalleConvocatoria.setConvocatoriaId(null);
+    	return detalleConvocatoria;
+    }
 
     @Override
     public int hashCode() {

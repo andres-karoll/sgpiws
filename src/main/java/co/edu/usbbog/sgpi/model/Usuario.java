@@ -212,11 +212,16 @@ public class Usuario implements Serializable {
     public void setGruposInvestigacion(List<GrupoInvestigacion> grupoInvestigacionList) {
         this.gruposInvestigacion = grupoInvestigacionList;
     }
-    /*public GrupoInvestigacion addGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
+    public GrupoInvestigacion addGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
     	getGruposInvestigacion().add(grupoInvestigacion);
-    	grupoInvestigacion.addUsuario(this);
+    	grupoInvestigacion.setDirectorGrupo(this);
     	return grupoInvestigacion;
-    }*/
+    }
+    public GrupoInvestigacion removeGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
+    	getGruposInvestigacion().remove(grupoInvestigacion);
+    	grupoInvestigacion.setDirectorGrupo(null);
+    	return grupoInvestigacion;
+    }
     @XmlTransient
     public List<Programa> getProgramas() {
         return programas;
@@ -297,7 +302,16 @@ public class Usuario implements Serializable {
     public void setFacultadList(List<Facultad> facultadList) {
         this.facultadList = facultadList;
     }
-
+    public Facultad addFacultad(Facultad facultad) {
+    	getFacultadList().add(facultad);
+    	facultad.setCoorInv(this);
+    	return facultad;
+    }
+    public Facultad removeFacultad(Facultad facultad) {
+    	getFacultadList().remove(facultad);
+    	facultad.setCoorInv(null);
+    	return facultad;
+    }
     @XmlTransient
     public List<Facultad> getFacultadList1() {
         return facultadList1;
@@ -306,7 +320,16 @@ public class Usuario implements Serializable {
     public void setFacultadList1(List<Facultad> facultadList1) {
         this.facultadList1 = facultadList1;
     }
-
+    public Facultad addFacultad1(Facultad facultad) {
+    	getFacultadList1().add(facultad);
+    	facultad.setDecano(this);
+    	return facultad;
+    }
+    public Facultad removeFacultad1(Facultad facultad) {
+    	getFacultadList1().remove(facultad);
+    	facultad.setDecano(null);
+    	return facultad;
+    }
     @XmlTransient
     public List<Participantes> getParticipantes() {
         return participantes;
@@ -315,11 +338,16 @@ public class Usuario implements Serializable {
     public void setParticipantes(List<Participantes> participantes) {
         this.participantes = participantes;
     }
-    /*public Participantes participantes(Participantes participantes) {
-    	getParticipantes().add(participantes);
-    	participantes.addUsuario(this);
-    	return participantes;
-    }*/
+    public Participantes addParticipante(Participantes participante) {
+    	getParticipantes().add(participante);
+    	participante.setUsuario(this);
+    	return participante;
+    }
+    public Participantes removeParticipante(Participantes participante) {
+    	getParticipantes().add(participante);
+    	participante.setUsuario(this);
+    	return participante;
+    }
 
     @Override
     public int hashCode() {

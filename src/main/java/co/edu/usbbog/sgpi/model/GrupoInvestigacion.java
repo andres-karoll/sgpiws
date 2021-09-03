@@ -145,12 +145,11 @@ public class GrupoInvestigacion implements Serializable {
     public LineaInvestigacion addLineaInvestigacion(LineaInvestigacion lineaInvestigacion) {
     	getLineasInvestigacion().add(lineaInvestigacion);
     	lineaInvestigacion.addGrupoInvestigacion(this);
-    	
     	return lineaInvestigacion;
     }
     public LineaInvestigacion removeLineaInvestigacion(LineaInvestigacion lineaInvestigacion) {
 		getLineasInvestigacion().remove(lineaInvestigacion);
-		lineaInvestigacion.removeGrupoInvestigacion(this);
+		lineaInvestigacion.removeGrupoInvestigacion(null);
 		return lineaInvestigacion;
 	}
     
@@ -189,16 +188,16 @@ public class GrupoInvestigacion implements Serializable {
     public void setSemilleros(List<Semillero> semilleros) {
         this.semilleros = semilleros;
     }
-    /*public Semillero addSemillero(Semillero semillero) {
+    public Semillero addSemillero(Semillero semillero) {
     	getSemilleros().add(semillero);
-    	semillero.addGrupoInvestigacion(this);
+    	semillero.setGrupoInvestigacion(this);
     	return semillero;
     }
     public Semillero removeSemillero(Semillero semillero) {
     	getSemilleros().remove(semillero);
-    	semillero.removeGrupoInvestigacion(this);
+    	semillero.setGrupoInvestigacion(null);
     	return semillero;
-    }*/
+    }
 
     @Override
     public int hashCode() {
@@ -236,12 +235,8 @@ public class GrupoInvestigacion implements Serializable {
     	
     }
 
-	/*public Usuario addUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
-		getDirectorGrupo().add
-		
-		return usuario;
-	}*/
+
+
 	
 
 

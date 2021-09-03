@@ -89,9 +89,9 @@ public class Proyecto implements Serializable {
     @Lob
     @Column(nullable = false, length = 2147483647)
     private String justificacion;
-    @ManyToMany(mappedBy = "proyectos")
+    @ManyToMany(mappedBy = "proyectos")//duda
     private List<AreaConocimiento> areasConocimiento;
-    @ManyToMany(mappedBy = "proyectos")
+    @ManyToMany(mappedBy = "proyectos")//duda
     private List<Clase> clases;
     @JoinTable(name = "antecedentes", joinColumns = {
         @JoinColumn(name = "ancedente", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
@@ -118,7 +118,7 @@ public class Proyecto implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
     private List<Presupuesto> presupuestos;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto1")
-    private List<Participantes> participantesList;
+    private List<Participantes> participantes;
 
     public Proyecto() {
     }
@@ -293,16 +293,8 @@ public class Proyecto implements Serializable {
     public void setProyectos(List<Proyecto> proyectos) {
         this.proyectos = proyectos;
     }
-    public Proyecto addProyecto(Proyecto proyecto) {
-    	getAntecedentes().add(proyecto);
-    	proyecto.addProyecto(this);
-    	return proyecto;
-    }
-    public Proyecto removeProyecto(Proyecto proyecto) {
-    	getAntecedentes().remove(proyecto);
-    	proyecto.removeProyecto(this);
-    	return proyecto;
-    }
+    
+   
 
     public MacroProyecto getMacroProyecto() {
         return macroProyecto;
@@ -336,12 +328,7 @@ public class Proyecto implements Serializable {
     public void setProyectosConvocatoriaList(List<ProyectosConvocatoria> proyectosConvocatoria) {
         this.proyectosConvocatoria = proyectosConvocatoria;
     }
-    /*public ProyectosConvocatoria addProyectosConvocatoria(ProyectosConvocatoria proyectosConvocatoria) {
-    	getProyectosConvocatoria().add(proyectosConvocatoria);
-    	proyectosConvocatoria.addProyecto(this);
-    	return proyectosConvocatoria;
-    }*/
-
+   
     @XmlTransient
     public List<Producto> getProductos() {
         return productos;
@@ -349,6 +336,16 @@ public class Proyecto implements Serializable {
 
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
+    }
+    public Producto addProducto(Producto producto) {
+    	getProductos().add(producto);
+    	producto.setProyecto(this);
+    	return producto;
+    }
+    public Producto removeProducto(Producto producto) {
+    	getProductos().remove(producto);
+    	producto.setProyecto(null);
+    	return producto;
     }
 
     @XmlTransient
@@ -359,12 +356,16 @@ public class Proyecto implements Serializable {
     public void setParticipaciones(List<Participaciones> participaciones) {
         this.participaciones = participaciones;
     }
-    /*public Participaciones addParticipaciones(Participaciones participaciones) {
+    public Participaciones addParticipaciones(Participaciones participaciones) {
     	getParticipaciones().add(participaciones);
-    	participaciones.addProyectos(this);
+    	participaciones.setProyecto(this);
     	return participaciones;
-    }*/
-    
+    }
+    public Participaciones removeParticipaciones(Participaciones participaciones) {
+    	getParticipaciones().remove(participaciones);
+    	participaciones.setProyecto(null);
+    	return participaciones;
+    }
 
     @XmlTransient
     public List<Presupuesto> getPresupuestos() {
@@ -374,15 +375,35 @@ public class Proyecto implements Serializable {
     public void setPresupuestos(List<Presupuesto> presupuestoList) {
         this.presupuestos = presupuestoList;
     }
-    
+    public Presupuesto addPresupuesto (Presupuesto presupuesto) {
+    	getPresupuestos().add(presupuesto);
+    	presupuesto.setProyecto(this);
+    	return presupuesto;
+    }
+    public Presupuesto removePresupuesto (Presupuesto presupuesto) {
+    	getPresupuestos().remove(presupuesto);
+    	presupuesto.setProyecto(null);
+    	return presupuesto;
+    }
+
 
     @XmlTransient
-    public List<Participantes> getParticipantesList() {
-        return participantesList;
+    public List<Participantes> getParticipantes() {
+        return participantes;
     }
     
-    public void setParticipantesList(List<Participantes> participantesList) {
-        this.participantesList = participantesList;
+    public void setParticipantes(List<Participantes> participantesList) {
+        this.participantes = participantesList;
+    }
+    public Participantes addParticipantes (Participantes participantes) {
+    	getParticipantes().add(participantes);
+    	participantes.setProyecto1(this);
+    	return participantes;
+    }
+    public Participantes removeParticipantes (Participantes participantes) {
+    	getParticipantes().remove(participantes);
+    	participantes.setProyecto1(null);
+    	return participantes;
     }
 
     @Override
@@ -426,14 +447,4 @@ public class Proyecto implements Serializable {
     	
     	return proyectoJson;
     }
-
-	/*public TipoProyecto addTipoProyecto(TipoProyecto tipoProyecto) {
-		// TODO Auto-generated method stub
-		getTipoProyecto().addproyecto(tipoProyecto);
-		tipoProyecto.addproyecto(this);
-		return tipoProyecto;
-	}*/
-
-	
-    
 }

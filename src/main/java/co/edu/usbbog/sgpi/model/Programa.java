@@ -62,7 +62,7 @@ public class Programa implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "programa")
     private List<Materia> materias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "programaId")
-    private List<Usuario> usuarioList;
+    private List<Usuario> usuarios;
 
     public Programa() {
     }
@@ -108,7 +108,7 @@ public class Programa implements Serializable {
 
 	public GrupoInvestigacion removeGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
 		getGruposInvestigacion().remove(grupoInvestigacion);
-		grupoInvestigacion.removePrograma(this);
+		grupoInvestigacion.removePrograma(null);
 		return grupoInvestigacion;
 	}
 
@@ -127,7 +127,7 @@ public class Programa implements Serializable {
     }
     public Semillero removeSemillero(Semillero semillero) {
     	getSemilleros().remove(semillero);
-    	semillero.removePrograma(this);
+    	semillero.removePrograma(null);
     	return semillero;
     }
     public Facultad getFacultadId() {
@@ -154,20 +154,38 @@ public class Programa implements Serializable {
     public void setMaterias(List<Materia> materiaList) {
         this.materias = materiaList;
     }
-    /*public Materia addMateria(Materia materia) {
+    public Materia addMateria(Materia materia) {
     	getMaterias().add(materia);
-    	materia.addPrograma(this);
+    	materia.setPrograma(this);
     	return materia;
-    }*/
+    }
+    public Materia removeMateria(Materia materia) {
+    	getMaterias().remove(materia);
+    	materia.setPrograma(null);
+    	return materia;
+    }
 
     @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
+    public List<Usuario> getUsuarios() {
+        return usuarios;
     }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
+    public void setUsuarios(List<Usuario> usuarioList) {
+        this.usuarios = usuarioList;
     }
+    public Usuario addUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		getUsuarios().add(usuario);
+		usuario.setProgramaId(this);
+		return usuario;
+	}
+    public Usuario removeUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		getUsuarios().remove(usuario);
+		usuario.setProgramaId(null);
+		return usuario;
+	}
+
 
     @Override
     public int hashCode() {
@@ -202,19 +220,7 @@ public class Programa implements Serializable {
     	return programaJson;
     }
 
-	public Usuario addUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
-		getUsuarioList().add(usuario);
-		usuario.addPrograma(this);
-		return usuario;
-	}
-	public Usuario removeUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
-		getUsuarioList().remove(usuario);
-		usuario.removePrograma(this);
-		return usuario;
-	}
-
+	
 	
 
 	

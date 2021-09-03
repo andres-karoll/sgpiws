@@ -180,7 +180,16 @@ public class Semillero implements Serializable {
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-
+    public Usuario addUsuario(Usuario usuario) {
+    	getUsuarios().add(usuario);
+    	usuario.addsemillero(this);
+    	return usuario;
+    }
+    public Usuario removeUsuario(Usuario usuario) {
+    	getUsuarios().remove(usuario);
+    	usuario.addsemillero(null);
+    	return usuario;
+    }
     @Override
     public int hashCode() {
         int hash = 0;
@@ -214,41 +223,7 @@ public class Semillero implements Serializable {
     	return semilleroJson;
     }
 
-	public Usuario addUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
-		getUsuarios().add(usuario);
-		usuario.addsemillero(this);
-		return usuario;
-	}
-	public Usuario removeUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
-		getUsuarios().remove(usuario);
-		usuario.removesemillero(this);
-		return usuario;
-	}
-    
-	/*public LineaInvestigacion addLineaInvestigacion(LineaInvestigacion lineaInvestigacion) {
-		// TODO Auto-generated method stub}
-		getLineaInvestigacion().addLineaInvestigacion(lineaInvestigacion);
-		lineaInvestigacion.addSemillero(this);
-		return lineaInvestigacion;
-	}*/
-
 	
-
-	
-    /*
-	public GrupoInvestigacion addGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
-		getGrupoInvestigacion().addSemillero(grupoInvestigacion);
-		grupoInvestigacion.addSemillero(this);
-		return grupoInvestigacion;
-	}
-
-	public GrupoInvestigacion removeGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
-		getGrupoInvestigacion().removeSemillero(grupoInvestigacion);
-		grupoInvestigacion.removeSemillero(null);
-		return grupoInvestigacion;
-	}*/
 
 	
 

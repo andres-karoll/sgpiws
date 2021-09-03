@@ -141,6 +141,8 @@ public class DetalleConvocatoria implements Serializable {
     	return detalleConvocatoriaJson;
     	
     }
+
+	
 	
 	
 

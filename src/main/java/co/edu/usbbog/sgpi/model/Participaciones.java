@@ -140,10 +140,4 @@ public class Participaciones implements Serializable {
     	return participacionesJson;
     }
 
-	/*public Proyecto addProyectos(Proyecto proyecto) {
-		// TODO Auto-generated method stub
-		getProyecto().addProyecto(proyecto);
-		proyecto.addParticipaciones(this);
-		return proyecto;
-	}*/
 }

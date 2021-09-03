@@ -86,12 +86,16 @@ public class Materia implements Serializable {
     public void setClases(List<Clase> claseList) {
         this.clases = claseList;
     }
-    /*public Clase addClase(Clase clase) {
+    public Clase addClase(Clase clase) {
     	getClases().add(clase);
-    	clase.addMateria(this);
+    	clase.setMateria(this);
     	return clase;
-    }*/
-
+    }
+    public Clase removeClase(Clase clase) {
+    	getClases().remove(clase);
+    	clase.setMateria(null);
+    	return clase;
+    }
     public Programa getPrograma() {
         return programa;
     }

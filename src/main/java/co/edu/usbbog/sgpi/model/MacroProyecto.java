@@ -141,12 +141,12 @@ public class MacroProyecto implements Serializable {
     }
     public Proyecto addProyecto(Proyecto proyecto) {
     	getProyectos().add(proyecto);
-    	proyecto.addProyecto(null);
+    	proyecto.setMacroProyecto(this);
     	return proyecto;
     }
     public Proyecto removeProyecto(Proyecto proyecto) {
     	getProyectos().remove(proyecto);
-    	proyecto.removeProyecto(null);
+    	proyecto.setMacroProyecto(null);
     	return proyecto;
     }
     

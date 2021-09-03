@@ -166,12 +166,5 @@ public class Clase implements Serializable {
        	return claseJson;
     	
     }
-
-	/*public Materia addMateria(Materia materia) {
-		getMateria().addClase(materia);
-		
-		return materia;
-	}
-	*/
     
 }

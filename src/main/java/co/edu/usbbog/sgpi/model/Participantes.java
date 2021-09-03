@@ -56,7 +56,7 @@ public class Participantes implements Serializable {
     private Proyecto proyecto1;
     @JoinColumn(name = "usuario", referencedColumnName = "cedula", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Usuario usuario1;//duda
+    private Usuario usuario;
 
     public Participantes() {
     }
@@ -115,12 +115,12 @@ public class Participantes implements Serializable {
         this.proyecto1 = proyecto1;
     }
 
-    public Usuario getUsuario1() {
-        return usuario1;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuario1(Usuario usuario1) {
-        this.usuario1 = usuario1;
+    public void setUsuario(Usuario usuario1) {
+        this.usuario = usuario1;
     }
 
     @Override
@@ -155,9 +155,5 @@ public class Participantes implements Serializable {
     	return paticipantesJson;
     }
 
-/*	public Usuario addUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
-		getUsuario1().add
-		return usuario;
-	}*/
+
 }

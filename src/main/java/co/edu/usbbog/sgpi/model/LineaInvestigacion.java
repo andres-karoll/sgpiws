@@ -119,11 +119,16 @@ public class LineaInvestigacion implements Serializable {
     public void setSemilleros(List<Semillero> semillerow) {
         this.semilleros = semillerow;
     }
-    /*public Semillero addSemillero(Semillero semillero) {
-    	getSemilleroList().add(semillero);
-    	semillero.addLineaInvestigacion(this);
+    public Semillero addSemillero(Semillero semillero) {
+    	getSemilleros().add(semillero);
+    	semillero.setLineaInvestigacion(this);
     	return semillero;
-    }*/
+    }
+    public Semillero removeSemillero(Semillero semillero) {
+    	getSemilleros().remove(semillero);
+    	semillero.setLineaInvestigacion(null);
+    	return semillero;
+    }
 
     @Override
     public int hashCode() {

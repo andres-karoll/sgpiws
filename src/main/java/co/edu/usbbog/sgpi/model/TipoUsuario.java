@@ -85,7 +85,16 @@ public class TipoUsuario implements Serializable {
     public void setUsuarios(List<Usuario> usuarioList) {
         this.usuarios = usuarioList;
     }
-
+    public Usuario addUsuario (Usuario usuario) {
+    	getUsuarios().add(usuario);
+    	usuario.addTipoUsuario(this);
+    	return usuario;
+    }
+    public Usuario removeUsuario (Usuario usuario) {
+    	getUsuarios().add(usuario);
+    	usuario.setTiposUsuario(null);;
+    	return usuario;
+    }
     @Override
     public int hashCode() {
         int hash = 0;
@@ -118,18 +127,5 @@ public class TipoUsuario implements Serializable {
     	
     }
 
-	public Usuario addUsuario(Usuario usuario) {
-		getUsuarios().add(usuario);
-		usuario.addTipoUsuario(this);
-		return usuario;
-		
-	}
-
 	
-	public Usuario removeUsuario(Usuario usuario) {
-		getUsuarios().remove(usuario);
-		usuario.removeTipoUsuario(null);
-		return usuario;
-		
-	}
 }
