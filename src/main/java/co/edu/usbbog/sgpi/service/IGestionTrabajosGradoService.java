@@ -1,9 +1,8 @@
 package co.edu.usbbog.sgpi.service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.Producto;
@@ -29,7 +28,7 @@ public interface IGestionTrabajosGradoService {
 	
 	public List<Usuario> todosLosParticipantesPorProyecto(Proyecto proyecto);
 	public boolean crearParticipante(Participantes participante);
-	public boolean eliminarParticipante(Date fecha_inicio);
+	public boolean eliminarParticipante(LocalDate fecha_inicio);
 	//actualizar participante
 	
 	public List<Comentario> ComentariosPorProducto(Producto producto);

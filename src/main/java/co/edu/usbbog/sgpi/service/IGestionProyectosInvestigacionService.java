@@ -1,5 +1,6 @@
 package co.edu.usbbog.sgpi.service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public interface IGestionProyectosInvestigacionService {
 	
 	public List<Usuario> todosLosParticipantesPorProyecto(Proyecto proyecto);
 	public boolean crearParticipante(Participantes participante);
-	public boolean eliminarParticipante(Date fecha_inicio);
+	public boolean eliminarParticipante(LocalDate fecha_inicio);
 	//actualizar participante
 	
 	public List<Comentario> ComentariosPorProducto(Producto producto);
