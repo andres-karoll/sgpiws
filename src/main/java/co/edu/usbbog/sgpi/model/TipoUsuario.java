@@ -82,8 +82,8 @@ public class TipoUsuario implements Serializable {
         return usuarios;
     }
 
-    public void setUsuarios(List<Usuario> usuarioList) {
-        this.usuarios = usuarioList;
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
     public Usuario addUsuario (Usuario usuario) {
     	getUsuarios().add(usuario);

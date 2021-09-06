@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -53,16 +54,14 @@ public class GrupoInvestigacion implements Serializable {
     @Column(nullable = false, length = 45)
     private String nombre;
     @Basic(optional = false)
-    @Column(name = "fecha_fun", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaFun;
+    @Column(name = "fecha_fun", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaFun;
     @Basic(optional = false)
     @Column(nullable = false, length = 45)
     private String categoria;
     @Basic(optional = false)
-    @Column(name = "fecha_cat", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaCat;
+    @Column(name = "fecha_cat", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaCat;
     @JoinTable(name = "grupo_inv_lineas_inv", joinColumns = {
         @JoinColumn(name = "grupo_investigacion", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "linea_investigacion", referencedColumnName = "nombre", nullable = false)})
@@ -86,7 +85,7 @@ public class GrupoInvestigacion implements Serializable {
         this.id = id;
     }
 
-    public GrupoInvestigacion(Integer id, String nombre, Date fechaFun, String categoria, Date fechaCat) {
+    public GrupoInvestigacion(Integer id, String nombre, LocalDate fechaFun, String categoria, LocalDate fechaCat) {
         this.id = id;
         this.nombre = nombre;
         this.fechaFun = fechaFun;
@@ -110,11 +109,11 @@ public class GrupoInvestigacion implements Serializable {
         this.nombre = nombre;
     }
 
-    public Date getFechaFun() {
+    public LocalDate getFechaFun() {
         return fechaFun;
     }
 
-    public void setFechaFun(Date fechaFun) {
+    public void setFechaFun(LocalDate fechaFun) {
         this.fechaFun = fechaFun;
     }
 
@@ -126,11 +125,11 @@ public class GrupoInvestigacion implements Serializable {
         this.categoria = categoria;
     }
 
-    public Date getFechaCat() {
+    public LocalDate getFechaCat() {
         return fechaCat;
     }
 
-    public void setFechaCat(Date fechaCat) {
+    public void setFechaCat(LocalDate fechaCat) {
         this.fechaCat = fechaCat;
     }
 
@@ -169,7 +168,7 @@ public class GrupoInvestigacion implements Serializable {
     }
     public Programa removePrograma(Programa programa) {
     	getProgramas().add(programa);
-    	programa.removeGrupoInvestigacion(this);
+    	programa.removeGrupoInvestigacion(null);
     	return programa;
     }
     public Usuario getDirectorGrupo() {

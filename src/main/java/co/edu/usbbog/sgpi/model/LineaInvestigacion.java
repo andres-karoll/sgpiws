@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -47,8 +48,8 @@ public class LineaInvestigacion implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false, length = 150)
     private String descripcion;
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+    @Column(name = "fecha", columnDefinition = "DATE")
+    private LocalDate fecha;
     @ManyToMany(mappedBy = "lineasInvestigacion")
     private List<GrupoInvestigacion> gruposInvestigacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaInvestigacion")
@@ -82,11 +83,11 @@ public class LineaInvestigacion implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
@@ -116,8 +117,8 @@ public class LineaInvestigacion implements Serializable {
         return semilleros;
     }
 
-    public void setSemilleros(List<Semillero> semillerow) {
-        this.semilleros = semillerow;
+    public void setSemilleros(List<Semillero> semillero) {
+        this.semilleros = semillero;
     }
     public Semillero addSemillero(Semillero semillero) {
     	getSemilleros().add(semillero);

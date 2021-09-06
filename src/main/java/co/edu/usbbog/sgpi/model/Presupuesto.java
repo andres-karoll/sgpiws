@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -50,9 +51,8 @@ public class Presupuesto implements Serializable {
     @Column(nullable = false)
     private double monto;
     @Basic(optional = false)
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+    @Column(nullable = false, columnDefinition = "DATE")
+    private LocalDate fecha;
     @Lob
     @Column(length = 2147483647)
     private String descripcion;
@@ -69,7 +69,7 @@ public class Presupuesto implements Serializable {
         this.id = id;
     }
 
-    public Presupuesto(Integer id, double monto, Date fecha) {
+    public Presupuesto(Integer id, double monto, LocalDate fecha) {
         this.id = id;
         this.monto = monto;
         this.fecha = fecha;
@@ -91,11 +91,11 @@ public class Presupuesto implements Serializable {
         this.monto = monto;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

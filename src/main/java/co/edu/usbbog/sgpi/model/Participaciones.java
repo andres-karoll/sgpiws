@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -41,9 +42,8 @@ public class Participaciones implements Serializable {
     @EmbeddedId
     protected ParticipacionesPK participacionesPK;
     @Basic(optional = false)
-    @Column(name = "fecha_part", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaPart;
+    @Column(name = "fecha_part", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaPart;
     @Column(length = 10)
     private String reconocimientos;
     @JoinColumn(name = "evento_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
@@ -60,7 +60,7 @@ public class Participaciones implements Serializable {
         this.participacionesPK = participacionesPK;
     }
 
-    public Participaciones(ParticipacionesPK participacionesPK, Date fechaPart) {
+    public Participaciones(ParticipacionesPK participacionesPK, LocalDate fechaPart) {
         this.participacionesPK = participacionesPK;
         this.fechaPart = fechaPart;
     }
@@ -77,11 +77,11 @@ public class Participaciones implements Serializable {
         this.participacionesPK = participacionesPK;
     }
 
-    public Date getFechaPart() {
+    public LocalDate getFechaPart() {
         return fechaPart;
     }
 
-    public void setFechaPart(Date fechaPart) {
+    public void setFechaPart(LocalDate fechaPart) {
         this.fechaPart = fechaPart;
     }
 
@@ -137,6 +137,7 @@ public class Participaciones implements Serializable {
     	JSONObject participacionesJson=new JSONObject();
     	participacionesJson.put("fecha_part",this.getFechaPart());
     	participacionesJson.put("reconocimientos",this.getReconocimientos());
+    	
     	return participacionesJson;
     }
 

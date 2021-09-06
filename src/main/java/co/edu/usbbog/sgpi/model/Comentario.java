@@ -6,6 +6,8 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,8 +60,8 @@ public class Comentario implements Serializable {
     @Column(nullable = false, length = 45)
     private String nivel;
     @Basic(optional = false)
-    @Column(nullable = false, length = 45)
-    private String fecha;
+    @Column(nullable = false, name="fecha", columnDefinition = "DATE")
+    private LocalDate fecha;
     @JoinColumn(name = "producto_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Producto productoId;
@@ -71,7 +73,7 @@ public class Comentario implements Serializable {
         this.id = id;
     }
 
-    public Comentario(Integer id, String comentario, String fase, String nivel, String fecha) {
+    public Comentario(Integer id, String comentario, String fase, String nivel, LocalDate fecha) {
         this.id = id;
         this.comentario = comentario;
         this.fase = fase;
@@ -119,11 +121,11 @@ public class Comentario implements Serializable {
         this.nivel = nivel;
     }
 
-    public String getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

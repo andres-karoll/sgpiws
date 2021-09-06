@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -53,9 +54,8 @@ public class Semillero implements Serializable {
     @Column(nullable = false, length = 45)
     private String descripcion;
     @Basic(optional = false)
-    @Column(name = "fecha_fun", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaFun;
+    @Column(name = "fecha_fun", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaFun;
     @ManyToMany(mappedBy = "semilleros")
     private List<Programa> programas;
     @OneToMany(mappedBy = "semillero")
@@ -79,7 +79,7 @@ public class Semillero implements Serializable {
         this.id = id;
     }
 
-    public Semillero(Integer id, String nombre, String descripcion, Date fechaFun) {
+    public Semillero(Integer id, String nombre, String descripcion, LocalDate fechaFun) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -110,11 +110,11 @@ public class Semillero implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaFun() {
+    public LocalDate getFechaFun() {
         return fechaFun;
     }
 
-    public void setFechaFun(Date fechaFun) {
+    public void setFechaFun(LocalDate fechaFun) {
         this.fechaFun = fechaFun;
     }
 

@@ -74,7 +74,7 @@ public class Convocatoria implements Serializable {
     private String tipo;
     @Column(length = 45)
     private String entidad;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoria1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoria")
     private List<ProyectosConvocatoria> proyectosConvocatorias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoriaId")
     private List<DetalleConvocatoria> detallesConvocatoria;
@@ -178,12 +178,12 @@ public class Convocatoria implements Serializable {
     }
     public ProyectosConvocatoria addProyectosConvocatoria(ProyectosConvocatoria proyectosConvocatoria) {
     	getProyectosConvocatorias().add(proyectosConvocatoria);
-    	proyectosConvocatoria.setConvocatoria1(this);
+    	proyectosConvocatoria.setConvocatoria(this);
     	return proyectosConvocatoria;
     }
     public ProyectosConvocatoria removeProyectosConvocatoria(ProyectosConvocatoria proyectosConvocatoria) {
     	getProyectosConvocatorias().remove(proyectosConvocatoria);
-    	proyectosConvocatoria.setConvocatoria1(this);
+    	proyectosConvocatoria.setConvocatoria(null);
     	return proyectosConvocatoria;
     }
     @XmlTransient

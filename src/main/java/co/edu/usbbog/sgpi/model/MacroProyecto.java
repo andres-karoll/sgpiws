@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -56,12 +57,10 @@ public class MacroProyecto implements Serializable {
     @Column(nullable = false, length = 2147483647)
     private String descripcion;
     @Basic(optional = false)
-    @Column(name = "fecha_inicio", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaInicio;
-    @Column(name = "fecha_fin")
-    @Temporal(TemporalType.DATE)
-    private Date fechaFin;
+    @Column(name = "fecha_inicio", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaInicio;
+    @Column(name = "fecha_fin", columnDefinition = "DATE")
+    private LocalDate fechaFin;
     @Basic(optional = false)
     @Column(nullable = false, length = 45)
     private String estado;
@@ -75,7 +74,7 @@ public class MacroProyecto implements Serializable {
         this.id = id;
     }
 
-    public MacroProyecto(Integer id, String nombre, String descripcion, Date fechaInicio, String estado) {
+    public MacroProyecto(Integer id, String nombre, String descripcion, LocalDate fechaInicio, String estado) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -107,19 +106,19 @@ public class MacroProyecto implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 

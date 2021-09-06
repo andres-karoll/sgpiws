@@ -83,8 +83,8 @@ public class Materia implements Serializable {
         return clases;
     }
 
-    public void setClases(List<Clase> claseList) {
-        this.clases = claseList;
+    public void setClases(List<Clase> clases) {
+        this.clases = clases;
     }
     public Clase addClase(Clase clase) {
     	getClases().add(clase);
@@ -134,11 +134,4 @@ public class Materia implements Serializable {
     	materiaJson.put("nombre",this.getNombre());
     	return materiaJson;
     }
-
-	/*public Programa addPrograma(Programa programa) {
-		// TODO Auto-generated method stub
-		getPrograma().addMateria(programa);
-		programa.addMateria(this);
-		return programa;
-	}*/
 }

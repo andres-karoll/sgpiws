@@ -41,7 +41,7 @@ public class ProyectosConvocatoria implements Serializable {
     private String idProyecto;
     @JoinColumn(name = "convocatoria", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Convocatoria convocatoria1;
+    private Convocatoria convocatoria;
     @JoinColumn(name = "proyectos", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Proyecto proyecto;
@@ -78,12 +78,12 @@ public class ProyectosConvocatoria implements Serializable {
         this.idProyecto = idProyecto;
     }
 
-    public Convocatoria getConvocatoria1() {
-        return convocatoria1;
+    public Convocatoria getConvocatoria() {
+        return convocatoria;
     }
 
-    public void setConvocatoria1(Convocatoria convocatoria1) {
-        this.convocatoria1 = convocatoria1;
+    public void setConvocatoria(Convocatoria convocatoria) {
+        this.convocatoria = convocatoria;
     }
 
     public Proyecto getProyecto() {
@@ -121,16 +121,8 @@ public class ProyectosConvocatoria implements Serializable {
     public JSONObject toJson() {
     	JSONObject proyectosConovocatoriaJson=new JSONObject();
     	proyectosConovocatoriaJson.put("id_proyecto",this.getIdProyecto());
-    	proyectosConovocatoriaJson.put("convocatoria",this.getConvocatoria1());
+    	proyectosConovocatoriaJson.put("convocatoria",this.getConvocatoria());
     	return proyectosConovocatoriaJson;
     }
 
-	/*public Proyecto addProyecto(Proyecto proyecto) {
-		// TODO Auto-generated method stub
-		getProyecto().addProyectosConvocatoria(proyecto);
-		proyecto.addProyectosConvocatoria(this);
-		return proyecto;
-		
-	}*/
-    
 }

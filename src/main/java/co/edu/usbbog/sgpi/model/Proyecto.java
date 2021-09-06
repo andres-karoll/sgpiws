@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -63,12 +64,11 @@ public class Proyecto implements Serializable {
     @Column(nullable = false, length = 2147483647)
     private String descripcion;
     @Basic(optional = false)
-    @Column(name = "fecha_inicio", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaInicio;
-    @Column(name = "fecha_fin")
-    @Temporal(TemporalType.DATE)
-    private Date fechaFin;
+    @Column(name = "fecha_inicio", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaInicio;
+    @Column(name = "fecha_fin", columnDefinition = "DATE")
+   
+    private LocalDate fechaFin;
     @Lob
     @Column(name = "retroalimentacion_final", length = 2147483647)
     private String retroalimentacionFinal;
@@ -89,9 +89,9 @@ public class Proyecto implements Serializable {
     @Lob
     @Column(nullable = false, length = 2147483647)
     private String justificacion;
-    @ManyToMany(mappedBy = "proyectos")//duda
+    @ManyToMany(mappedBy = "proyectos")
     private List<AreaConocimiento> areasConocimiento;
-    @ManyToMany(mappedBy = "proyectos")//duda
+    @ManyToMany(mappedBy = "proyectos")
     private List<Clase> clases;
     @JoinTable(name = "antecedentes", joinColumns = {
         @JoinColumn(name = "ancedente", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
@@ -117,7 +117,7 @@ public class Proyecto implements Serializable {
     private List<Participaciones> participaciones;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
     private List<Presupuesto> presupuestos;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
     private List<Participantes> participantes;
 
     public Proyecto() {
@@ -127,7 +127,7 @@ public class Proyecto implements Serializable {
         this.id = id;
     }
 
-    public Proyecto(Integer id, String titulo, String estado, String descripcion, Date fechaInicio, short visibilidad, String ciudad, String metodologia, String justificacion) {
+    public Proyecto(Integer id, String titulo, String estado, String descripcion, LocalDate fechaInicio, short visibilidad, String ciudad, String metodologia, String justificacion) {
         this.id = id;
         this.titulo = titulo;
         this.estado = estado;
@@ -171,19 +171,19 @@ public class Proyecto implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 
@@ -372,8 +372,8 @@ public class Proyecto implements Serializable {
         return presupuestos;
     }
 
-    public void setPresupuestos(List<Presupuesto> presupuestoList) {
-        this.presupuestos = presupuestoList;
+    public void setPresupuestos(List<Presupuesto> presupuesto) {
+        this.presupuestos = presupuesto;
     }
     public Presupuesto addPresupuesto (Presupuesto presupuesto) {
     	getPresupuestos().add(presupuesto);
@@ -392,17 +392,17 @@ public class Proyecto implements Serializable {
         return participantes;
     }
     
-    public void setParticipantes(List<Participantes> participantesList) {
-        this.participantes = participantesList;
+    public void setParticipantes(List<Participantes> participantes) {
+        this.participantes = participantes;
     }
     public Participantes addParticipantes (Participantes participantes) {
     	getParticipantes().add(participantes);
-    	participantes.setProyecto1(this);
+    	participantes.setProyecto(this);
     	return participantes;
     }
     public Participantes removeParticipantes (Participantes participantes) {
     	getParticipantes().remove(participantes);
-    	participantes.setProyecto1(null);
+    	participantes.setProyecto(null);
     	return participantes;
     }
 

@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -35,7 +36,8 @@ import net.minidev.json.JSONObject;
     , @NamedQuery(name = "Producto.findById", query = "SELECT p FROM Producto p WHERE p.id = :id")
     , @NamedQuery(name = "Producto.findByTituloProducto", query = "SELECT p FROM Producto p WHERE p.tituloProducto = :tituloProducto")
     , @NamedQuery(name = "Producto.findByTipoProducto", query = "SELECT p FROM Producto p WHERE p.tipoProducto = :tipoProducto")
-    , @NamedQuery(name = "Producto.findByUrlRepo", query = "SELECT p FROM Producto p WHERE p.urlRepo = :urlRepo")})
+    , @NamedQuery(name = "Producto.findByUrlRepo", query = "SELECT p FROM Producto p WHERE p.urlRepo = :urlRepo")
+	, @NamedQuery(name = "Producto.findByFecha", query = "SELECT p FROM Producto p WHERE p.fecha = :fecha")})
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,7 +54,10 @@ public class Producto implements Serializable {
     @Basic(optional = false)
     @Column(name = "url_repo", nullable = false, length = 150)
     private String urlRepo;
-    @JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false)
+    @Column(name = "fecha", nullable = false, columnDefinition = "date")
+    private LocalDate fecha;
+   
+	@JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Proyecto proyecto;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
@@ -103,6 +108,13 @@ public class Producto implements Serializable {
     public void setUrlRepo(String urlRepo) {
         this.urlRepo = urlRepo;
     }
+    public LocalDate getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
+	}
 
     public Proyecto getProyecto() {
         return proyecto;

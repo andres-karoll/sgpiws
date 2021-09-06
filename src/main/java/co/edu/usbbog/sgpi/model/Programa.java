@@ -117,8 +117,8 @@ public class Programa implements Serializable {
         return semilleros;
     }
 
-    public void setSemilleros(List<Semillero> semilleroList) {
-        this.semilleros = semilleroList;
+    public void setSemilleros(List<Semillero> semilleros) {
+        this.semilleros = semilleros;
     }
     public Semillero addSemillero(Semillero semillero) {
     	getSemilleros().add(semillero);
@@ -151,8 +151,8 @@ public class Programa implements Serializable {
         return materias;
     }
 
-    public void setMaterias(List<Materia> materiaList) {
-        this.materias = materiaList;
+    public void setMaterias(List<Materia> materias) {
+        this.materias = materias;
     }
     public Materia addMateria(Materia materia) {
     	getMaterias().add(materia);
@@ -170,8 +170,8 @@ public class Programa implements Serializable {
         return usuarios;
     }
 
-    public void setUsuarios(List<Usuario> usuarioList) {
-        this.usuarios = usuarioList;
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
     public Usuario addUsuario(Usuario usuario) {
 		// TODO Auto-generated method stub
@@ -216,7 +216,6 @@ public class Programa implements Serializable {
     	JSONObject programaJson=new JSONObject();
     	programaJson.put("id",this.getId());
     	programaJson.put("nombre",this.getNombre());
-    	
     	return programaJson;
     }
 

@@ -91,10 +91,10 @@ public class Usuario implements Serializable {
     @ManyToOne
     private Semillero semilleroId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "coorInv")
-    private List<Facultad> facultadList;//duda
+    private List<Facultad> coorIncFacultad;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "decano")
-    private List<Facultad> facultadList1;//duda
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario1")
+    private List<Facultad> decanoFacultad;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Participantes> participantes;
 
     public Usuario() {
@@ -209,8 +209,8 @@ public class Usuario implements Serializable {
         return gruposInvestigacion;
     }
 
-    public void setGruposInvestigacion(List<GrupoInvestigacion> grupoInvestigacionList) {
-        this.gruposInvestigacion = grupoInvestigacionList;
+    public void setGruposInvestigacion(List<GrupoInvestigacion> grupoInvestigacion) {
+        this.gruposInvestigacion = grupoInvestigacion;
     }
     public GrupoInvestigacion addGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
     	getGruposInvestigacion().add(grupoInvestigacion);
@@ -227,8 +227,8 @@ public class Usuario implements Serializable {
         return programas;
     }
 
-    public void setProgramas(List<Programa> programaList) {
-        this.programas = programaList;
+    public void setProgramas(List<Programa> programa) {
+        this.programas = programa;
     }
     public Programa addPrograma(Programa programa) {
     	getProgramas().add(programa);
@@ -265,8 +265,8 @@ public class Usuario implements Serializable {
         return semilleros;
     }
 
-    public void setSemilleros(List<Semillero> semilleroList) {
-        this.semilleros = semilleroList;
+    public void setSemilleros(List<Semillero> semillero) {
+        this.semilleros = semillero;
     }
     public Semillero addsemillero(Semillero semillero) {
     	getSemilleros().add(semillero);
@@ -295,38 +295,38 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Facultad> getFacultadList() {
-        return facultadList;
+    public List<Facultad> getCoorIncFacultad() {
+        return coorIncFacultad;
     }
 
-    public void setFacultadList(List<Facultad> facultadList) {
-        this.facultadList = facultadList;
+    public void setCoorInvFacultad(List<Facultad> coorInvFacultad) {
+        this.coorIncFacultad = coorInvFacultad;
     }
-    public Facultad addFacultad(Facultad facultad) {
-    	getFacultadList().add(facultad);
+    public Facultad addCoodInvFacultad(Facultad facultad) {
+    	getCoorIncFacultad().add(facultad);
     	facultad.setCoorInv(this);
     	return facultad;
     }
-    public Facultad removeFacultad(Facultad facultad) {
-    	getFacultadList().remove(facultad);
+    public Facultad removeCoorInvFacultad(Facultad facultad) {
+    	getCoorIncFacultad().remove(facultad);
     	facultad.setCoorInv(null);
     	return facultad;
     }
     @XmlTransient
-    public List<Facultad> getFacultadList1() {
-        return facultadList1;
+    public List<Facultad> getDecanoFacultad() {
+        return decanoFacultad;
     }
 
-    public void setFacultadList1(List<Facultad> facultadList1) {
-        this.facultadList1 = facultadList1;
+    public void setDecanoFacultad(List<Facultad> deFacultad) {
+        this.decanoFacultad = deFacultad;
     }
-    public Facultad addFacultad1(Facultad facultad) {
-    	getFacultadList1().add(facultad);
+    public Facultad addDecanoFacultad(Facultad facultad) {
+    	getDecanoFacultad().add(facultad);
     	facultad.setDecano(this);
     	return facultad;
     }
-    public Facultad removeFacultad1(Facultad facultad) {
-    	getFacultadList1().remove(facultad);
+    public Facultad removeDeFacultad(Facultad facultad) {
+    	getDecanoFacultad().remove(facultad);
     	facultad.setDecano(null);
     	return facultad;
     }
@@ -345,7 +345,7 @@ public class Usuario implements Serializable {
     }
     public Participantes removeParticipante(Participantes participante) {
     	getParticipantes().add(participante);
-    	participante.setUsuario(this);
+    	participante.setUsuario(null);
     	return participante;
     }
 
