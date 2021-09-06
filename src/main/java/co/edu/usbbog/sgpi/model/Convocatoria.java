@@ -23,6 +23,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -72,10 +74,10 @@ public class Convocatoria implements Serializable {
     private String tipo;
     @Column(length = 45)
     private String entidad;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoria1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoria")
     private List<ProyectosConvocatoria> proyectosConvocatorias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoriaId")
-    private List<DetalleConvocatoria> detalleConvocatoriaList;
+    private List<DetalleConvocatoria> detallesConvocatoria;
 
     public Convocatoria() {
     }
@@ -176,21 +178,31 @@ public class Convocatoria implements Serializable {
     }
     public ProyectosConvocatoria addProyectosConvocatoria(ProyectosConvocatoria proyectosConvocatoria) {
     	getProyectosConvocatorias().add(proyectosConvocatoria);
-    	proyectosConvocatoria.setConvocatoria1(this);
+    	proyectosConvocatoria.setConvocatoria(this);
     	return proyectosConvocatoria;
     }
     public ProyectosConvocatoria removeProyectosConvocatoria(ProyectosConvocatoria proyectosConvocatoria) {
     	getProyectosConvocatorias().remove(proyectosConvocatoria);
-    	proyectosConvocatoria.setConvocatoria1(this);
+    	proyectosConvocatoria.setConvocatoria(null);
     	return proyectosConvocatoria;
     }
     @XmlTransient
-    public List<DetalleConvocatoria> getDetalleConvocatoriaList() {
-        return detalleConvocatoriaList;
+    public List<DetalleConvocatoria> getDetallesConvocatoria() {
+        return detallesConvocatoria;
     }
 
-    public void setDetalleConvocatoriaList(List<DetalleConvocatoria> detalleConvocatoriaList) {
-        this.detalleConvocatoriaList = detalleConvocatoriaList;
+    public void setDetallesConvocatoria(List<DetalleConvocatoria> detallesConvocatoria) {
+        this.detallesConvocatoria = detallesConvocatoria;
+    }
+    public DetalleConvocatoria addDetalleConvocatoria(DetalleConvocatoria detalleConvocatoria) {
+    	getDetallesConvocatoria().add(detalleConvocatoria);
+    	detalleConvocatoria.setConvocatoriaId(this);
+    	return detalleConvocatoria;
+    }
+    public DetalleConvocatoria removeDetalleConvocatoria(DetalleConvocatoria detalleConvocatoria) {
+    	getDetallesConvocatoria().remove(detalleConvocatoria);
+    	detalleConvocatoria.setConvocatoriaId(null);
+    	return detalleConvocatoria;
     }
 
     @Override
@@ -217,5 +229,18 @@ public class Convocatoria implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Convocatoria[ id=" + id + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject convocatoriaJson=new JSONObject();
+    	convocatoriaJson.put("id",this.getId());
+    	convocatoriaJson.put("nombre_convocatoria",this.getNombreConvocatoria());
+    	convocatoriaJson.put("fecha_inicio",this.getFechaInicio());
+    	convocatoriaJson.put("fecha_final",this.getFechaFinal());
+    	convocatoriaJson.put("contexto",this.getContexto());
+    	convocatoriaJson.put("numero_productos",this.getNumeroProductos());
+    	convocatoriaJson.put("estado",this.getEstado());
+    	convocatoriaJson.put("tipo",this.getTipo());
+    	convocatoriaJson.put("entidad",this.getEntidad());
+    	return convocatoriaJson;
+    	
+    }
 }

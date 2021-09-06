@@ -23,6 +23,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -58,9 +60,9 @@ public class Programa implements Serializable {
     @ManyToOne(optional = false)
     private Usuario director;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "programa")
-    private List<Materia> materiaList;
+    private List<Materia> materias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "programaId")
-    private List<Usuario> usuarioList;
+    private List<Usuario> usuarios;
 
     public Programa() {
     }
@@ -106,7 +108,7 @@ public class Programa implements Serializable {
 
 	public GrupoInvestigacion removeGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
 		getGruposInvestigacion().remove(grupoInvestigacion);
-		grupoInvestigacion.removePrograma(this);
+		grupoInvestigacion.removePrograma(null);
 		return grupoInvestigacion;
 	}
 
@@ -115,8 +117,8 @@ public class Programa implements Serializable {
         return semilleros;
     }
 
-    public void setSemilleros(List<Semillero> semilleroList) {
-        this.semilleros = semilleroList;
+    public void setSemilleros(List<Semillero> semilleros) {
+        this.semilleros = semilleros;
     }
     public Semillero addSemillero(Semillero semillero) {
     	getSemilleros().add(semillero);
@@ -125,7 +127,7 @@ public class Programa implements Serializable {
     }
     public Semillero removeSemillero(Semillero semillero) {
     	getSemilleros().remove(semillero);
-    	semillero.removePrograma(this);
+    	semillero.removePrograma(null);
     	return semillero;
     }
     public Facultad getFacultadId() {
@@ -145,22 +147,45 @@ public class Programa implements Serializable {
     }
 
     @XmlTransient
-    public List<Materia> getMateriaList() {
-        return materiaList;
+    public List<Materia> getMaterias() {
+        return materias;
     }
 
-    public void setMateriaList(List<Materia> materiaList) {
-        this.materiaList = materiaList;
+    public void setMaterias(List<Materia> materias) {
+        this.materias = materias;
+    }
+    public Materia addMateria(Materia materia) {
+    	getMaterias().add(materia);
+    	materia.setPrograma(this);
+    	return materia;
+    }
+    public Materia removeMateria(Materia materia) {
+    	getMaterias().remove(materia);
+    	materia.setPrograma(null);
+    	return materia;
     }
 
     @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
+    public List<Usuario> getUsuarios() {
+        return usuarios;
     }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
+    public Usuario addUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		getUsuarios().add(usuario);
+		usuario.setProgramaId(this);
+		return usuario;
+	}
+    public Usuario removeUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		getUsuarios().remove(usuario);
+		usuario.setProgramaId(null);
+		return usuario;
+	}
+
 
     @Override
     public int hashCode() {
@@ -187,6 +212,14 @@ public class Programa implements Serializable {
         return "co.edu.usbbog.sgpi.model.Programa[ id=" + id + " ]";
     }
 
+    public JSONObject toJson() {
+    	JSONObject programaJson=new JSONObject();
+    	programaJson.put("id",this.getId());
+    	programaJson.put("nombre",this.getNombre());
+    	return programaJson;
+    }
+
+	
 	
 
 	

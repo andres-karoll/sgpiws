@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -45,7 +47,7 @@ public class TipoUsuario implements Serializable {
         @JoinColumn(name = "tipo_usuario", referencedColumnName = "nombre", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "usuario", referencedColumnName = "cedula", nullable = false)})
     @ManyToMany
-    private List<Usuario> usuarioList;
+    private List<Usuario> usuarios;
 
     public TipoUsuario() {
     }
@@ -76,14 +78,23 @@ public class TipoUsuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
+    public List<Usuario> getUsuarios() {
+        return usuarios;
     }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
-
+    public Usuario addUsuario (Usuario usuario) {
+    	getUsuarios().add(usuario);
+    	usuario.addTipoUsuario(this);
+    	return usuario;
+    }
+    public Usuario removeUsuario (Usuario usuario) {
+    	getUsuarios().add(usuario);
+    	usuario.setTiposUsuario(null);;
+    	return usuario;
+    }
     @Override
     public int hashCode() {
         int hash = 0;
@@ -108,5 +119,13 @@ public class TipoUsuario implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.TipoUsuario[ nombre=" + nombre + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject tipousuarioJson=new JSONObject();
+    	tipousuarioJson.put("nombre",this.getNombre());
+    	tipousuarioJson.put("descripcion",this.getDescripcion());
+    	return tipousuarioJson;
+    	
+    }
+
+	
 }

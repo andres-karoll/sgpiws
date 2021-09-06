@@ -6,6 +6,8 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +21,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import net.minidev.json.JSONObject;
 
 /**
  *
@@ -56,8 +60,8 @@ public class Comentario implements Serializable {
     @Column(nullable = false, length = 45)
     private String nivel;
     @Basic(optional = false)
-    @Column(nullable = false, length = 45)
-    private String fecha;
+    @Column(nullable = false, name="fecha", columnDefinition = "DATE")
+    private LocalDate fecha;
     @JoinColumn(name = "producto_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Producto productoId;
@@ -69,7 +73,7 @@ public class Comentario implements Serializable {
         this.id = id;
     }
 
-    public Comentario(Integer id, String comentario, String fase, String nivel, String fecha) {
+    public Comentario(Integer id, String comentario, String fase, String nivel, LocalDate fecha) {
         this.id = id;
         this.comentario = comentario;
         this.fase = fase;
@@ -117,11 +121,11 @@ public class Comentario implements Serializable {
         this.nivel = nivel;
     }
 
-    public String getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
@@ -157,5 +161,16 @@ public class Comentario implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Comentario[ id=" + id + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject comentarioJson=new JSONObject();
+    	comentarioJson.put("id",this.getId());
+    	comentarioJson.put("comentario",this.getComentario());
+    	comentarioJson.put("calificacion",this.getCalificacion());
+    	comentarioJson.put("fase",this.getFase());
+    	comentarioJson.put("nivel",this.getNivel());
+    	comentarioJson.put("fecha",this.getFecha());
+    	comentarioJson.put("producto_id",this.getProductoId());
+    	return comentarioJson;
+    	
+    }
 }

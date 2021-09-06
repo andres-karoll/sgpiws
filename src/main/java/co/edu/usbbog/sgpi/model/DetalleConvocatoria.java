@@ -17,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -128,5 +130,22 @@ public class DetalleConvocatoria implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.DetalleConvocatoria[ id=" + id + " ]";
     }
+    public JSONObject toJson() {
+    	JSONObject detalleConvocatoriaJson=new JSONObject();
+    	detalleConvocatoriaJson.put("id",this.getId());
+    	detalleConvocatoriaJson.put("objetivos_convocatoria",this.getObjetivosConvocatoria());
+    	detalleConvocatoriaJson.put("requisitos",this.getRequisitos());
+    	detalleConvocatoriaJson.put("modalidade",this.getModalidade());
+    	detalleConvocatoriaJson.put("convocatoria_id",this.getConvocatoriaId());
+    	
+    	return detalleConvocatoriaJson;
+    	
+    }
+
+	
+	
+	
+
+	
     
 }

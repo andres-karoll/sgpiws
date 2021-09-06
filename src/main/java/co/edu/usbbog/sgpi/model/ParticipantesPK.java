@@ -6,12 +6,15 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import net.minidev.json.JSONObject;
 
 /**
  *
@@ -31,14 +34,13 @@ public class ParticipantesPK implements Serializable {
     @Column(nullable = false)
     private int proyecto;
     @Basic(optional = false)
-    @Column(name = "fecha_inicio", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaInicio;
+    @Column(name = "fecha_inicio", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaInicio;
 
     public ParticipantesPK() {
     }
 
-    public ParticipantesPK(String usuario, int proyecto, Date fechaInicio) {
+    public ParticipantesPK(String usuario, int proyecto, LocalDate fechaInicio) {
         this.usuario = usuario;
         this.proyecto = proyecto;
         this.fechaInicio = fechaInicio;
@@ -60,11 +62,11 @@ public class ParticipantesPK implements Serializable {
         this.proyecto = proyecto;
     }
 
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
@@ -99,6 +101,13 @@ public class ParticipantesPK implements Serializable {
     @Override
     public String toString() {
         return "co.edu.usbbog.sgpi.model.ParticipantesPK[ usuario=" + usuario + ", proyecto=" + proyecto + ", fechaInicio=" + fechaInicio + " ]";
+    }
+    public JSONObject toJson() {
+    	JSONObject paticipantesPKJson=new JSONObject();
+    	paticipantesPKJson.put("usuario",this.getUsuario());
+    	paticipantesPKJson.put("proyecto",this.getProyecto());
+    	paticipantesPKJson.put("fecha_inicio",this.getFechaInicio());
+    	return paticipantesPKJson;
     }
     
 }

@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -23,6 +24,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import net.minidev.json.JSONObject;
 
 /**
  *
@@ -51,13 +54,12 @@ public class Semillero implements Serializable {
     @Column(nullable = false, length = 45)
     private String descripcion;
     @Basic(optional = false)
-    @Column(name = "fecha_fun", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaFun;
+    @Column(name = "fecha_fun", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaFun;
     @ManyToMany(mappedBy = "semilleros")
     private List<Programa> programas;
     @OneToMany(mappedBy = "semillero")
-    private List<Proyecto> proyectoList;
+    private List<Proyecto> proyectos;
     @JoinColumn(name = "grupo_investigacion", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private GrupoInvestigacion grupoInvestigacion;
@@ -68,7 +70,7 @@ public class Semillero implements Serializable {
     @ManyToOne(optional = false)
     private Usuario liderSemillero;
     @OneToMany(mappedBy = "semilleroId")
-    private List<Usuario> usuarioList;
+    private List<Usuario> usuarios;
 
     public Semillero() {
     }
@@ -77,7 +79,7 @@ public class Semillero implements Serializable {
         this.id = id;
     }
 
-    public Semillero(Integer id, String nombre, String descripcion, Date fechaFun) {
+    public Semillero(Integer id, String nombre, String descripcion, LocalDate fechaFun) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -108,11 +110,11 @@ public class Semillero implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaFun() {
+    public LocalDate getFechaFun() {
         return fechaFun;
     }
 
-    public void setFechaFun(Date fechaFun) {
+    public void setFechaFun(LocalDate fechaFun) {
         this.fechaFun = fechaFun;
     }
 
@@ -124,14 +126,25 @@ public class Semillero implements Serializable {
     public void setProgramas(List<Programa> programas) {
         this.programas = programas;
     }
+    public Programa addPrograma(Programa programa) {
+		getProgramas().add(programa);
+		programa.addSemillero(this);	
+		return programa;
+	}
 
+	public Programa removePrograma(Programa programa) {
+		getProgramas().remove(programa);
+		programa.removeSemillero(this);
+		return programa;
+		
+	}
     @XmlTransient
-    public List<Proyecto> getProyectoList() {
-        return proyectoList;
+    public List<Proyecto> getProyectos() {
+        return proyectos;
     }
 
-    public void setProyectoList(List<Proyecto> proyectoList) {
-        this.proyectoList = proyectoList;
+    public void setProyectos(List<Proyecto> proyectos) {
+        this.proyectos = proyectos;
     }
 
     public GrupoInvestigacion getGrupoInvestigacion() {
@@ -160,14 +173,23 @@ public class Semillero implements Serializable {
     }
 
     @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
+    public List<Usuario> getUsuarios() {
+        return usuarios;
     }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
-
+    public Usuario addUsuario(Usuario usuario) {
+    	getUsuarios().add(usuario);
+    	usuario.addsemillero(this);
+    	return usuario;
+    }
+    public Usuario removeUsuario(Usuario usuario) {
+    	getUsuarios().remove(usuario);
+    	usuario.addsemillero(null);
+    	return usuario;
+    }
     @Override
     public int hashCode() {
         int hash = 0;
@@ -192,26 +214,16 @@ public class Semillero implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Semillero[ id=" + id + " ]";
     }
+    public JSONObject toJson() {
+    	JSONObject semilleroJson=new JSONObject();
+    	semilleroJson.put("id",this.getId());
+    	semilleroJson.put("nombre",this.getNombre());
+    	semilleroJson.put("descripcion",this.getDescripcion());
+    	semilleroJson.put("fecha_fun",this.getFechaFun());
+    	return semilleroJson;
+    }
 
-	public Programa addPrograma(Programa programa) {
-		getProgramas().add(programa);
-		programa.addSemillero(this);	
-		return programa;
-	}
-
-	public Programa removePrograma(Programa programa) {
-		getProgramas().remove(programa);
-		programa.removeSemillero(this);
-		return programa;
-		
-	}
-
-	public Programa removeSemillero(Programa programa) {
-		getProgramas().remove(programa);
-		programa.removeSemillero(null);
-		return programa;
-		
-	}
+	
 
 	
 

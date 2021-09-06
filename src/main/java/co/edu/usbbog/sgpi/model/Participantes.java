@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import net.minidev.json.JSONObject;
 
 /**
  *
@@ -40,9 +43,8 @@ public class Participantes implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ParticipantesPK participantesPK;
-    @Column(name = "fecha_fin")
-    @Temporal(TemporalType.DATE)
-    private Date fechaFin;
+    @Column(name = "fecha_fin",columnDefinition = "DATE")
+    private LocalDate fechaFin;
     @Basic(optional = false)
     @Column(nullable = false, length = 45)
     private String estado;
@@ -51,10 +53,10 @@ public class Participantes implements Serializable {
     private String rol;
     @JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Proyecto proyecto1;
+    private Proyecto proyecto;
     @JoinColumn(name = "usuario", referencedColumnName = "cedula", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Usuario usuario1;
+    private Usuario usuario;
 
     public Participantes() {
     }
@@ -69,7 +71,7 @@ public class Participantes implements Serializable {
         this.rol = rol;
     }
 
-    public Participantes(String usuario, int proyecto, Date fechaInicio) {
+    public Participantes(String usuario, int proyecto, LocalDate fechaInicio) {
         this.participantesPK = new ParticipantesPK(usuario, proyecto, fechaInicio);
     }
 
@@ -81,11 +83,11 @@ public class Participantes implements Serializable {
         this.participantesPK = participantesPK;
     }
 
-    public Date getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 
@@ -105,20 +107,20 @@ public class Participantes implements Serializable {
         this.rol = rol;
     }
 
-    public Proyecto getProyecto1() {
-        return proyecto1;
+    public Proyecto getProyecto() {
+        return proyecto;
     }
 
-    public void setProyecto1(Proyecto proyecto1) {
-        this.proyecto1 = proyecto1;
+    public void setProyecto(Proyecto proyecto) {
+        this.proyecto = proyecto;
     }
 
-    public Usuario getUsuario1() {
-        return usuario1;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuario1(Usuario usuario1) {
-        this.usuario1 = usuario1;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
@@ -145,5 +147,13 @@ public class Participantes implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Participantes[ participantesPK=" + participantesPK + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject paticipantesJson=new JSONObject();
+    	paticipantesJson.put("fecha_fin",this.getFechaFin());
+    	paticipantesJson.put("estado",this.getEstado());
+    	paticipantesJson.put("rol",this.getRol());
+    	return paticipantesJson;
+    }
+
+
 }

@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -26,6 +27,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import net.minidev.json.JSONObject;
 
 /**
  *
@@ -61,12 +64,11 @@ public class Proyecto implements Serializable {
     @Column(nullable = false, length = 2147483647)
     private String descripcion;
     @Basic(optional = false)
-    @Column(name = "fecha_inicio", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaInicio;
-    @Column(name = "fecha_fin")
-    @Temporal(TemporalType.DATE)
-    private Date fechaFin;
+    @Column(name = "fecha_inicio", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaInicio;
+    @Column(name = "fecha_fin", columnDefinition = "DATE")
+   
+    private LocalDate fechaFin;
     @Lob
     @Column(name = "retroalimentacion_final", length = 2147483647)
     private String retroalimentacionFinal;
@@ -108,15 +110,15 @@ public class Proyecto implements Serializable {
     @ManyToOne(optional = false)
     private TipoProyecto tipoProyecto;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
-    private List<ProyectosConvocatoria> proyectosConvocatoriaList;
+    private List<ProyectosConvocatoria> proyectosConvocatoria;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
     private List<Producto> productos;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
-    private List<Participaciones> participacionesList;
+    private List<Participaciones> participaciones;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
     private List<Presupuesto> presupuestos;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto1")
-    private List<Participantes> participantesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
+    private List<Participantes> participantes;
 
     public Proyecto() {
     }
@@ -125,7 +127,7 @@ public class Proyecto implements Serializable {
         this.id = id;
     }
 
-    public Proyecto(Integer id, String titulo, String estado, String descripcion, Date fechaInicio, short visibilidad, String ciudad, String metodologia, String justificacion) {
+    public Proyecto(Integer id, String titulo, String estado, String descripcion, LocalDate fechaInicio, short visibilidad, String ciudad, String metodologia, String justificacion) {
         this.id = id;
         this.titulo = titulo;
         this.estado = estado;
@@ -169,19 +171,19 @@ public class Proyecto implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 
@@ -291,16 +293,8 @@ public class Proyecto implements Serializable {
     public void setProyectos(List<Proyecto> proyectos) {
         this.proyectos = proyectos;
     }
-    public Proyecto addProyecto(Proyecto proyecto) {
-    	getAntecedentes().add(proyecto);
-    	proyecto.addProyecto(this);
-    	return proyecto;
-    }
-    public Proyecto removeProyecto(Proyecto proyecto) {
-    	getAntecedentes().remove(proyecto);
-    	proyecto.removeProyecto(this);
-    	return proyecto;
-    }
+    
+   
 
     public MacroProyecto getMacroProyecto() {
         return macroProyecto;
@@ -327,14 +321,14 @@ public class Proyecto implements Serializable {
     }
 
     @XmlTransient
-    public List<ProyectosConvocatoria> getProyectosConvocatoriaList() {
-        return proyectosConvocatoriaList;
+    public List<ProyectosConvocatoria> getProyectosConvocatoria() {
+        return proyectosConvocatoria;
     }
 
-    public void setProyectosConvocatoriaList(List<ProyectosConvocatoria> proyectosConvocatoriaList) {
-        this.proyectosConvocatoriaList = proyectosConvocatoriaList;
+    public void setProyectosConvocatoriaList(List<ProyectosConvocatoria> proyectosConvocatoria) {
+        this.proyectosConvocatoria = proyectosConvocatoria;
     }
-
+   
     @XmlTransient
     public List<Producto> getProductos() {
         return productos;
@@ -343,14 +337,34 @@ public class Proyecto implements Serializable {
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
-
-    @XmlTransient
-    public List<Participaciones> getParticipacionesList() {
-        return participacionesList;
+    public Producto addProducto(Producto producto) {
+    	getProductos().add(producto);
+    	producto.setProyecto(this);
+    	return producto;
+    }
+    public Producto removeProducto(Producto producto) {
+    	getProductos().remove(producto);
+    	producto.setProyecto(null);
+    	return producto;
     }
 
-    public void setParticipacionesList(List<Participaciones> participacionesList) {
-        this.participacionesList = participacionesList;
+    @XmlTransient
+    public List<Participaciones> getParticipaciones() {
+        return participaciones;
+    }
+
+    public void setParticipaciones(List<Participaciones> participaciones) {
+        this.participaciones = participaciones;
+    }
+    public Participaciones addParticipaciones(Participaciones participaciones) {
+    	getParticipaciones().add(participaciones);
+    	participaciones.setProyecto(this);
+    	return participaciones;
+    }
+    public Participaciones removeParticipaciones(Participaciones participaciones) {
+    	getParticipaciones().remove(participaciones);
+    	participaciones.setProyecto(null);
+    	return participaciones;
     }
 
     @XmlTransient
@@ -358,18 +372,38 @@ public class Proyecto implements Serializable {
         return presupuestos;
     }
 
-    public void setPresupuestos(List<Presupuesto> presupuestoList) {
-        this.presupuestos = presupuestoList;
+    public void setPresupuestos(List<Presupuesto> presupuesto) {
+        this.presupuestos = presupuesto;
     }
-    
+    public Presupuesto addPresupuesto (Presupuesto presupuesto) {
+    	getPresupuestos().add(presupuesto);
+    	presupuesto.setProyecto(this);
+    	return presupuesto;
+    }
+    public Presupuesto removePresupuesto (Presupuesto presupuesto) {
+    	getPresupuestos().remove(presupuesto);
+    	presupuesto.setProyecto(null);
+    	return presupuesto;
+    }
+
 
     @XmlTransient
-    public List<Participantes> getParticipantesList() {
-        return participantesList;
+    public List<Participantes> getParticipantes() {
+        return participantes;
     }
     
-    public void setParticipantesList(List<Participantes> participantesList) {
-        this.participantesList = participantesList;
+    public void setParticipantes(List<Participantes> participantes) {
+        this.participantes = participantes;
+    }
+    public Participantes addParticipantes (Participantes participantes) {
+    	getParticipantes().add(participantes);
+    	participantes.setProyecto(this);
+    	return participantes;
+    }
+    public Participantes removeParticipantes (Participantes participantes) {
+    	getParticipantes().remove(participantes);
+    	participantes.setProyecto(null);
+    	return participantes;
     }
 
     @Override
@@ -396,8 +430,21 @@ public class Proyecto implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Proyecto[ id=" + id + " ]";
     }
-
-
-	
-    
+    public JSONObject toJson() {
+    	JSONObject proyectoJson=new JSONObject();
+    	proyectoJson.put("id",this.getId());
+    	proyectoJson.put("titulo",this.getTitulo());
+    	proyectoJson.put("estado",this.getEstado());
+    	proyectoJson.put("descripcion",this.getDescripcion());
+    	proyectoJson.put("fecha_inicio",this.getFechaInicio());
+    	proyectoJson.put("fecha_fin",this.getFechaFin());
+    	proyectoJson.put("retroalimentacion_final",this.getRetroalimentacionFinal());
+    	proyectoJson.put("visibilidad",this.getVisibilidad());
+    	proyectoJson.put("ciudad",this.getCiudad());
+    	proyectoJson.put("metodologia",this.getMetodologia());
+    	proyectoJson.put("conclusiones",this.getConclusiones());
+    	proyectoJson.put("justificacion",this.getJustificacion());
+    	
+    	return proyectoJson;
+    }
 }

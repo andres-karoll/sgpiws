@@ -17,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -39,7 +41,7 @@ public class ProyectosConvocatoria implements Serializable {
     private String idProyecto;
     @JoinColumn(name = "convocatoria", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Convocatoria convocatoria1;
+    private Convocatoria convocatoria;
     @JoinColumn(name = "proyectos", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Proyecto proyecto;
@@ -76,12 +78,12 @@ public class ProyectosConvocatoria implements Serializable {
         this.idProyecto = idProyecto;
     }
 
-    public Convocatoria getConvocatoria1() {
-        return convocatoria1;
+    public Convocatoria getConvocatoria() {
+        return convocatoria;
     }
 
-    public void setConvocatoria1(Convocatoria convocatoria1) {
-        this.convocatoria1 = convocatoria1;
+    public void setConvocatoria(Convocatoria convocatoria) {
+        this.convocatoria = convocatoria;
     }
 
     public Proyecto getProyecto() {
@@ -116,5 +118,11 @@ public class ProyectosConvocatoria implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.ProyectosConvocatoria[ proyectosConvocatoriaPK=" + proyectosConvocatoriaPK + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject proyectosConovocatoriaJson=new JSONObject();
+    	proyectosConovocatoriaJson.put("id_proyecto",this.getIdProyecto());
+    	proyectosConovocatoriaJson.put("convocatoria",this.getConvocatoria());
+    	return proyectosConovocatoriaJson;
+    }
+
 }

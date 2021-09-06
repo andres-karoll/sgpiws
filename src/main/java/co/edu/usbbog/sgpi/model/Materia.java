@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -43,7 +45,7 @@ public class Materia implements Serializable {
     @Column(nullable = false, length = 45)
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "materia")
-    private List<Clase> claseList;
+    private List<Clase> clases;
     @JoinColumn(name = "programa", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Programa programa;
@@ -77,14 +79,23 @@ public class Materia implements Serializable {
     }
 
     @XmlTransient
-    public List<Clase> getClaseList() {
-        return claseList;
+    public List<Clase> getClases() {
+        return clases;
     }
 
-    public void setClaseList(List<Clase> claseList) {
-        this.claseList = claseList;
+    public void setClases(List<Clase> clases) {
+        this.clases = clases;
     }
-
+    public Clase addClase(Clase clase) {
+    	getClases().add(clase);
+    	clase.setMateria(this);
+    	return clase;
+    }
+    public Clase removeClase(Clase clase) {
+    	getClases().remove(clase);
+    	clase.setMateria(null);
+    	return clase;
+    }
     public Programa getPrograma() {
         return programa;
     }
@@ -117,5 +128,10 @@ public class Materia implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Materia[ catalogo=" + catalogo + " ]";
     }
-    
+    public JSONObject toJson() {
+    	JSONObject materiaJson=new JSONObject();
+    	materiaJson.put("catalogo",this.getCatalogo());
+    	materiaJson.put("nombre",this.getNombre());
+    	return materiaJson;
+    }
 }

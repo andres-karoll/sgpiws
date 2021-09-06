@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author 57310
@@ -137,6 +139,16 @@ public class Facultad implements Serializable {
     @Override
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Facultad[ id=" + id + " ]";
+    }
+    public JSONObject toJson() {
+    	JSONObject facultadJson=new JSONObject();
+    	facultadJson.put("id",this.getId());
+    	facultadJson.put("nombre",this.getNombre());
+    	facultadJson.put("coor_inv",this.getCoorInv());
+    	facultadJson.put("decano",this.getDecano());
+    	
+    	return facultadJson;
+    	
     }
     
 }

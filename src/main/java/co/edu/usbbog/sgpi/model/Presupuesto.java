@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -24,6 +25,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import net.minidev.json.JSONObject;
 
 /**
  *
@@ -48,9 +51,8 @@ public class Presupuesto implements Serializable {
     @Column(nullable = false)
     private double monto;
     @Basic(optional = false)
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+    @Column(nullable = false, columnDefinition = "DATE")
+    private LocalDate fecha;
     @Lob
     @Column(length = 2147483647)
     private String descripcion;
@@ -67,7 +69,7 @@ public class Presupuesto implements Serializable {
         this.id = id;
     }
 
-    public Presupuesto(Integer id, double monto, Date fecha) {
+    public Presupuesto(Integer id, double monto, LocalDate fecha) {
         this.id = id;
         this.monto = monto;
         this.fecha = fecha;
@@ -89,11 +91,11 @@ public class Presupuesto implements Serializable {
         this.monto = monto;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
@@ -113,7 +115,16 @@ public class Presupuesto implements Serializable {
     public void setCompras(List<Compra> compras) {
         this.compras = compras;
     }
-   
+    public Compra addCompra(Compra compra) {
+    	getCompras().add(compra);
+    	compra.setPresupuesto(this);
+    	return compra;
+    }
+    public Compra removeCompra(Compra compra) {
+    	getCompras().remove(compra);
+    	compra.setPresupuesto(null);
+    	return compra;
+    }
     
 
     public Proyecto getProyecto() {
@@ -148,7 +159,14 @@ public class Presupuesto implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Presupuesto[ id=" + id + " ]";
     }
-
+    public JSONObject toJson() {
+    	JSONObject presupuestoJson=new JSONObject();
+    	presupuestoJson.put("id",this.getId());
+    	presupuestoJson.put("monto",this.getMonto());
+    	presupuestoJson.put("fecha",this.getFecha());
+    	presupuestoJson.put("descripcion",this.getDescripcion());
+    	return presupuestoJson;
+    }
 	
     
 }

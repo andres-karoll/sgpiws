@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import net.minidev.json.JSONObject;
 
 /**
  *
@@ -47,9 +50,8 @@ public class Compra implements Serializable {
     @Column(nullable = false)
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "fecha_solicitud", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaSolicitud;
+    @Column(nullable = true , name="fecha_solicitud", columnDefinition = "DATE")
+    private LocalDate fechaSolicitud;
     @Basic(optional = false)
     @Column(nullable = false, length = 45)
     private String nombre;
@@ -83,7 +85,7 @@ public class Compra implements Serializable {
         this.id = id;
     }
 
-    public Compra(Integer id, Date fechaSolicitud, String nombre, String tipo, int estado, String descripcion) {
+    public Compra(Integer id, LocalDate fechaSolicitud, String nombre, String tipo, int estado, String descripcion) {
         this.id = id;
         this.fechaSolicitud = fechaSolicitud;
         this.nombre = nombre;
@@ -100,11 +102,11 @@ public class Compra implements Serializable {
         this.id = id;
     }
 
-    public Date getFechaSolicitud() {
+    public LocalDate getFechaSolicitud() {
         return fechaSolicitud;
     }
 
-    public void setFechaSolicitud(Date fechaSolicitud) {
+    public void setFechaSolicitud(LocalDate fechaSolicitud) {
         this.fechaSolicitud = fechaSolicitud;
     }
 
@@ -204,7 +206,22 @@ public class Compra implements Serializable {
     public String toString() {
         return "co.edu.usbbog.sgpi.model.Compra[ id=" + id + " ]";
     }
+    public JSONObject toJson() {
+    	JSONObject compraJson=new JSONObject();
+    	compraJson.put("id",this.getId());
+    	compraJson.put("fecha_solicitud",this.getFechaSolicitud());
+    	compraJson.put("nombre",this.getNombre());
+    	compraJson.put("tipo",this.getTipo());
+    	compraJson.put("codigo_compra",this.getCodigoCompra());
+    	compraJson.put("valor",this.getValor());
+    	compraJson.put("fecha_compra",this.getFechaCompra());
+    	compraJson.put("estado",this.getEstado());
+    	compraJson.put("link",this.getLink());
+    	compraJson.put("descripcion",this.getDescripcion());
 
+    	return compraJson;
+    	
+    }
 
 	
     
