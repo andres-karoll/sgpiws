@@ -1,6 +1,7 @@
 package co.edu.usbbog.sgpi.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Convocatoria;
@@ -23,9 +24,9 @@ public interface IGestionInstitucionalService {
 	//actualizar grupoInvestigacion
 	
 	public List<Semillero> todosLosSemilleros();
-	public List<Semillero> todosLosSemillerosPorGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion);
-	public List<Semillero> todosLosSemillerosPorLiderSemillero(Usuario lider);
-	public List<Semillero> todosLosSemillerosPorLineaInvestigacion(LineaInvestigacion lineaInvestigacion);
+	public Optional<Semillero> todosLosSemillerosPorGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion);
+	public Optional<Semillero> todosLosSemillerosPorLiderSemillero(Usuario lider);
+	public Optional<Semillero> todosLosSemillerosPorLineaInvestigacion(LineaInvestigacion lineaInvestigacion);
 	public boolean eliminarSemillero(int id);
 	public boolean crearSemillero(Semillero semillero);
 	//actualizar semillero
