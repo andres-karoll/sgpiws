@@ -13,6 +13,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -26,6 +27,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import net.minidev.json.JSONObject;
 
@@ -55,12 +58,14 @@ public class GrupoInvestigacion implements Serializable {
     private String nombre;
     @Basic(optional = false)
     @Column(name = "fecha_fun", nullable = false, columnDefinition = "DATE")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate fechaFun;
     @Basic(optional = false)
     @Column(nullable = false, length = 45)
     private String categoria;
     @Basic(optional = false)
     @Column(name = "fecha_cat", nullable = false, columnDefinition = "DATE")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate fechaCat;
     @JoinTable(name = "grupo_inv_lineas_inv", joinColumns = {
         @JoinColumn(name = "grupo_investigacion", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
@@ -72,8 +77,8 @@ public class GrupoInvestigacion implements Serializable {
         @JoinColumn(name = "programa", referencedColumnName = "id", nullable = false)})
     @ManyToMany
     private List<Programa> programas;
-    @JoinColumn(name = "director_grupo", referencedColumnName = "cedula", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "director_grupo", referencedColumnName = "cedula", nullable = true)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Usuario directorGrupo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoInvestigacion")
     private List<Semillero> semilleros;

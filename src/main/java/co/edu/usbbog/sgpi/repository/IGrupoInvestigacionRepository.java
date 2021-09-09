@@ -7,9 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import co.edu.usbbog.sgpi.model.GrupoInvestigacion;
 import co.edu.usbbog.sgpi.model.Proyecto;
+import co.edu.usbbog.sgpi.model.Usuario;
 
 public interface IGrupoInvestigacionRepository extends JpaRepository<GrupoInvestigacion, Integer>{
 
-	@Query(value = "DELETE FROM  grupo_investigacion WHERE id = ?1 ", nativeQuery = true)
-	List<GrupoInvestigacion> findByGrupo(int id);
 }

@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -46,11 +47,11 @@ public class Facultad implements Serializable {
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facultadId")
     private List<Programa> programas;
-    @JoinColumn(name = "coor_inv", referencedColumnName = "cedula", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "coor_inv", referencedColumnName = "cedula", nullable = true)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Usuario coorInv;
-    @JoinColumn(name = "decano", referencedColumnName = "cedula", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "decano", referencedColumnName = "cedula", nullable = true)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Usuario decano;
 
     public Facultad() {

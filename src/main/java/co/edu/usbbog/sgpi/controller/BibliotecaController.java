@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.service.IBibliotecaService;
+import net.minidev.json.JSONArray;
 
 @RestController
 @CrossOrigin
@@ -25,21 +26,21 @@ public class BibliotecaController {
 	private IBibliotecaService bibliotecaService;
 
 	@GetMapping(value = "/listarGrado")
-	public String listarGrado() {
-		String salida = "";
+	public JSONArray listarGrado() {
+		JSONArray salida = new JSONArray();
 		List<Proyecto> pro = bibliotecaService.todosLosProyectosDeGrado();
 		for (Proyecto proyecto : pro) {
-			salida += proyecto.getTitulo() + ", ";
+			salida.add(proyecto.toJson());
 		}
 		return salida;
 	}
 
 	@GetMapping(value = "/listarGradoTerminado")
-	public String listarGradoTerminado() {
-		String salida = "";
+	public JSONArray listarGradoTerminado() {
+		JSONArray salida = new JSONArray();
 		List<Proyecto> pro = bibliotecaService.todosLosProyectosTerminados("grado", "fin");
 		for (Proyecto proyecto : pro) {
-			salida += proyecto.getTitulo() + ", ";
+			salida.add(proyecto.toJson());
 		}
 		return salida;
 	}

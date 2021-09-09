@@ -14,21 +14,27 @@ import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.Usuario;
+import net.minidev.json.JSONObject;
 
  
 
 public interface IGestionInstitucionalService {
+	
+	public boolean existeUsuario (String cedula);
+	
 	public List<GrupoInvestigacion> todosLosGruposInvestigacion();
 	public boolean eliminarGrupoInvestigacion(int id);
 	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion);
+	public boolean asignarDirector(Usuario director,int id);
 	//actualizar grupoInvestigacion
 	
 	public List<Semillero> todosLosSemilleros();
-	public Optional<Semillero> todosLosSemillerosPorGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion);
-	public Optional<Semillero> todosLosSemillerosPorLiderSemillero(Usuario lider);
-	public Optional<Semillero> todosLosSemillerosPorLineaInvestigacion(LineaInvestigacion lineaInvestigacion);
+	public List<Semillero> todosLosSemillerosPorGrupoInvestigacion(int grupoInvestigacion);
+	public List<Semillero> todosLosSemillerosPorLiderSemillero(String lider);
+	public List<Semillero> todosLosSemillerosPorLineaInvestigacion(String lineaInvestigacion);
 	public boolean eliminarSemillero(int id);
 	public boolean crearSemillero(Semillero semillero);
+	public boolean asignarLiderSemillero(Usuario lider, int id);
 	//actualizar semillero
 	
 	public List<Facultad> todasLasFacultades();
