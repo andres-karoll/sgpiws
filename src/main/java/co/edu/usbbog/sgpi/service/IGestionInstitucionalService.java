@@ -21,10 +21,11 @@ import net.minidev.json.JSONObject;
 public interface IGestionInstitucionalService {
 	
 	public boolean existeUsuario (String cedula);
+	public boolean asignarLineaAGrupo (GrupoInvestigacion grupoInvestigacion, LineaInvestigacion lineaInvestigacion);
 	
 	public List<GrupoInvestigacion> todosLosGruposInvestigacion();
 	public boolean eliminarGrupoInvestigacion(int id);
-	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion);
+	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion, int id);
 	public boolean asignarDirector(Usuario director,int id);
 	//actualizar grupoInvestigacion
 	
@@ -43,8 +44,8 @@ public interface IGestionInstitucionalService {
 	//actualizarFacultad
 	
 	public List<Programa> todosLosProgramas();
-	public List<Programa> todosLosProgramasPorFacultad(Facultad facultad);
-	public List<Programa> todosLosProgramasPorDirector(Usuario usuario);
+	public List<Programa> todosLosProgramasPorFacultad(int facultad);
+	public List<Programa> todosLosProgramasPorDirector(String usuario);
 	public List<Programa> todosLosProgramasPorSemillero(Semillero semillero);
 	public boolean eliminarPrograma(int id);
 	public boolean crearPrograma(Programa programa);
@@ -53,7 +54,7 @@ public interface IGestionInstitucionalService {
 	public List<Materia> todasLasMaterias();
 	public List<Materia> todasLasMateriasPorPrograma(Programa programa);
 	public boolean eliminarMateria(String catalogo);
-	public boolean crearPrograma(Materia materia);
+	public boolean crearMateria(Materia materia);
 	//actualizar materia
 	
 	public List<Clase> todasLasClases();

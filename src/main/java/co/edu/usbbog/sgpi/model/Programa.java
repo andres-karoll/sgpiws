@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -56,8 +57,8 @@ public class Programa implements Serializable {
     @JoinColumn(name = "facultad_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Facultad facultadId;
-    @JoinColumn(name = "director", referencedColumnName = "cedula", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "director", referencedColumnName = "cedula", nullable = true)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Usuario director;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "programa")
     private List<Materia> materias;

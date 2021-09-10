@@ -56,6 +56,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Autowired
 	private ILineaInvestigacionRepository lineaRepo;
 	
+
 	
 	private static Logger logger = LoggerFactory.getLogger(BibliotecaService.class);
 	@Override
@@ -66,13 +67,31 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 	@Override
 	public boolean eliminarGrupoInvestigacion(int id) {
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//NO SEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+		//validar que no esten usando el grupoInvestigacion
 		grupoIRepo.deleteById(id);
 		return !grupoIRepo.existsById(id);
 	}
 
 	@Override
-	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
-			grupoIRepo.save(grupoInvestigacion);	
+	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion, int id) {
+		
+			if(grupoIRepo.existsById(grupoInvestigacion.getId())) {
+				return false;
+			}
+			Programa programa = programaRepo.getById(id);
+			programa.getId();
+			programa.getGruposInvestigacion().add(grupoInvestigacion);			
+			grupoIRepo.save(grupoInvestigacion);
+			programaRepo.save(programa);
+			System.out.println(programa);
 			return grupoIRepo.existsById(grupoInvestigacion.getId());		
 	}
 	@Override
@@ -156,6 +175,14 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 	@Override
 	public boolean asignarLiderSemillero(Usuario lider, int id) {
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//NO SEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 		Usuario lid = usuarioRepo.getById(lider.getCedula());
 		if(lid!=null) {
 			Semillero semi = semilleroRepo.getById(id);
@@ -183,50 +210,87 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 	@Override
 	public boolean eliminarFacultad(int id) {
+		if(programaRepo.findByFacultad(id).isEmpty()) {			
+			return false;
+		}
 		facultadRepo.deleteById(id);
 		return !facultadRepo.existsById(id);
 	}
 
 	@Override
 	public boolean crearFacultad(Facultad facultad) {
-		// TODO Auto-generated method stub
-		return false;
+		facultadRepo.save(facultad);
+		return facultadRepo.existsById(facultad.getId());
 	}
 
 	@Override
 	public List<Programa> todosLosProgramas() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Programa> programas = programaRepo.findAll();
+		return programas;
+	}
+	@Override
+	public List<Programa> todosLosProgramasPorFacultad(int facultad) {
+		List<Programa> programas = programaRepo.findByFacultad(facultad);
+		return programas;
 	}
 
 	@Override
-	public List<Programa> todosLosProgramasPorFacultad(Facultad facultad) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Programa> todosLosProgramasPorDirector(Usuario usuario) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Programa> todosLosProgramasPorDirector(String usuario) {
+		
+		if(existeUsuario(usuario)) {
+			List<Programa> programas = programaRepo.findByDirector(usuario);
+			return programas;
+		}else {
+			return null;
+		}
+		
 	}
 
 	@Override
 	public List<Programa> todosLosProgramasPorSemillero(Semillero semillero) {
 		// TODO Auto-generated method stub
+		//
+		//
+		//
+		//
+		//
+		//NO SEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 		return null;
 	}
 
 	@Override
 	public boolean eliminarPrograma(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		//programa por usuario y por materia
+		if(programaRepo.findById(id).isPresent()) {
+			//programa por usuario 
+			if(usuarioRepo.findByPrograma(id).isEmpty()) {
+				//programa por materia
+				if(materiaRepo.findByPrograma(id).isEmpty()) {
+					//NO SEEEEE COMO VALIDAR POR SEMILLERO Y PROGRAMASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+					//
+					//
+					//
+					//
+					//					
+					programaRepo.deleteById(id);
+					return true;
+				}
+				else {
+					return false;
+				}
+				
+			}else {
+				return false;
+			}	
+		}else {
+			return false;
+		}	
 	}
 
 	@Override
 	public boolean crearPrograma(Programa programa) {
-		// TODO Auto-generated method stub
-		return false;
+		programaRepo.save(programa);
+		return programaRepo.existsById(programa.getId());
 	}
 
 	@Override
@@ -246,12 +310,12 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 	@Override
-	public boolean crearPrograma(Materia materia) {
+	public boolean crearMateria(Materia materia) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 
 	@Override
 	public List<Clase> todasLasClases() {
@@ -289,6 +353,11 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		return null;
 	}
 
+	
+	
+	
+	
+	//METODOS DE SI EXISTE
 	@Override
 	public boolean existeUsuario(String cedula) {
 			if(usuarioRepo.findById(cedula).isPresent()) {
@@ -296,8 +365,23 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			}else {
 				return false;
 			}
-			
 	}
+	
+	@Override
+	public boolean asignarLineaAGrupo(GrupoInvestigacion grupoInvestigacion, LineaInvestigacion lineaInvestigacion) {
+		grupoInvestigacion.getLineasInvestigacion().add(lineaInvestigacion);
+		lineaInvestigacion.getGruposInvestigacion().add(grupoInvestigacion);		
+		grupoIRepo.save(grupoInvestigacion);
+		lineaRepo.save(lineaInvestigacion);
+		
+		List<GrupoInvestigacion> grupos = lineaRepo.getById(lineaInvestigacion.getNombre()).getGruposInvestigacion();
+		return grupos.contains(lineaInvestigacion);
+	}
+	
+	
+
+
+
 
 	
 

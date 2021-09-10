@@ -6,4 +6,5 @@ import co.edu.usbbog.sgpi.model.Facultad;
 
 public interface IFacultadRepository extends JpaRepository<Facultad, Integer>{
 
+	
 }

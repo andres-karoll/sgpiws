@@ -1,5 +1,6 @@
 package co.edu.usbbog.sgpi.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbbog.sgpi.model.Facultad;
 import co.edu.usbbog.sgpi.model.GrupoInvestigacion;
+import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.Usuario;
@@ -31,7 +33,7 @@ public class GestionInstitucionalController {
 	private IGestionInstitucionalService gestionInstitucionalService;
 	
 	
-	
+	//GRUPOS DE INVESTIGACION
 	@GetMapping(value = "/listarGruposI")
 	public JSONArray listarGruposI() {
 		
@@ -50,9 +52,26 @@ public class GestionInstitucionalController {
 	}
 	
 	@PostMapping(value = "/crearGruposI")
-	public JSONObject crearGruposI(@RequestBody GrupoInvestigacion grupoInvestigacion) {		
-		gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion);	
-		return new JSONObject();
+	public JSONObject crearGruposI(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		GrupoInvestigacion grupoInvestigacion = new GrupoInvestigacion(
+				Integer.parseInt(entrada.getAsString("id")),
+				entrada.getAsString("nombre"),
+				LocalDate.parse(entrada.getAsString("fechaFun")) ,
+				entrada.getAsString("categoria"),
+				LocalDate.parse(entrada.getAsString("fechaCat")));
+		//grupoInvestigacion.setDirectorGrupo(entrada.getAsString("director_grupo"));
+		if(gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion, Integer.parseInt(entrada.getAsString("grupos_investigacion")))) {
+			salida.put("respuesta", "el grupo se creo");
+		}
+		else {
+			salida.put("respuesta", "no se pudo");
+		}
+		
+			
+		
+		
+		return salida;
 	}
 	
 	/*@GetMapping(value = "/asignarDirectorGruposI/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,6 +87,7 @@ public class GestionInstitucionalController {
 		return new JSONObject();
 	}*/
 	
+	//SEMILLEROS
 	
 	@GetMapping(value = "/listarSemilleros")
 	public JSONArray listarSemilleros() {
@@ -132,6 +152,8 @@ public class GestionInstitucionalController {
 		return new JSONObject();
 	}*/
 	
+	
+	//FACULTADES
 	@GetMapping(value = "/listarFacultades")
 	public JSONArray listarFacultades() {
 		
@@ -143,8 +165,80 @@ public class GestionInstitucionalController {
 		return salida;		
 	}
 	@GetMapping(value = "/eliminarFacultad/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String eliminarFacultad(@PathVariable int id) {		
-		gestionInstitucionalService.eliminarFacultad(id);
-		return "Eliminado";
+	public boolean eliminarFacultad(@PathVariable int id) {		
+		boolean salida = gestionInstitucionalService.eliminarFacultad(id);
+		return salida;
 	}
+	@PostMapping(value = "/crearFacultad")
+	public boolean crearFacultad(@RequestBody Facultad facultad) {		
+		boolean salida = gestionInstitucionalService.crearFacultad(facultad);	
+		return salida;
+	}
+	
+	//ASIGNAR DECANO Y COORDINADOR INVITADO
+	
+	//PROGRAMAS
+	@GetMapping(value = "/listarProgramas")
+	public JSONArray listarProgramas() {
+		
+		JSONArray salida = new JSONArray(); 
+		List<Programa> progra = gestionInstitucionalService.todosLosProgramas();
+		for (Programa programa : progra) {
+			salida.add(programa.toJson()) ;
+		}
+		return salida;		
+	}
+	
+	@GetMapping(value = "/listarProgramasPorFacultad/{facultad_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONArray listarProgramasPorFacultad(@PathVariable int facultad_id) {
+		
+		JSONArray salida = new JSONArray(); 
+		List<Programa> progra = gestionInstitucionalService.todosLosProgramasPorFacultad(facultad_id);
+		for (Programa programa : progra) {
+			salida.add(programa.toJson()) ;
+		}
+		return salida;		
+	}
+	
+	@GetMapping(value = "/listarProgramasPorDirector/{director}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONArray listarProgramasPorDirector(@PathVariable int director) {
+		JSONArray salida = new JSONArray(); 
+		List<Programa> progra = gestionInstitucionalService.todosLosProgramasPorFacultad(director);
+		for (Programa programa : progra) {
+			salida.add(programa.toJson()) ;
+		}
+		return salida;		
+	}
+	
+	@GetMapping(value = "/eliminarPrograma/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public boolean eliminarPrograma(@PathVariable int id) {		
+		boolean salida = gestionInstitucionalService.eliminarPrograma(id);
+		return salida;
+	}
+	
+	@PostMapping(value = "/crearPrograma")
+	public boolean crearPrograma(@RequestBody Programa programa) {		
+		boolean salida = gestionInstitucionalService.crearPrograma(programa);	
+		return salida;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Asignar cositas
+	
+	
+	
+	
+	
+	
 }
