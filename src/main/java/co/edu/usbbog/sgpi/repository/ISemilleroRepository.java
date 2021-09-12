@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.usbbog.sgpi.model.GrupoInvestigacion;
 import co.edu.usbbog.sgpi.model.Semillero;
+import net.minidev.json.JSONObject;
 
 public interface ISemilleroRepository extends JpaRepository<Semillero, Integer>{
 
@@ -23,4 +24,8 @@ public interface ISemilleroRepository extends JpaRepository<Semillero, Integer>{
 	//solo para consultar por linea
 	@Query(value = "select * from semillero where linea_investigacion= ?1", nativeQuery = true)
 	List<Semillero> findByLineaInvestigacion(String linea);
+	
+	//solo para consultar el programa
+		@Query(value = "SELECT * FROM programas_semilleros where semillero = ?1", nativeQuery = true)
+		List<JSONObject> findByPrograma(int semillero);
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -56,8 +57,8 @@ public class Clase implements Serializable {
     @JoinColumn(name = "materia", referencedColumnName = "catalogo", nullable = false)
     @ManyToOne(optional = false)
     private Materia materia;
-    @JoinColumn(name = "profesor", referencedColumnName = "cedula", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "profesor", referencedColumnName = "cedula", nullable = true)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Usuario profesor;
 
     public Clase() {

@@ -21,12 +21,17 @@ import net.minidev.json.JSONObject;
 public interface IGestionInstitucionalService {
 	
 	public boolean existeUsuario (String cedula);
-	public boolean asignarLineaAGrupo (GrupoInvestigacion grupoInvestigacion, LineaInvestigacion lineaInvestigacion);
+
 	
 	public List<GrupoInvestigacion> todosLosGruposInvestigacion();
 	public boolean eliminarGrupoInvestigacion(int id);
-	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion, int id);
-	public boolean asignarDirector(Usuario director,int id);
+	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion);
+	public boolean asignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion);
+	public List<JSONObject> programaDelGrupo(int grupo_investigacion);
+	public boolean desasignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion);
+	public boolean asignarLineaAGrupoInvestigacion (String linea_investigacion, int grupo_investigacion);
+	public List<JSONObject> lineaDelGrupo(int grupo_investigacion);
+	public boolean desasignarLineaAGrupoInvestigacion (String linea_investigacion, int grupo_investigacion);
 	//actualizar grupoInvestigacion
 	
 	public List<Semillero> todosLosSemilleros();
@@ -35,7 +40,9 @@ public interface IGestionInstitucionalService {
 	public List<Semillero> todosLosSemillerosPorLineaInvestigacion(String lineaInvestigacion);
 	public boolean eliminarSemillero(int id);
 	public boolean crearSemillero(Semillero semillero);
-	public boolean asignarLiderSemillero(Usuario lider, int id);
+	public boolean asignarSemilleroAPrograma(int programa, int semillero);
+	public List<JSONObject> programaDelSemillero(int semillero);
+	public boolean desasignarSemilleroAPrograma(int programa, int semillero);
 	//actualizar semillero
 	
 	public List<Facultad> todasLasFacultades();
@@ -46,22 +53,27 @@ public interface IGestionInstitucionalService {
 	public List<Programa> todosLosProgramas();
 	public List<Programa> todosLosProgramasPorFacultad(int facultad);
 	public List<Programa> todosLosProgramasPorDirector(String usuario);
-	public List<Programa> todosLosProgramasPorSemillero(Semillero semillero);
 	public boolean eliminarPrograma(int id);
-	public boolean crearPrograma(Programa programa);
+	public boolean crearPrograma(Programa programa, int facultad);
+	
+	public List<JSONObject> gruposDelPrograma(int grupo_investigacion);
+	public List<JSONObject> semillerosDelPrograma(int grupo_investigacion);
 	//actualizarPrograma
 	
 	public List<Materia> todasLasMaterias();
-	public List<Materia> todasLasMateriasPorPrograma(Programa programa);
+	public List<Materia> todasLasMateriasPorPrograma(int programa);
 	public boolean eliminarMateria(String catalogo);
 	public boolean crearMateria(Materia materia);
 	//actualizar materia
 	
 	public List<Clase> todasLasClases();
-	public List<Clase> clasesPorProfesor(Usuario profesor);
-	public List<Clase> clasesPorMateria(Materia materia);
+	public List<Clase> clasesPorProfesor(String profesor);
+	public List<Clase> clasesPorMateria(String materia);
 	public boolean eliminarClase(int numero);
-	public boolean crearClase(Clase clase);
+	public boolean crearClase(Clase clase, String materia);
+	public boolean asignarProyectosAClase(int proyecto, int clase);
+	public boolean desasignarProyectosAClase(int proyecto, int clase);
+	public List<JSONObject> proyectosPorClase(int clase);
 	//actualizar clase
 	
 	//Consultar convocatorias abiertas
