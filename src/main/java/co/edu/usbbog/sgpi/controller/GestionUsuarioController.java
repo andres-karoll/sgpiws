@@ -37,11 +37,12 @@ public class GestionUsuarioController {
 	private IGestionUsuariosService iGestionUsuariosService;
 
 	// usuario
-	@GetMapping("/listarUsuarios")
+	@GetMapping("/listarusuarios")
 	public JSONArray getAllUsuarios() {
 		JSONArray salida = new JSONArray();
+		
 		List<Usuario> usuarios = iGestionUsuariosService.todosLosUsuarios();
-		for (Iterator iterator = usuarios.iterator(); iterator.hasNext();) {
+		for (Iterator<Usuario> iterator = usuarios.iterator(); iterator.hasNext();) {
 			Usuario usuario = (Usuario) iterator.next();
 			salida.add(usuario.toJson());
 		}
@@ -196,9 +197,7 @@ public class GestionUsuarioController {
 		JSONObject salida = new JSONObject();
 		try {
 		Facultad facultad = iGestionUsuariosService.buscarFacultad(Integer.parseInt(entrada.getAsString("facultad")));
-		
-		if (iGestionUsuariosService.asignarDecano(facultad, entrada.getAsString("decano"),entrada.getAsString("tipousuario"))) {
-			
+		if (iGestionUsuariosService.asignarDecano(facultad, entrada.getAsString("decano"))) {
 			salida.put("respuesta", "el decano fue ingresado correctamente");
 		} else {
 			
@@ -219,7 +218,7 @@ public class GestionUsuarioController {
 		JSONObject salida = new JSONObject();
 		try {
 		Facultad facultad = iGestionUsuariosService.buscarFacultad(Integer.parseInt(entrada.getAsString("facultad")));
-		if (iGestionUsuariosService.asignarCoorInv(facultad, entrada.getAsString("coorinv"),entrada.getAsString("tipousuario"))) {
+		if (iGestionUsuariosService.asignarCoorInv(facultad, entrada.getAsString("coorinv"))) {
 			salida.put("respuesta", "el coordinador de investigaciones fue ingresado correctamente");
 		} else {
 			

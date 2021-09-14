@@ -35,11 +35,11 @@ public interface IGestionUsuariosService {
 	//exite facultad
 	public boolean existeFacultad(Integer id);
 	//asignar decano a facultad
-	public boolean asignarDecano(Facultad facultad, String  decano,String tipo);
+	public boolean asignarDecano(Facultad facultad, String  decano);
 	//buscar facultad por id
 	public Facultad buscarFacultad(int id);
 	//asignar coordinador de investigacion a facultad 
-	public boolean asignarCoorInv(Facultad facultad, String coorInv,String tipo);
+	public boolean asignarCoorInv(Facultad facultad, String coorInv);
 	//asignar director programa
 	public boolean asignarDirectorPrograma(Programa programa, String director);
 	//buscar programa

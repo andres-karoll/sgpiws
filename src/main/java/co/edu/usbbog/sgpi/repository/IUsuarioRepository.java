@@ -17,10 +17,9 @@ import net.minidev.json.JSONObject;
  */
 public interface IUsuarioRepository extends JpaRepository<Usuario, String> {
 	
-	@Query(value = "SELECT tipo_usuario FROM sgpi_db.usuarios where usuario = ?1 && tipo_usuario = ?2 ", nativeQuery = true)
-	JSONObject findByUsuario(String usuario,String tipo);
-	@Query(value = "SELECT tipo_usuario FROM sgpi_db.usuarios where usuario = ?1 && tipo_usuario = ?2 ", nativeQuery = true)
-	JSONObject findByCoorInv(String usuario,String coorInv);
+	//@Query(value = "SELECT tipo_usuario FROM sgpi_db.usuarios where usuario = ?1 && tipo_usuario = ?2 ", nativeQuery = true)
+	//JSONObject findByUsuario(String usuario,String tipo);
+	
 	@Modifying
 	@Transactional
 	@Query(value= "UPDATE `sgpi_db`.`usuario` SET `semillero_id` = null WHERE (`cedula` = ?1)", nativeQuery=true)
@@ -29,18 +28,8 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, String> {
 	@Transactional
 	@Query(value= "DELETE FROM `sgpi_db`.`usuarios` WHERE (`usuario` = ?1) and (`tipo_usuario` = ?2)", nativeQuery=true)
 	void deleteUsuariosById(String cedula, String nombre);
-	@Modifying
-	@Transactional
-	@Query(value= "UPDATE `sgpi_db`.`facultad` SET `decano` = null WHERE (`id` = ?1);", nativeQuery=true)
-	void deleteDecanoById(String facultad);
-	@Modifying
-	@Transactional
-	@Query(value="UPDATE `sgpi_db`.`facultad` SET `coor_inv` = null WHERE (`id` = ?1)",nativeQuery=true)
-	void deleteCoorInvById(String facultad);
-	@Modifying
-	@Transactional
-	@Query(value="UPDATE `sgpi_db`.`semillero` SET `lider_semillero` = null WHERE (`id` = ?1)",nativeQuery=true)
-	void deleteLiderSemilleroById(String semillero);
+	
+	
 	@Modifying
 	@Transactional
 	@Query(value="UPDATE `sgpi_db`.`grupo_investigacion` SET `director_grupo` = null WHERE (`id` = ?1)",nativeQuery=true)
