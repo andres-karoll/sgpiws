@@ -79,12 +79,11 @@ public interface IGestionInstitucionalService {
 	//Consultar convocatorias abiertas
 	public List<Convocatoria> todasLasConvocatoriasAbiertas(String estado);
 	
-	//Consultar postulaciones del semillero para poder aceptarlas o denegarlas?????
-	
-	//Realizar postulación de un proyecto de semillero a una convocatoria vigente?????
-	
-	//Consultar solicitudes de compras hechas por el semillerista o el investigador en formación para poder aprobarlas o denegarlas?????
-	
-	
+	//Listar usuarios de un semillero
+	public List<Usuario> usuariosPorSemillero(int semillero);
+
+	//proyectos por semillero
+	public List<Proyecto> proyectosPorSemillero(int semillero);
+
 	
 }

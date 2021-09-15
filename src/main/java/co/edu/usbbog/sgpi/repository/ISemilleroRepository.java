@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.usbbog.sgpi.model.GrupoInvestigacion;
+import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.Semillero;
+import co.edu.usbbog.sgpi.model.Usuario;
 import net.minidev.json.JSONObject;
 
 public interface ISemilleroRepository extends JpaRepository<Semillero, Integer>{
@@ -28,4 +31,21 @@ public interface ISemilleroRepository extends JpaRepository<Semillero, Integer>{
 	//solo para consultar el programa
 		@Query(value = "SELECT * FROM programas_semilleros where semillero = ?1", nativeQuery = true)
 		List<JSONObject> findByPrograma(int semillero);
+
+		
+		//des asignar semillero a programa
+		@Modifying
+		@Transactional
+		@Query(value = "DELETE FROM `sgpi_db`.`programas_semilleros` WHERE (`programa` = ?1 ) and (`semillero` = ?2 )", nativeQuery = true)
+		void desAsignarPrograma( String programa, String semillero);
+		
+		
+		//solo para consultar el programa
+				@Query(value = "SELECT * FROM sgpi_db.usuario where semillero_id = ?1", nativeQuery = true)
+				List<Usuario> findByUsuarios(int semillero);
+				
+				//solo para consultar el programa
+				@Query(value = "SELECT * FROM sgpi_db.proyecto where semillero = ?1", nativeQuery = true)
+				List<Proyecto> findByProyectos(int semillero);
+		
 }

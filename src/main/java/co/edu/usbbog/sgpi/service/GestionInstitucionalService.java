@@ -118,13 +118,6 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	
 	@Override
 	public boolean desasignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion) {
-		//NO SE DES-ASIGNAR
-		//
-		//
-		//
-		//
-		//
-		//
 		if(!grupoIRepo.existsById(grupo_investigacion)) {
 			System.out.println("no existe el grupo");
 			return false;
@@ -132,12 +125,8 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		if(!programaRepo.existsById(programa)) {
 			System.out.println("no existe el programa con id: "+ programa);
 			return false;
-		}		
-		Programa pro = programaRepo.getById(programa);
-		GrupoInvestigacion grupoInvestigacion = grupoIRepo.getById(grupo_investigacion);
-		
-		grupoInvestigacion.getProgramas().remove(pro);;
-		grupoIRepo.save(grupoInvestigacion);
+		}	
+		grupoIRepo.desAsignarPrograma(programa+"", grupo_investigacion+"");
 		return true;
 	}
 	
@@ -171,7 +160,6 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 	
 	
-	
 	@Override
 	public List<JSONObject> lineaDelGrupo(int grupo_investigacion) {
 		List<JSONObject> x= new ArrayList<>();
@@ -182,18 +170,28 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		List<JSONObject> grupo = grupoIRepo.findByLinea(grupo_investigacion);
 		return grupo;
 	}
+	
 	@Override
 	public boolean desasignarLineaAGrupoInvestigacion(String linea_investigacion, int grupo_investigacion) {
-		// NO SEEEE DES-ASIGNAR
-		//
-		//
-		//
-		//
-		//
-		//
-		return false;
+		if(!grupoIRepo.existsById(grupo_investigacion)) {
+			System.out.println("no existe el grupo");
+			return false;
+		}	
+		if(!lineaRepo.existsById(linea_investigacion)) {
+			System.out.println("no existe la linea");
+			return false;			
+		}
+		System.out.println(linea_investigacion);
+		System.out.println(grupo_investigacion);
+		grupoIRepo.desAsignarLinea(linea_investigacion, grupo_investigacion+"");
+		
+		return true;
 	}
 
+	
+	//semilleros---------------------------------------------------------------------------------------------
+	
+	
 	@Override
 	public List<Semillero> todosLosSemilleros() {
 		List<Semillero> semilleros = semilleroRepo.findAll();
@@ -276,6 +274,21 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 
 	@Override
+	public boolean desasignarSemilleroAPrograma(int programa, int semillero) {
+		if(!semilleroRepo.existsById(semillero)) {
+			System.out.println("no existe el semillero" + semillero);
+			return false;
+		}
+		if(!programaRepo.existsById(programa)) {
+			System.out.println("no existe el programa" + programa);
+			return false;
+		}
+		semilleroRepo.desAsignarPrograma(programa+"", semillero+"");
+		
+		return true;
+	}
+	
+	@Override
 	public List<JSONObject> programaDelSemillero(int semillero) {
 		List<JSONObject> x= new ArrayList<>();
 		if(!semilleroRepo.existsById(semillero)) {
@@ -285,19 +298,26 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		List<JSONObject> semi = semilleroRepo.findByPrograma(semillero);
 		return semi;
 	}
+	/*
 	@Override
-	public boolean desasignarSemilleroAPrograma(int programa, int semillero) {
-		// FALTAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		
-		return false;
+	public List<Clase> usuariosPorSemillero(int semillero) {
+		List<Clase> x = new ArrayList<>();
+		if(!semilleroRepo.existsById(semillero)){
+
+		List<>
+		return true;
 	}
+	
+
+	@Override
+	public List<Clase> proyectosPorSemillero(int semillero) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	*/
+	//facultades--------------------------------------------------------------------------------
+	
+	
 	@Override
 	public List<Facultad> todasLasFacultades() {
 		List<Facultad> facultades = facultadRepo.findAll();
@@ -401,7 +421,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 	
 	
-	//MATERIAS
+	//MATERIAS------------------------------------------------------------------------------------------
 	
 	@Override
 	public List<Materia> todasLasMaterias() {
@@ -435,29 +455,14 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 
 	
-	//CLASES
+	//CLASES-------------------------------------------------------------------------------------------------
 	
 	@Override
 	public List<Clase> todasLasClases() {
-		// NO LO LISTA BIEN
-				//
-				//
-				//
-				//
-				
-				//
-				///
-				//
+
 		List<Clase> clases = claseRepo.findAll();
 		return clases;
 	}
-	/*
-	@Override
-	public List<Materia> todasLasMaterias() {
-		List<Materia> materias = materiaRepo.findAll();
-		return materias;
-	}
-*/
 
 	@Override
 	public List<Clase> clasesPorProfesor(String profesor) {
@@ -537,16 +542,15 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	
 	@Override
 	public boolean desasignarProyectosAClase(int proyecto, int clase) {
-		// DES ASIGNAAAAAAAAR
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		return false;
+
+		if(!claseRepo.existsById(clase)) {
+			return false;
+		}
+		if(!proyectoRepo.existsById(proyecto)) {
+			return false;
+		}
+		claseRepo.desAsignarProyecto(clase+"", proyecto + "");
+		return true;
 	}
 	
 	
@@ -566,5 +570,27 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			return false;
 		}
 	}
+
+	@Override
+	public List<Usuario> usuariosPorSemillero(int semillero) {
+		List<Usuario> x = new ArrayList<>();
+		if(!semilleroRepo.existsById(semillero)){
+			return x;
+		}
+		List<Usuario> usuarios = semilleroRepo.findByUsuarios(semillero);
+		return usuarios;	
+	}
+
+	@Override
+	public List<Proyecto> proyectosPorSemillero(int semillero) {
+		List<Proyecto> x = new ArrayList<>();
+		if(!semilleroRepo.existsById(semillero)){
+			return x;
+		}
+		List<Proyecto> proyectos = semilleroRepo.findByProyectos(semillero);
+		return proyectos;	
+	}
+
+	
 
 }
