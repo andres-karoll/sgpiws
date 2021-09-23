@@ -27,7 +27,7 @@ public class BibliotecaService implements IBibliotecaService{
 	
 	@Override
 	public List<Proyecto> todosLosProyectosDeGrado() {
-		List<Proyecto> proyectos = proyectoRepo.findByTipoProyecto();
+		List<Proyecto> proyectos = proyectoRepo.findByTipoProyectoGrado();
 		return proyectos;
 	}
 

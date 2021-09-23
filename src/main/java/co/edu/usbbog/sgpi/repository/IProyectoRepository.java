@@ -23,5 +23,15 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	List<Proyecto> findByEstado(String estado);
 
 	@Query(value = "SELECT * FROM proyecto WHERE tipo_proyecto = 'grado'", nativeQuery = true)
-	List<Proyecto> findByTipoProyecto();
+	List<Proyecto> findByTipoProyectoGrado();
+	
+	@Query(value = "SELECT * FROM proyecto WHERE tipo_proyecto = ?1", nativeQuery = true)
+	List<Proyecto> findByTipoProyecto(String tipo_proyecto);
+	
+	
+	@Query(value = "SELECT * FROM sgpi_db.proyecto JOIN areas_conocimiento ON sgpi_db.proyecto.id=areas_conocimiento.proyecto WHERE areas_conocimiento.area_conocimiento= ?1", nativeQuery = true)
+	List<Proyecto> findByAreaConocimiento(int area_conocimiento);
+	
+	@Query(value = "SELECT * FROM sgpi_db.proyecto where titulo = ?1", nativeQuery = true)
+	List<Proyecto> findByTitulo(String titulo);
 }

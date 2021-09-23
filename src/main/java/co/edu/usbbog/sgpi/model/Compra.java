@@ -50,7 +50,7 @@ public class Compra implements Serializable {
     @Column(nullable = false)
     private Integer id;
     @Basic(optional = false)
-    @Column(nullable = true , name="fecha_solicitud", columnDefinition = "DATE")
+    @Column(nullable = false , name="fecha_solicitud", columnDefinition = "DATE")
     private LocalDate fechaSolicitud;
     @Basic(optional = false)
     @Column(nullable = false, length = 45)

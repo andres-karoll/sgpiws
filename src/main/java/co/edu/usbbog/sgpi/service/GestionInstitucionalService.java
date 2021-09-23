@@ -83,8 +83,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			grupoIRepo.deleteById(id);
 			return !grupoIRepo.existsById(id);
 		}
-		
-		
+
 		return false;
 	}
 

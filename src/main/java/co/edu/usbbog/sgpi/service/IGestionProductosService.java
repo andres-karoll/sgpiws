@@ -19,10 +19,12 @@ import co.edu.usbbog.sgpi.model.Usuario;
 
 
 public interface IGestionProductosService {
+	/*
 	public List<TipoProyecto> todosLosTipoProyecto();
 	public List<TipoProyecto> tipoProyectoPorProyecto(Proyecto proyecto);
 	public boolean eliminarTipoProyecto(String nombre);
 	public boolean crearTipoProyecto(TipoProyecto tipoProyecto);
+	*/
 	//actualizar tipoproyecto
 	
 	public List<Producto> todosLosProductos();
@@ -31,6 +33,7 @@ public interface IGestionProductosService {
 	public boolean crearProducto(Producto producto);
 	//actualizar producto
 	
+	/*
 	public List<Proyecto> todosLosProyectos();
 	public List<Proyecto> todosLosProyectosPorClase(Clase clase);
 	public List<Proyecto> todosLosProyectosPorSemillero(Semillero semillero);
@@ -38,13 +41,16 @@ public interface IGestionProductosService {
 	public boolean eliminarProyecto(int id);
 	public boolean crearProyecto(Proyecto proyecto);
 	//actualizar proyecto
-	
+	 */
+	 
+	/*
 	public List<Convocatoria> todoasLasConvocatorias();
 	public List<Convocatoria> todoasLasConvocatoriasPorProyecto(Proyecto proyecto);
 	public List<DetalleConvocatoria> detallesPorConvocatoria(Convocatoria convocatoria);
 	public boolean eliminarConvocatoria(int id);
 	public boolean crearConvocatoria (Convocatoria convocatoria);
 	//actualizar convocatoria
+	*/
 	
 	//LA NOTA????
 	public List<Comentario> todosLosComentariosPorProducto(Producto producto);
@@ -52,10 +58,12 @@ public interface IGestionProductosService {
 	public boolean eliminarCalificacion(Comentario comentario);
 	//actualizar nota
 	
+	/*
 	public List<Usuario> todosLosParticipantesPorProyecto(Proyecto proyecto);
 	public boolean crearParticipante(Participantes participante);
 	public boolean eliminarParticipante(LocalDate fecha_inicio);
 	//actualizar participante
+	*/
 	
 	public List<Comentario> ComentariosPorProducto(Producto producto);
 	public boolean eliminarComentario(int id);
