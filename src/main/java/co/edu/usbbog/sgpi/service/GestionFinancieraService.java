@@ -1,6 +1,8 @@
 package co.edu.usbbog.sgpi.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,21 +92,39 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 	}
 
 	@Override
-	public boolean crearCompra(Compra compra) {
-		if(compraRepo.existsById(compra.getId())) {
+	public boolean crearCompra(Compra compra, String codigo_compra, double valor, LocalDate fecha_compra, String link,
+			int presupuesto) {
+		Presupuesto presu = presupuestoRepo.getById(presupuesto);
+		if(presu == null) {
 			return false;
 		}
-		else {
-			compraRepo.save(compra);
-			return true;
-		}
+		compra.setCodigoCompra(codigo_compra);
+		compra.setValor(valor);
+		compra.setFechaCompra(null);
+		compra.setLink(link);
+		compra.setPresupuesto(presu);
+		
+
+		compraRepo.save(compra);
+		return true;
+
 	}
 
+	
+	
+	
 	@Override
 	public boolean autorizarCompra(int Estado) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	
+
+
+	
+
+	
 
 
 

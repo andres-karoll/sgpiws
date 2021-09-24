@@ -199,13 +199,14 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 	@Override
 	public List<Semillero> todosLosSemillerosPorGrupoInvestigacion(int grupoInvestigacion) {
-		Semillero sem = semilleroRepo.getById(grupoInvestigacion);
+		GrupoInvestigacion sem = grupoIRepo.getById(grupoInvestigacion);
 		List<Semillero> x = new ArrayList<>();
 		if (sem != null) {
+			System.out.println("if");
 			List<Semillero> semillero = semilleroRepo.findByGrupoInvestigacion(grupoInvestigacion);
 			return semillero;
 		} else {
-			logger.info("El tipo no existe");
+			System.out.println("else");
 			return x;
 		}
 	}

@@ -221,7 +221,7 @@ public class GestionInstitucionalController {
 		JSONObject salida = new JSONObject();
 		if(gestionInstitucionalService.crearSemillero(semillero)) {
 			salida.put("respuesta", "se creo el semillero correctamente");
-			
+			return salida;
 		}
 		salida.put("respuesta", "NO se creo el semillero correctamente");
 		return salida;
@@ -332,8 +332,7 @@ public class GestionInstitucionalController {
 	public JSONObject crearPrograma(@RequestBody JSONObject entrada) {		
 
 		JSONObject salida = new JSONObject();
-		Programa programa =  new Programa(
-				
+		Programa programa =  new Programa(	
 				Integer.parseInt(entrada.getAsString("id")), 
 				entrada.getAsString("nombre"));
 		System.out.println(programa);

@@ -1,5 +1,7 @@
 package co.edu.usbbog.sgpi.controller;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import net.minidev.json.JSONObject;
 @RestController
 @CrossOrigin
 @RequestMapping("/gestionfinanciera")
-public class GestionFinanciera {
+public class GestionFinancieraController {
 	@Autowired
 	private IGestionFinancieraService gestionFinancieraService;
 
@@ -86,14 +88,25 @@ public class GestionFinanciera {
 	}
 	
 	@PostMapping(value = "/crearcompra")
-	public JSONObject crearCompra(@RequestBody Compra compra) {
+	public JSONObject crearCompra(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		if(gestionFinancieraService.crearCompra(compra)) {
-			salida.put("respuesta", "se creo");			
+		Compra compra = new Compra(
+				Integer.parseInt(entrada.getAsString("id")),
+				LocalDate.parse(entrada.getAsString("fecha_solicitud")), 
+				entrada.getAsString("nombre"),
+				entrada.getAsString("tipo"),
+				Integer.parseInt(entrada.getAsString("estado")),
+				entrada.getAsString("descripcion"));
+		if(gestionFinancieraService.crearCompra(
+				compra,entrada.getAsString("codigo_compra"), 
+				Double.parseDouble(entrada.getAsString("valor")),
+				LocalDate.parse(entrada.getAsString("fecha_compra")),
+				entrada.getAsString("link"),
+				Integer.parseInt(entrada.getAsString("presupuesto")))) {
+			salida.put("respuesta", "se creo");
 		}else {
 			salida.put("respuesta", "NO se creo");
 		}
-		
 		return salida;
 	}
 }

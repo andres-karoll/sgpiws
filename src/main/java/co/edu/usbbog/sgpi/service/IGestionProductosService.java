@@ -1,21 +1,18 @@
 package co.edu.usbbog.sgpi.service;
 
-import java.time.LocalDate;
-import java.util.Date;
+
+
 import java.util.List;
 
-import co.edu.usbbog.sgpi.model.Clase;
+
 import co.edu.usbbog.sgpi.model.Comentario;
-import co.edu.usbbog.sgpi.model.Convocatoria;
-import co.edu.usbbog.sgpi.model.DetalleConvocatoria;
+
 import co.edu.usbbog.sgpi.model.Evento;
 import co.edu.usbbog.sgpi.model.MacroProyecto;
-import co.edu.usbbog.sgpi.model.Participantes;
+
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Proyecto;
-import co.edu.usbbog.sgpi.model.Semillero;
-import co.edu.usbbog.sgpi.model.TipoProyecto;
-import co.edu.usbbog.sgpi.model.Usuario;
+
 
 
 public interface IGestionProductosService {
@@ -28,9 +25,9 @@ public interface IGestionProductosService {
 	//actualizar tipoproyecto
 	
 	public List<Producto> todosLosProductos();
-	public List<Producto> todosLosProductos(Proyecto proyecto);
+	public List<Producto> todosLosProductosPorProyecto(int proyecto);
 	public boolean eliminarProductos(int id);
-	public boolean crearProducto(Producto producto);
+	public boolean crearProducto(Producto producto, int proyecto);
 	//actualizar producto
 	
 	/*
@@ -52,12 +49,7 @@ public interface IGestionProductosService {
 	//actualizar convocatoria
 	*/
 	
-	//LA NOTA????
-	public List<Comentario> todosLosComentariosPorProducto(Producto producto);
-	public boolean asignarCalificacion(double calificacion);
-	public boolean eliminarCalificacion(Comentario comentario);
-	//actualizar nota
-	
+
 	/*
 	public List<Usuario> todosLosParticipantesPorProyecto(Proyecto proyecto);
 	public boolean crearParticipante(Participantes participante);
@@ -65,10 +57,16 @@ public interface IGestionProductosService {
 	//actualizar participante
 	*/
 	
-	public List<Comentario> ComentariosPorProducto(Producto producto);
+	public List<Comentario> ComentariosPorProducto(int producto_id);
 	public boolean eliminarComentario(int id);
-	public boolean crearComentario(Comentario comentario);
+	public boolean crearComentario(Comentario comentario, int producto_id);
 	//actualizar comentario
+	
+	//LA NOTA????
+
+	public boolean asignarCalificacion(double calificacion, int id);
+	public boolean eliminarCalificacion(Comentario comentario);
+	//actualizar nota
 	
 	
 	//El sistema debe permitir asociar proyectos que estén relacionados
