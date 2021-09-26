@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -76,6 +77,15 @@ public class Producto implements Serializable {
         this.tipoProducto = tipoProducto;
         this.urlRepo = urlRepo;
     }
+    public Producto(Integer id, String tituloProducto, String tipoProducto, String urlRepo,LocalDate fecha,Proyecto proyecto) {
+        this.id = id;
+        this.tituloProducto = tituloProducto;
+        this.tipoProducto = tipoProducto;
+        this.urlRepo = urlRepo;
+        this.fecha=fecha;
+        this.proyecto=proyecto;
+    }
+
 
     public Integer getId() {
         return id;

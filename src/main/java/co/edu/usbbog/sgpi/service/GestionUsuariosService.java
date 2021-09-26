@@ -39,8 +39,6 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 
 	@Override
 	public List<Usuario> todosLosUsuarios() {
-		System.out.println("hola1");
-		
 		List<Usuario> usuarios = iUsuarioRepository.findAll();
 		if (usuarios.equals(null)) {
 			usuarios = new ArrayList<Usuario>();
@@ -99,7 +97,6 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 			return false;
 		}
 		usuario.setProgramaId(pro);
-		;
 		tp.getUsuarios().add(usuario);
 		iUsuarioRepository.save(usuario);
 		iTipoUsuarioRepository.save(tp);
