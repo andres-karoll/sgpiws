@@ -425,7 +425,7 @@ public class Proyecto implements Serializable {
 
     @Override
     public String toString() {
-        return toString().toString();
+        return toJson().toString();
     }
     public JSONObject toJson() {
     	JSONObject proyectoJson=new JSONObject();

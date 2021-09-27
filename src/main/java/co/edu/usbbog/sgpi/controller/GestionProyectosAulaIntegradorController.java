@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.io.JsonEOFException;
+
 import java.util.Iterator;
 import java.util.List;
+
+import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Participaciones;
@@ -204,10 +208,10 @@ public class GestionProyectosAulaIntegradorController {
 	@PostMapping("/agregarantecedente")
 	public JSONObject agregarAntecedente(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		Proyecto proyeto=iGestionProyectosAulaIntegradorService.buscarProyecto(Integer.parseInt(entrada.getAsString("proyecto")));
+		Proyecto proyecto=iGestionProyectosAulaIntegradorService.buscarProyecto(Integer.parseInt(entrada.getAsString("proyecto")));
 		Proyecto antecedente=iGestionProyectosAulaIntegradorService.buscarProyecto(Integer.parseInt(entrada.getAsString("antecedente")));
-		System.out.println("holass");
-		if(iGestionProyectosAulaIntegradorService.agregarAntecedente(proyeto,antecedente) {
+		System.out.println(proyecto +""+antecedente);
+		if(iGestionProyectosAulaIntegradorService.agregarAntecedente(proyecto,antecedente)){
 			salida.put("respuesta", "se agrego exitosamente el antecedente");
 		}else {
 			salida.put("respuesta", "no se agrego el antecedente ");
@@ -215,5 +219,25 @@ public class GestionProyectosAulaIntegradorController {
 	
 		return salida;
 	}
-
+	@PostMapping("/agregarareaconocimiento")
+	public JSONObject agregarAreaConocimiento(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(iGestionProyectosAulaIntegradorService.agregarAreaConocimiento(Integer.parseInt(entrada.getAsString("proyecto")),Integer.parseInt(entrada.getAsString("area")))) {
+			salida.put("respuesta", "se agrego exitosamente las areas");
+		}else {
+			salida.put("respuesta", "No se agrego las areas");
+		}
+		return salida;
+	}
+	@GetMapping("/listarareasproyecto/{proyecto}")
+	public JSONArray listarAreasProyecto(@PathVariable String proyecto) {
+		JSONArray salida = new JSONArray();
+		List<AreaConocimiento> areaConocimientos=iGestionProyectosAulaIntegradorService.buscarAreasProyecto(Integer.parseInt(proyecto));
+		for (Iterator<AreaConocimiento> iterator = areaConocimientos.iterator(); iterator.hasNext();) {
+			AreaConocimiento areas = (AreaConocimiento) iterator.next();
+			salida.add(areas.toJson());
+		}
+		return salida;
+	}
+	
 }

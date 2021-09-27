@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Evento;
@@ -23,6 +24,7 @@ import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.TipoUsuario;
 import co.edu.usbbog.sgpi.model.Usuario;
+import co.edu.usbbog.sgpi.repository.IAreaConocimientoRepository;
 import co.edu.usbbog.sgpi.repository.IClaseRepository;
 import co.edu.usbbog.sgpi.repository.IComentarioRepository;
 import co.edu.usbbog.sgpi.repository.IEventoRepository;
@@ -63,7 +65,8 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	private IEventoRepository iEventoRepository;
 	@Autowired
 	private IParticipacionesRepository iParticipacionesRepository;
-	
+	@Autowired
+	private IAreaConocimientoRepository iAreaConocimientoRepository;
 	@Override
 	public List<Proyecto> todosLosProyectos() {
 		List<Proyecto> proyecto = iProyectoRepository.findAll();
@@ -290,10 +293,36 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 
 	@Override
 	public boolean agregarAntecedente(Proyecto proyecto, Proyecto antecedente) {
-		proyecto.setAntecedentes(antecedente);
 		
-		return false;
+		proyecto.getAntecedentes().add(antecedente);
+		iProyectoRepository.save(proyecto);
+		return proyecto.getAntecedentes().contains(antecedente.getId());
 	}
+
+	@Override
+	public boolean agregarAreaConocimiento(int proyecto, int area) {
+		Proyecto pro=iProyectoRepository.getById(proyecto);
+		AreaConocimiento are=iAreaConocimientoRepository.getById(area);
+		if(are.equals(null) || pro.equals(null)) {
+			return false;
+		}else {
+			are.getProyectos().add(pro);
+			iAreaConocimientoRepository.save(are);
+			return true;
+		}
+		
+	}
+
+	@Override
+	public List<AreaConocimiento> buscarAreasProyecto(int proyecto) {
+		Proyecto pro=iProyectoRepository.getById(proyecto);
+		List<AreaConocimiento> areas=pro.getAreasConocimiento();
+		if (areas.equals(null)) {
+			areas = new ArrayList<AreaConocimiento>();
+		}
+		return areas;
+	}
+	
 	
 
 }

@@ -3,6 +3,7 @@ package co.edu.usbbog.sgpi.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Materia;
@@ -49,5 +50,7 @@ public interface IGestionProyectosAulaIntegradorService {
 		public boolean participarEvento(Participaciones participaciones, LocalDate parse, String asString);
 		public List<Participaciones> buscarParticipaciones(int parseInt);
 		public boolean agregarAntecedente(Proyecto proyeto, Proyecto antecedente);
+		public boolean agregarAreaConocimiento(int proyecto, int area);
+		public List<AreaConocimiento> buscarAreasProyecto(int proyecto);
 		
 }
