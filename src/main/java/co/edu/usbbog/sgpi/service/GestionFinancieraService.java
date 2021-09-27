@@ -100,7 +100,7 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 		}
 		compra.setCodigoCompra(codigo_compra);
 		compra.setValor(valor);
-		compra.setFechaCompra(null);
+		compra.setFechaCompra(fecha_compra);
 		compra.setLink(link);
 		compra.setPresupuesto(presu);
 		

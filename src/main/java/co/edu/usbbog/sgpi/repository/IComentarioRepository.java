@@ -20,4 +20,10 @@ public interface IComentarioRepository extends JpaRepository<Comentario, Integer
 	@Transactional
 	@Query(value = "UPDATE `sgpi_db`.`comentario` SET `calificacion` = ?1 WHERE (`id` = ?2 )", nativeQuery = true)
 	void asignarCalificacion( double calificacion, int id);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE `sgpi_db`.`comentario` SET `calificacion` = NULL WHERE (`id` = ?1 )", nativeQuery = true)
+	void eliminarCalificacion(int id);
 }

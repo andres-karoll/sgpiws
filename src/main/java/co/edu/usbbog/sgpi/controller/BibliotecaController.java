@@ -38,7 +38,7 @@ public class BibliotecaController {
 	@GetMapping(value = "/listarGradoTerminado")
 	public JSONArray listarGradoTerminado() {
 		JSONArray salida = new JSONArray();
-		List<Proyecto> pro = bibliotecaService.todosLosProyectosTerminados("grado", "fin");
+		List<Proyecto> pro = bibliotecaService.todosLosProyectosTerminados("grado", "finalizado");
 		for (Proyecto proyecto : pro) {
 			salida.add(proyecto.toJson());
 		}

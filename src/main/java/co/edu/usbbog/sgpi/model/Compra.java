@@ -63,9 +63,9 @@ public class Compra implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(precision = 22)
     private Double valor;
-    @Column(name = "fecha_compra")
-    @Temporal(TemporalType.DATE)
-    private Date fechaCompra;
+    @Basic(optional = false)
+    @Column(nullable = false , name="fecha_compra", columnDefinition = "DATE")
+    private LocalDate fechaCompra;
     @Basic(optional = false)
     @Column(nullable = false)
     private int estado;
@@ -142,11 +142,11 @@ public class Compra implements Serializable {
         this.valor = valor;
     }
 
-    public Date getFechaCompra() {
+    public LocalDate getFechaCompra() {
         return fechaCompra;
     }
 
-    public void setFechaCompra(Date fechaCompra) {
+    public void setFechaCompra(LocalDate fechaCompra) {
         this.fechaCompra = fechaCompra;
     }
 

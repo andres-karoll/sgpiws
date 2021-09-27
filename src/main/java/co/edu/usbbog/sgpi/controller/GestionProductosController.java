@@ -128,7 +128,20 @@ public class GestionProductosController {
 			salida.put("respuesta", "se asigno la nota");
 		}
 		else {
-			salida.put("respuesta", "NO se puedo");
+			salida.put("respuesta", "NO se pudo");
+		}
+		return salida;
+	}
+	
+	@PostMapping(value = "/eliminarnota")
+	public JSONObject eliminarNota(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+
+		if(gestionProductos.eliminarCalificacion(Integer.parseInt( entrada.getAsString("id")))) {
+			salida.put("respuesta", "se elimino la nota");
+		}
+		else {
+			salida.put("respuesta", "NO se pudo");
 		}
 		return salida;
 	}

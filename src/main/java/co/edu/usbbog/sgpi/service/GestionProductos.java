@@ -113,9 +113,13 @@ public class GestionProductos implements IGestionProductosService{
 	}
 
 	@Override
-	public boolean eliminarCalificacion(Comentario comentario) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminarCalificacion(int id) {
+		boolean comentario = comentarioRepo.existsById(id);
+		if(comentario == false) {
+			return false;
+		}
+		comentarioRepo.eliminarCalificacion(id);
+		return true;
 	}
 
 	@Override
@@ -135,6 +139,8 @@ public class GestionProductos implements IGestionProductosService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 
 	
 

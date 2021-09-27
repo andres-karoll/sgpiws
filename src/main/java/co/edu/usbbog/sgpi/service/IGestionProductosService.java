@@ -65,7 +65,7 @@ public interface IGestionProductosService {
 	//LA NOTA????
 
 	public boolean asignarCalificacion(double calificacion, int id);
-	public boolean eliminarCalificacion(Comentario comentario);
+	public boolean eliminarCalificacion(int id);
 	//actualizar nota
 	
 	
