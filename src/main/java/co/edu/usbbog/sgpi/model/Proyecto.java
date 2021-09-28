@@ -91,8 +91,8 @@ public class Proyecto implements Serializable {
     @ManyToMany(mappedBy = "proyectos")
     private List<Clase> clases;
     @JoinTable(name = "antecedentes", joinColumns = {
-        @JoinColumn(name = "ancedente", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false)})
+        @JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "ancedente", referencedColumnName = "id", nullable = false)})
     @ManyToMany
     private List<Proyecto> antecedentes;
     @ManyToMany(mappedBy = "antecedentes")

@@ -67,6 +67,7 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	private IParticipacionesRepository iParticipacionesRepository;
 	@Autowired
 	private IAreaConocimientoRepository iAreaConocimientoRepository;
+
 	@Override
 	public List<Proyecto> todosLosProyectos() {
 		List<Proyecto> proyecto = iProyectoRepository.findAll();
@@ -224,6 +225,7 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		Usuario usu = iUsuarioRepository.getById(cedula);
 		List<TipoUsuario> tipo = usu.getTiposUsuario();
 		TipoUsuario profesor = iTipoUsuarioRepository.getById("profesor");
+		tipo.contains(profesor);
 		List<Clase> clases = usu.getClases();
 		if (clases != null) {
 			if (iComentarioRepository.existsById(comentario.getId())) {
@@ -266,8 +268,8 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 
 	@Override
 	public boolean participarEvento(Participaciones participaciones, LocalDate fecha, String reconocimiento) {
-		
-		if (participaciones!=null) {
+
+		if (participaciones != null) {
 			participaciones.setFechaPart(fecha);
 			try {
 				participaciones.setReconocimientos(reconocimiento);
@@ -282,9 +284,9 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	}
 
 	@Override
-	public List<Participaciones>  buscarParticipaciones(int proyecto) {
-		Proyecto pro =iProyectoRepository.getById(proyecto);
-		List<Participaciones> participaciones =pro.getParticipaciones();
+	public List<Participaciones> buscarParticipaciones(int proyecto) {
+		Proyecto pro = iProyectoRepository.getById(proyecto);
+		List<Participaciones> participaciones = pro.getParticipaciones();
 		if (participaciones.equals(null)) {
 			participaciones = new ArrayList<Participaciones>();
 		}
@@ -293,36 +295,52 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 
 	@Override
 	public boolean agregarAntecedente(Proyecto proyecto, Proyecto antecedente) {
-		
-		proyecto.getAntecedentes().add(antecedente);
-		iProyectoRepository.save(proyecto);
-		return proyecto.getAntecedentes().contains(antecedente.getId());
+		if (antecedente != null && proyecto != null) {
+			if (proyecto.getFechaInicio().isAfter(antecedente.getFechaFin())) {
+				if (proyecto.getAntecedentes().isEmpty()) {
+					
+					proyecto.setAntecedentes(new ArrayList<Proyecto>());
+					proyecto.getAntecedentes().add(antecedente);
+					iProyectoRepository.save(proyecto);
+				} else {
+					if (!proyecto.getAntecedentes().contains(proyecto)) {
+						return false;
+					} else {
+						proyecto.getAntecedentes().add(antecedente);
+						iProyectoRepository.save(proyecto);
+					}
+				}
+			} else {
+				return false;
+			}
+			return !proyecto.getAntecedentes().contains(antecedente);
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean agregarAreaConocimiento(int proyecto, int area) {
-		Proyecto pro=iProyectoRepository.getById(proyecto);
-		AreaConocimiento are=iAreaConocimientoRepository.getById(area);
-		if(are.equals(null) || pro.equals(null)) {
+		Proyecto pro = iProyectoRepository.getById(proyecto);
+		AreaConocimiento are = iAreaConocimientoRepository.getById(area);
+		if (are.equals(null) || pro.equals(null)) {
 			return false;
-		}else {
+		} else {
 			are.getProyectos().add(pro);
 			iAreaConocimientoRepository.save(are);
 			return true;
 		}
-		
+
 	}
 
 	@Override
 	public List<AreaConocimiento> buscarAreasProyecto(int proyecto) {
-		Proyecto pro=iProyectoRepository.getById(proyecto);
-		List<AreaConocimiento> areas=pro.getAreasConocimiento();
+		Proyecto pro = iProyectoRepository.getById(proyecto);
+		List<AreaConocimiento> areas = pro.getAreasConocimiento();
 		if (areas.equals(null)) {
 			areas = new ArrayList<AreaConocimiento>();
 		}
 		return areas;
 	}
-	
-	
 
 }
