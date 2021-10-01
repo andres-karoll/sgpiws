@@ -7,18 +7,16 @@ package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import net.minidev.json.JSONObject;
@@ -47,10 +45,10 @@ public class Participaciones implements Serializable {
     @Column(length = 10)
     private String reconocimientos;
     @JoinColumn(name = "evento_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
     private Evento evento;
     @JoinColumn(name = "proyecto_id_proyecto", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
     private Proyecto proyecto;
 
     public Participaciones() {
@@ -131,10 +129,12 @@ public class Participaciones implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.Participaciones[ participacionesPK=" + participacionesPK + " ]";
+        return toJson().toString();
     }
     public JSONObject toJson() {
     	JSONObject participacionesJson=new JSONObject();
+    	participacionesJson.put("evento",this.getEvento().getNombre());
+    	participacionesJson.put("proyecto", this.getProyecto().getTitulo());
     	participacionesJson.put("fecha_part",this.getFechaPart());
     	participacionesJson.put("reconocimientos",this.getReconocimientos());
     	

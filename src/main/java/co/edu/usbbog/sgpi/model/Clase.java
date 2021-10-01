@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -51,13 +52,13 @@ public class Clase implements Serializable {
     @JoinTable(name = "proyectos_clase", joinColumns = {
         @JoinColumn(name = "clase", referencedColumnName = "numero", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false)})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Proyecto> proyectos;
     @JoinColumn(name = "materia", referencedColumnName = "catalogo", nullable = false)
     @ManyToOne(optional = false)
     private Materia materia;
-    @JoinColumn(name = "profesor", referencedColumnName = "cedula", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "profesor", referencedColumnName = "cedula", nullable = true)
+    @ManyToOne
     private Usuario profesor;
 
     public Clase() {
@@ -112,7 +113,7 @@ public class Clase implements Serializable {
     }
     public Proyecto removeProyectos(Proyecto proyecto) {
     	getProyectos().remove(proyecto);    	  	
-    	proyecto.removeClases(this);    	
+    	proyecto.removeClases(null);    	
     	return proyecto;
     }
 

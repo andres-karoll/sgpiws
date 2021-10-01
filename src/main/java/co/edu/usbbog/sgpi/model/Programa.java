@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -54,10 +55,10 @@ public class Programa implements Serializable {
     @ManyToMany
     private List<Semillero> semilleros;
     @JoinColumn(name = "facultad_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private Facultad facultadId;
-    @JoinColumn(name = "director", referencedColumnName = "cedula", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn( name = "director", referencedColumnName = "cedula", nullable = true)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario director;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "programa")
     private List<Materia> materias;
@@ -207,16 +208,17 @@ public class Programa implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "co.edu.usbbog.sgpi.model.Programa[ id=" + id + " ]";
-    }
+   
 
     public JSONObject toJson() {
     	JSONObject programaJson=new JSONObject();
     	programaJson.put("id",this.getId());
     	programaJson.put("nombre",this.getNombre());
     	return programaJson;
+    }
+    @Override
+    public String toString() {
+        return toJson().toString();
     }
 
 	

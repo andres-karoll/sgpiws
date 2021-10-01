@@ -7,12 +7,12 @@ package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -23,8 +23,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -67,7 +65,6 @@ public class Proyecto implements Serializable {
     @Column(name = "fecha_inicio", nullable = false, columnDefinition = "DATE")
     private LocalDate fechaInicio;
     @Column(name = "fecha_fin", columnDefinition = "DATE")
-   
     private LocalDate fechaFin;
     @Lob
     @Column(name = "retroalimentacion_final", length = 2147483647)
@@ -94,14 +91,14 @@ public class Proyecto implements Serializable {
     @ManyToMany(mappedBy = "proyectos")
     private List<Clase> clases;
     @JoinTable(name = "antecedentes", joinColumns = {
-        @JoinColumn(name = "ancedente", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false)})
+        @JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "ancedente", referencedColumnName = "id", nullable = false)})
     @ManyToMany
     private List<Proyecto> antecedentes;
     @ManyToMany(mappedBy = "antecedentes")
     private List<Proyecto> proyectos;
-    @JoinColumn(name = "macro_proyecto", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "macro_proyecto", referencedColumnName = "id", nullable = true)
+    @ManyToOne
     private MacroProyecto macroProyecto;
     @JoinColumn(name = "semillero", referencedColumnName = "id")
     @ManyToOne
@@ -428,7 +425,7 @@ public class Proyecto implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.Proyecto[ id=" + id + " ]";
+        return toJson().toString();
     }
     public JSONObject toJson() {
     	JSONObject proyectoJson=new JSONObject();

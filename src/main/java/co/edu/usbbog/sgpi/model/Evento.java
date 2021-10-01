@@ -7,8 +7,6 @@ package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -19,8 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -37,8 +33,7 @@ import net.minidev.json.JSONObject;
     @NamedQuery(name = "Evento.findAll", query = "SELECT e FROM Evento e")
     , @NamedQuery(name = "Evento.findById", query = "SELECT e FROM Evento e WHERE e.id = :id")
     , @NamedQuery(name = "Evento.findByNombre", query = "SELECT e FROM Evento e WHERE e.nombre = :nombre")
-    , @NamedQuery(name = "Evento.findByFechaInicio", query = "SELECT e FROM Evento e WHERE e.fechaInicio = :fechaInicio")
-    , @NamedQuery(name = "Evento.findByFechaFin", query = "SELECT e FROM Evento e WHERE e.fechaFin = :fechaFin")
+    , @NamedQuery(name = "Evento.findByFecha", query = "SELECT e FROM Evento e WHERE e.fecha = :fecha")
     , @NamedQuery(name = "Evento.findByEntidad", query = "SELECT e FROM Evento e WHERE e.entidad = :entidad")
     , @NamedQuery(name = "Evento.findByEstado", query = "SELECT e FROM Evento e WHERE e.estado = :estado")
     , @NamedQuery(name = "Evento.findBySitioWeb", query = "SELECT e FROM Evento e WHERE e.sitioWeb = :sitioWeb")
@@ -54,11 +49,8 @@ public class Evento implements Serializable {
     @Column(nullable = false, length = 45)
     private String nombre;
     @Basic(optional = false)
-    @Column(nullable = false , name="fecha_inicio", columnDefinition = "DATE")
-    private LocalDate fechaInicio;
-    @Basic(optional = false)
-    @Column(nullable = true , name="fecha_fin", columnDefinition = "DATE")
-    private LocalDate fechaFin;
+    @Column(nullable = false , name="fecha", columnDefinition = "DATE")
+    private LocalDate fecha;
 	@Column(length = 45)
     private String entidad;
     @Basic(optional = false)
@@ -81,7 +73,7 @@ public class Evento implements Serializable {
     public Evento(Integer id, String nombre, LocalDate fecha, String estado) {
         this.id = id;
         this.nombre = nombre;
-        this.fechaInicio = fecha;
+        this.fecha = fecha;
         this.estado = estado;
     }
 
@@ -101,21 +93,14 @@ public class Evento implements Serializable {
         this.nombre = nombre;
     }
 
-    public LocalDate getFechaInicio() {
+    public LocalDate getFecha() {
     	
-        return fechaInicio;
+        return fecha;
     }
 
-    public void setFechaInicio(LocalDate fechaInicio) {
-        this.fechaInicio = fechaInicio;
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
-    public LocalDate getFechaFin() {
-		return fechaFin;
-	}
-
-	public void setFechaFin(LocalDate fechaFin) {
-		this.fechaFin = fechaFin;
-	}
 
     public String getEntidad() {
         return entidad;
@@ -196,8 +181,7 @@ public class Evento implements Serializable {
     	JSONObject eventoJson=new JSONObject();
     	eventoJson.put("id",this.getId());
     	eventoJson.put("nombre",this.getNombre());
-    	eventoJson.put("fecha_inicio",this.getFechaInicio());
-    	eventoJson.put("fecha_fin",this.getFechaFin());
+    	eventoJson.put("fecha_inicio",this.getFecha());
     	eventoJson.put("entidad",this.getEntidad());
     	eventoJson.put("sitio_web",this.getSitioWeb());
     	eventoJson.put("url_memoria",this.getUrlMemoria());
