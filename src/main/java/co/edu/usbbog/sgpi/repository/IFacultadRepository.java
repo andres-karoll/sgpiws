@@ -26,4 +26,5 @@ public interface IFacultadRepository extends JpaRepository<Facultad, Integer>{
 	@Query(value="UPDATE `sgpi_db`.`facultad` SET `coor_inv` = null WHERE (`id` = ?1)",nativeQuery=true)
 	void deleteCoorInvById(String facultad);
 
+	
 }

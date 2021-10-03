@@ -58,7 +58,7 @@ public class Clase implements Serializable {
     @ManyToOne(optional = false)
     private Materia materia;
     @JoinColumn(name = "profesor", referencedColumnName = "cedula", nullable = true)
-    @ManyToOne
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Usuario profesor;
 
     public Clase() {
@@ -162,10 +162,13 @@ public class Clase implements Serializable {
     	claseJson.put("numero",this.getNumero());
     	claseJson.put("nombre",this.getNombre());
     	claseJson.put("semestre",this.getSemestre());
-    	claseJson.put("materia",this.getMateria());
-    	claseJson.put("profesor",this.getProfesor());
-       	return claseJson;
-    	
+    	claseJson.put("materia",this.getMateria().getCatalogo());    	
+    	if(this.getProfesor() == null) { 		
+    		claseJson.put("profesor","");
+    	}else {
+    		claseJson.put("profesor",this.getProfesor().getCedula());
+    	}
+       	return claseJson;  	
     }
     
 }

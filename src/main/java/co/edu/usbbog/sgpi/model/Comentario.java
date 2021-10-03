@@ -177,7 +177,6 @@ public class Comentario implements Serializable {
     	comentarioJson.put("fase",this.getFase());
     	comentarioJson.put("nivel",this.getNivel());
     	comentarioJson.put("fecha",this.getFecha());
-    	comentarioJson.put("producto_id",this.getProductoId().getId());
     	return comentarioJson;
     	
     }

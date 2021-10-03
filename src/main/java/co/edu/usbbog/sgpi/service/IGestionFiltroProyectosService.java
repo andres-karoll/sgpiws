@@ -13,9 +13,9 @@ public interface IGestionFiltroProyectosService {
 	public List<Proyecto> todosLosProyectos();
 	//listar por lugar?????????
 	public List<Proyecto> todosLosProyectosPorLugar();
-	public List<Proyecto> todosLosProyectosPorTipoProyecto(TipoProyecto tipoProyecto);
-	public List<Proyecto> todosLosProyectosPorAreaConocimiento(AreaConocimiento areaConocimiento);
+	public List<Proyecto> todosLosProyectosPorTipoProyecto(String tipo_proyecto);
+	public List<Proyecto> todosLosProyectosPorAreaConocimiento(int areaConocimiento);
 	public List<Proyecto> todosLosProyectosPorNombre(String titulo);
 	//El sistema deberá contar con un filtro que evidencie la línea de investigación a la cual se está aplicando el proyecto.
-	public List<Proyecto> todosLosProyectosPorNombre(Semillero semillero, LineaInvestigacion lineainvestigacion);
+	public List<Proyecto> todosLosProyectosPorLinea(String lineainvestigacion);
 }

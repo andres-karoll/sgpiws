@@ -57,8 +57,8 @@ public class Programa implements Serializable {
     @JoinColumn(name = "facultad_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private Facultad facultadId;
-    @JoinColumn( name = "director", referencedColumnName = "cedula", nullable = true)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "director", referencedColumnName = "cedula", nullable = true)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Usuario director;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "programa")
     private List<Materia> materias;

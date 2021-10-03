@@ -48,10 +48,10 @@ public class Facultad implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facultadId")
     private List<Programa> programas;
     @JoinColumn(name = "coor_inv", referencedColumnName = "cedula", nullable = true)
-    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Usuario coorInv;
     @JoinColumn(name = "decano", referencedColumnName = "cedula", nullable = true)
-    @ManyToOne(optional = false ,fetch = FetchType.EAGER)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Usuario decano;
 
     public Facultad() {

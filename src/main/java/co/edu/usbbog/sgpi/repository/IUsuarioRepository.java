@@ -3,11 +3,13 @@
  */
 package co.edu.usbbog.sgpi.repository;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
+import co.edu.usbbog.sgpi.model.Programa;
+import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import co.edu.usbbog.sgpi.model.Usuario;
 import net.minidev.json.JSONObject;
 
@@ -16,6 +18,10 @@ import net.minidev.json.JSONObject;
  *
  */
 public interface IUsuarioRepository extends JpaRepository<Usuario, String> {
+
+	//solo para consultar por programa
+			@Query(value = "SELECT * FROM usuario where programa_id = ?1", nativeQuery = true)
+			List<Usuario> findByPrograma(int programa_id);
 	
 	//@Query(value = "SELECT tipo_usuario FROM sgpi_db.usuarios where usuario = ?1 && tipo_usuario = ?2 ", nativeQuery = true)
 	//JSONObject findByUsuario(String usuario,String tipo);

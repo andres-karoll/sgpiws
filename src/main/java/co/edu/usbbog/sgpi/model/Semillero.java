@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -63,8 +64,8 @@ public class Semillero implements Serializable {
     @JoinColumn(name = "linea_investigacion", referencedColumnName = "nombre", nullable = false)
     @ManyToOne(optional = false)
     private LineaInvestigacion lineaInvestigacion;
-    @JoinColumn(name = "lider_semillero", referencedColumnName = "cedula", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "lider_semillero", referencedColumnName = "cedula", nullable = true)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Usuario liderSemillero;
     @OneToMany(mappedBy = "semilleroId")
     private List<Usuario> usuarios;
