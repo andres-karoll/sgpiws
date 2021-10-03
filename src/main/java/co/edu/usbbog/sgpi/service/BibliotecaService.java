@@ -2,6 +2,7 @@ package co.edu.usbbog.sgpi.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,17 @@ public class BibliotecaService implements IBibliotecaService{
 			logger.info("El tipo no existe");
 			return x;
 		}
+	}
+
+	@Override
+	public Proyecto proyectoporid(int id) {
+		if(proyectoRepo.existsById(id)) {
+			Proyecto proyectos = proyectoRepo.getById(id);
+			return proyectos;
+		}
+		return null;
+		
+		
 	}
 
 

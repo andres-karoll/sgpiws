@@ -9,5 +9,6 @@ import co.edu.usbbog.sgpi.model.TipoProyecto;
 public interface IBibliotecaService {
 	public List<Proyecto> todosLosProyectosDeGrado();
 	public List<Proyecto> todosLosProyectosTerminados(String grado, String estado);
+	public Proyecto proyectoporid(int id);
 	
 }

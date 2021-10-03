@@ -1,6 +1,7 @@
 package co.edu.usbbog.sgpi.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,7 @@ import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.service.IBibliotecaService;
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 @RestController
 @CrossOrigin
@@ -43,5 +45,17 @@ public class BibliotecaController {
 			salida.add(proyecto.toJson());
 		}
 		return salida;
+	}
+	
+	@GetMapping(value = "/listarporid/{id}")
+	public JSONObject listarPorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();
+		if(bibliotecaService.proyectoporid(id) !=null) {
+			Proyecto pro = bibliotecaService.proyectoporid(id);
+			return pro.toJson();
+		}
+		else {
+			return x;
+		}	
 	}
 }
