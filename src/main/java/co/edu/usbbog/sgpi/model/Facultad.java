@@ -139,7 +139,7 @@ public class Facultad implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.Facultad[ id=" + id + " ]";
+        return toJson().toString();
     }
     public JSONObject toJson() {
     	JSONObject facultadJson=new JSONObject();

@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -43,7 +44,7 @@ import net.minidev.json.JSONObject;
     , @NamedQuery(name = "Usuario.findByNombres", query = "SELECT u FROM Usuario u WHERE u.nombres = :nombres")
     , @NamedQuery(name = "Usuario.findByApellidos", query = "SELECT u FROM Usuario u WHERE u.apellidos = :apellidos")
     , @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")
-    , @NamedQuery(name = "Usuario.findByVisiblidad", query = "SELECT u FROM Usuario u WHERE u.visiblidad = :visiblidad")
+    , @NamedQuery(name = "Usuario.findByVisiblidad", query = "SELECT u FROM Usuario u WHERE u.visibilidad = :visibilidad")
     , @NamedQuery(name = "Usuario.findByCorreoPersonal", query = "SELECT u FROM Usuario u WHERE u.correoPersonal = :correoPersonal")})
 public class Usuario implements Serializable {
 
@@ -55,8 +56,8 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_universitario", nullable = false)
     private int codUniversitario;
-    @Basic(optional = false)
-    @Column(name = "correo_est", nullable = false, length = 45)
+    @Basic(optional = false, fetch = FetchType.LAZY)
+    @Column(name = "correo_est", nullable = true, length = 45)
     private String correoEst;
     @Basic(optional = false)
     @Column(nullable = false, length = 100)
@@ -69,9 +70,9 @@ public class Usuario implements Serializable {
     private String apellidos;
     @Column(length = 45)
     private String telefono;
-    @Basic(optional = false)
+    @Basic(optional = false, fetch = FetchType.LAZY)
     @Column(nullable = false, length = 50)
-    private String visiblidad;
+    private String visibilidad;
     @Column(name = "correo_personal", length = 45)
     private String correoPersonal;
     @ManyToMany(mappedBy = "usuarios")
@@ -85,10 +86,10 @@ public class Usuario implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "liderSemillero")
     private List<Semillero> semilleros;
     @JoinColumn(name = "programa_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Programa programaId;
     @JoinColumn(name = "semillero_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Semillero semilleroId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "coorInv")
     private List<Facultad> coorIncFacultad;
@@ -111,7 +112,7 @@ public class Usuario implements Serializable {
         this.contrasena = contrasena;
         this.nombres = nombres;
         this.apellidos = apellidos;
-        this.visiblidad = visiblidad;
+        this.visibilidad = visiblidad;
     }
 
     public String getCedula() {
@@ -170,12 +171,12 @@ public class Usuario implements Serializable {
         this.telefono = telefono;
     }
 
-    public String getVisiblidad() {
-        return visiblidad;
+    public String getVisibilidad() {
+        return visibilidad;
     }
 
-    public void setVisiblidad(String visiblidad) {
-        this.visiblidad = visiblidad;
+    public void setVisibilidad(String visibilidad) {
+        this.visibilidad = visibilidad;
     }
 
     public String getCorreoPersonal() {
@@ -377,14 +378,24 @@ public class Usuario implements Serializable {
     	usuarioJson.put("nombres",this.getNombres());
     	usuarioJson.put("apellidos",this.getApellidos());
     	usuarioJson.put("telefono",this.getTelefono());
-    	usuarioJson.put("visbilidad",this.getVisiblidad());
+    	usuarioJson.put("visbilidad",this.getVisibilidad());
     	usuarioJson.put("correo_personal",this.getCorreoPersonal());
+    	if(this.getSemilleroId()==null) {
+    		usuarioJson.put("semillero_id","");
+    	}else {
+    		usuarioJson.put("semillero_id",this.getSemilleroId().getId());
+    	}
+    	if(this.getProgramaId()==null) {
+    		usuarioJson.put("programa_id","");
+    	}else {
+    		usuarioJson.put("programa_id",this.getProgramaId().getId());
+    	}
     	return usuarioJson;
     	
     }
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.Usuario[ cedula=" + cedula + " ]";
+        return toJson().toString();
     }
     
 }

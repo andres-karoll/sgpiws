@@ -117,7 +117,7 @@ public class TipoUsuario implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.TipoUsuario[ nombre=" + nombre + " ]";
+        return toJson().toString();
     }
     public JSONObject toJson() {
     	JSONObject tipousuarioJson=new JSONObject();

@@ -80,7 +80,15 @@ public class Comentario implements Serializable {
         this.nivel = nivel;
         this.fecha = fecha;
     }
-
+    public Comentario(Integer id, String comentario, String fase, String nivel,Double calificacion, LocalDate fecha,Producto producto) {
+        this.id = id;
+        this.comentario = comentario;
+        this.fase = fase;
+        this.nivel = nivel;
+        this.calificacion=calificacion;
+        this.fecha = fecha;
+        this.productoId=producto;
+    }
     public Integer getId() {
         return id;
     }
@@ -159,7 +167,7 @@ public class Comentario implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.Comentario[ id=" + id + " ]";
+        return toJson().toString();
     }
     public JSONObject toJson() {
     	JSONObject comentarioJson=new JSONObject();

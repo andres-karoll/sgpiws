@@ -7,7 +7,6 @@ package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -17,8 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import net.minidev.json.JSONObject;
@@ -36,7 +33,6 @@ import net.minidev.json.JSONObject;
     , @NamedQuery(name = "Participantes.findByProyecto", query = "SELECT p FROM Participantes p WHERE p.participantesPK.proyecto = :proyecto")
     , @NamedQuery(name = "Participantes.findByFechaInicio", query = "SELECT p FROM Participantes p WHERE p.participantesPK.fechaInicio = :fechaInicio")
     , @NamedQuery(name = "Participantes.findByFechaFin", query = "SELECT p FROM Participantes p WHERE p.fechaFin = :fechaFin")
-    , @NamedQuery(name = "Participantes.findByEstado", query = "SELECT p FROM Participantes p WHERE p.estado = :estado")
     , @NamedQuery(name = "Participantes.findByRol", query = "SELECT p FROM Participantes p WHERE p.rol = :rol")})
 public class Participantes implements Serializable {
 
@@ -45,9 +41,6 @@ public class Participantes implements Serializable {
     protected ParticipantesPK participantesPK;
     @Column(name = "fecha_fin",columnDefinition = "DATE")
     private LocalDate fechaFin;
-    @Basic(optional = false)
-    @Column(nullable = false, length = 45)
-    private String estado;
     @Basic(optional = false)
     @Column(nullable = false, length = 45)
     private String rol;
@@ -65,9 +58,9 @@ public class Participantes implements Serializable {
         this.participantesPK = participantesPK;
     }
 
-    public Participantes(ParticipantesPK participantesPK, String estado, String rol) {
+    public Participantes(ParticipantesPK participantesPK, String rol) {
         this.participantesPK = participantesPK;
-        this.estado = estado;
+
         this.rol = rol;
     }
 
@@ -91,13 +84,6 @@ public class Participantes implements Serializable {
         this.fechaFin = fechaFin;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 
     public String getRol() {
         return rol;
@@ -150,7 +136,6 @@ public class Participantes implements Serializable {
     public JSONObject toJson() {
     	JSONObject paticipantesJson=new JSONObject();
     	paticipantesJson.put("fecha_fin",this.getFechaFin());
-    	paticipantesJson.put("estado",this.getEstado());
     	paticipantesJson.put("rol",this.getRol());
     	return paticipantesJson;
     }

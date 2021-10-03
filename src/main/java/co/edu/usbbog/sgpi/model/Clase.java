@@ -52,7 +52,7 @@ public class Clase implements Serializable {
     @JoinTable(name = "proyectos_clase", joinColumns = {
         @JoinColumn(name = "clase", referencedColumnName = "numero", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false)})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Proyecto> proyectos;
     @JoinColumn(name = "materia", referencedColumnName = "catalogo", nullable = false)
     @ManyToOne(optional = false)
@@ -113,7 +113,7 @@ public class Clase implements Serializable {
     }
     public Proyecto removeProyectos(Proyecto proyecto) {
     	getProyectos().remove(proyecto);    	  	
-    	proyecto.removeClases(this);    	
+    	proyecto.removeClases(null);    	
     	return proyecto;
     }
 
