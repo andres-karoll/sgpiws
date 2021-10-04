@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Compra;
 import co.edu.usbbog.sgpi.model.Facultad;
 import co.edu.usbbog.sgpi.model.GrupoInvestigacion;
 import co.edu.usbbog.sgpi.model.MacroProyecto;
+import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.Presupuesto;
 import co.edu.usbbog.sgpi.model.Producto;
@@ -36,19 +38,21 @@ public interface IGestionProyectosInvestigacionService {
 	public boolean crearProducto(Producto producto);
 	//actualizar Productos
 	
-	public List<Usuario> todosLosParticipantesPorProyecto(Proyecto proyecto);
-	public boolean crearParticipante(Participantes participante);
+	public List<Participantes> todosLosParticipantesPorProyecto(Proyecto proyecto);
+	public boolean crearParticipante(Participantes participante,String rol);
 	public boolean eliminarParticipante(LocalDate fecha_inicio);
 	//actualizar participante
 	
-	public List<Comentario> ComentariosPorProducto(Producto producto);
+	public List<Comentario> ComentariosPorProducto(int productoid);
 	public boolean eliminarComentario(int id);
-	public boolean crearComentario(Comentario comentario);
+	public boolean crearComentario(Comentario comentario,String cedula);
+	public boolean asignarCalificacion(int comentarioid,double calificacion);
+	public boolean eliminarCalificacion(int comentarioid);
 	//actualizar comentario
 	
 	public List<Presupuesto> PresupuestoPorProyecto(Proyecto proyecto);
 	public boolean eliminarPresupuesto(int id);
-	public boolean crearPresupuesto(Presupuesto presupuesto);
+	public boolean crearPresupuesto(Presupuesto presupuesto,String cedula);
 	//actualizar presupuesto
 	
 	public List<Compra> CompraPorPresupuesto(Presupuesto presupuesto);
@@ -58,4 +62,12 @@ public interface IGestionProyectosInvestigacionService {
 	
 	//El sistema debe permitir asociar proyectos que estén relacionados
 		public boolean asignarMacroProyecto(MacroProyecto macroProyecto);
+		public Proyecto buscarProyecto(int parseInt);
+		public Producto buscarProducto(int parseInt);
+		boolean eliminarProducto(int id);
+		boolean participarEvento(Participaciones participaciones, LocalDate fecha, String reconocimiento);
+		public List<Participaciones> buscarParticipaciones(int parseInt);
+		public boolean agregarAntecedente(Proyecto proyecto, Proyecto antecedente);
+		public boolean agregarAreaConocimiento(int parseInt, int parseInt2);
+		public List<AreaConocimiento> buscarAreasProyecto(int parseInt);
 }

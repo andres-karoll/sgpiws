@@ -1,18 +1,27 @@
 package co.edu.usbbog.sgpi.controller;
 
 import java.time.LocalDate;
+import java.util.Iterator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.usbbog.sgpi.model.AreaConocimiento;
+import co.edu.usbbog.sgpi.model.Comentario;
+import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
+import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.repository.ISemilleroRepository;
 import co.edu.usbbog.sgpi.service.IGestionProyectosInvestigacionService;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 
@@ -42,5 +51,185 @@ public class GestionProyectosInvestigacionController {
 		return salida;
 	}
 
+	@PostMapping("/agregarParticipante")
+	public JSONObject agregarParticipante(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		Participantes participante = new Participantes(entrada.getAsString("usuario"),
+				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
+		if (iGestionProyectosInvestigacionService.crearParticipante(participante, entrada.getAsString("rol"))) {
+			salida.put("respuesta", "el participante fue agregado");
+		} else {
+			salida.put("respuesta", "el participante no pudo ser agregado");
+		}
+		return salida;
+	}
+
+	@GetMapping("/todosLosproyectos")
+	public JSONArray todosLosProyectos() {
+		JSONArray salida = new JSONArray();
+		List<Proyecto> proyectos = iGestionProyectosInvestigacionService.todosLosProyectos();
+		for (Iterator iterator = proyectos.iterator(); iterator.hasNext();) {
+			Proyecto proyecto = (Proyecto) iterator.next();
+			salida.add(proyecto.toJson());
+		}
+		return salida;
+	}
+
+
+
+	@GetMapping("/eliminarproyecto/{id}")
+	public JSONObject elinimarProyecto(@PathVariable String id) {
+		JSONObject salida = new JSONObject();
+		if (iGestionProyectosInvestigacionService.eliminarProyecto(Integer.parseInt(id))) {
+			salida.put("respuesta", "proyeto fue eliminado correctamente");
+		} else {
+			salida.put("respuesta", "el proyecto no fue eliminado");
+		}
+		return salida;
+	}
+
+	@PostMapping("/crearproducto")
+	public JSONObject crearProducto(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		Proyecto proyecto = iGestionProyectosInvestigacionService
+				.buscarProyecto(Integer.parseInt(entrada.getAsString("proyectoid")));
+		Producto producto = new Producto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
+				entrada.getAsString("tipo"), entrada.getAsString("url"), LocalDate.parse(entrada.getAsString("fecha")),
+				proyecto);
+		if (iGestionProyectosInvestigacionService.crearProducto(producto)) {
+			salida.put("respuesta", "el producto fue guardado");
+		} else {
+			salida.put("respuesta", "el producto no fue guardado");
+		}
+		return salida;
+	}
+
+	@GetMapping("/eliminarproducto/{id}")
+	public JSONObject elinimarProducto(@PathVariable String id) {
+		JSONObject salida = new JSONObject();
+		if (iGestionProyectosInvestigacionService.eliminarProducto(Integer.parseInt(id))) {
+			salida.put("respuesta", "proyeto fue eliminado correctamente");
+		} else {
+			salida.put("respuesta", "el proyecto no fue eliminado");
+		}
+		return salida;
+	}
+
+	@PostMapping("/crearcomentario")
+	public JSONObject crearComentario(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		Producto producto = iGestionProyectosInvestigacionService
+				.buscarProducto(Integer.parseInt(entrada.getAsString("productoid")));
+		Comentario comentario = new Comentario(Integer.parseInt(entrada.getAsString("id")),
+				entrada.getAsString("comentario"), entrada.getAsString("fase"), entrada.getAsString("nivel"),
+				LocalDate.parse(entrada.getAsString("fecha")));
+		if (iGestionProyectosInvestigacionService.crearComentario(comentario, entrada.getAsString("cedula"))) {
+			salida.put("respuesta", "el comentario fue guardado");
+		} else {
+			salida.put("respuesta", "el comentario no fue guardado");
+		}
+		return salida;
+	}
+	@GetMapping("/eliminarcomentario/{id}")
+	public JSONObject elinimarComentario(@PathVariable String id) {
+		JSONObject salida = new JSONObject();
+		if (iGestionProyectosInvestigacionService.eliminarComentario(Integer.parseInt(id))) {
+			salida.put("respuesta", "el comentario fue eliminado correctamente");
+		} else {
+			salida.put("respuesta", "el comentario no fue eliminado");
+		}
+		return salida;
+	}
+
+	@GetMapping("/comentariosproducto/{id}")
+	public JSONArray ComentariosPorProducto(@PathVariable String id) {
+		JSONArray salida = new JSONArray();
+
+		List<Comentario> comentarios = iGestionProyectosInvestigacionService
+				.ComentariosPorProducto(Integer.parseInt(id));
+		for (Iterator<Comentario> iterator = comentarios.iterator(); iterator.hasNext();) {
+			Comentario comentario = (Comentario) iterator.next();
+			salida.add(comentario.toJson());
+		}
+		return salida;
+	}
+
+	@PostMapping("/participarevento")
+	public JSONObject participarEvento(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		Participaciones participaciones = new Participaciones(Integer.parseInt(entrada.getAsString("evento")),
+				Integer.parseInt(entrada.getAsString("proyecto")));
+		System.out.println("holass");
+		if (iGestionProyectosInvestigacionService.participarEvento(participaciones,
+				LocalDate.parse(entrada.getAsString("fecha")), entrada.getAsString("reconocimiento"))) {
+			salida.put("respuesta", "se unio al evento exitosamente");
+		} else {
+			salida.put("respuesta", "no se unio al evento ");
+		}
+
+		return salida;
+	}
+
+	@GetMapping("/participacionesproyecto/{proyecto}")
+	public JSONArray participacionesProyecto(@PathVariable String proyecto) {
+		JSONArray salida = new JSONArray();
+		List<Participaciones> participaciones = iGestionProyectosInvestigacionService
+				.buscarParticipaciones(Integer.parseInt(proyecto));
+		for (Iterator<Participaciones> iterator = participaciones.iterator(); iterator.hasNext();) {
+			Participaciones participacion = (Participaciones) iterator.next();
+			salida.add(participacion.toJson());
+		}
+		return salida;
+	}
+
+	@PostMapping("/agregarantecedente")
+	public JSONObject agregarAntecedente(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		Proyecto proyecto = iGestionProyectosInvestigacionService
+				.buscarProyecto(Integer.parseInt(entrada.getAsString("proyecto")));
+		Proyecto antecedente = iGestionProyectosInvestigacionService
+				.buscarProyecto(Integer.parseInt(entrada.getAsString("antecedente")));
+		if (antecedente.getFechaFin() == null) {
+			salida.put("respuesta ", "el antecedente aun no a terminado");
+		} else {
+			if (proyecto == antecedente) {
+				salida.put("respuesta", "el proyecto no puede ser antedente de si mismo");
+			} else {
+
+				if (iGestionProyectosInvestigacionService.agregarAntecedente(proyecto, antecedente)) {
+					salida.put("respuesta", "se agrego exitosamente el antecedente");
+				} else {
+					salida.put("respuesta", "no se agrego el antecedente ");
+				}
+			}
+		}
+
+		return salida;
+	}
+
+	@PostMapping("/agregarareaconocimiento")
+	public JSONObject agregarAreaConocimiento(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if (iGestionProyectosInvestigacionService.agregarAreaConocimiento(
+				Integer.parseInt(entrada.getAsString("proyecto")), Integer.parseInt(entrada.getAsString("area")))) {
+			salida.put("respuesta", "se agrego exitosamente las areas");
+		} else {
+			salida.put("respuesta", "No se agrego las areas");
+		}
+		return salida;
+	}
+
+	@GetMapping("/listarareasproyecto/{proyecto}")
+	public JSONArray listarAreasProyecto(@PathVariable String proyecto) {
+		JSONArray salida = new JSONArray();
+		List<AreaConocimiento> areaConocimientos = iGestionProyectosInvestigacionService
+				.buscarAreasProyecto(Integer.parseInt(proyecto));
+		for (Iterator<AreaConocimiento> iterator = areaConocimientos.iterator(); iterator.hasNext();) {
+			AreaConocimiento areas = (AreaConocimiento) iterator.next();
+			salida.add(areas.toJson());
+		}
+		return salida;
+	}
 
 }
+
