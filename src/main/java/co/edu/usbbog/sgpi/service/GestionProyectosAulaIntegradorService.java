@@ -250,15 +250,27 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	}
 
 	@Override
-	public boolean asignarCalificacion(double calificacion) {
-
-		return false;
+	public boolean asignarCalificacion(int comentarioid,double calificacion) {
+		Comentario comentario=iComentarioRepository.getById(comentarioid);
+		if(comentario!=null) {
+		comentario.setCalificacion(calificacion);
+		iComentarioRepository.save(comentario);
+		return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public boolean eliminarCalificacion(Comentario comentario) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminarCalificacion(int comentarioid) {
+		Comentario comentario=iComentarioRepository.getById(comentarioid);
+		if(comentario!=null) {
+		comentario.setCalificacion(null);
+		iComentarioRepository.save(comentario);
+		return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override

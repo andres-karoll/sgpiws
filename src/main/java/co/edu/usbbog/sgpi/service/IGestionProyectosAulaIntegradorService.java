@@ -40,8 +40,8 @@ public interface IGestionProyectosAulaIntegradorService {
 	//actualizar comentario
 	
 	//LA NOTA????
-		public boolean asignarCalificacion(double calificacion);
-		public boolean eliminarCalificacion(Comentario comentario);
+		public boolean asignarCalificacion(int comentarioid,double calificacion);
+		public boolean eliminarCalificacion(int comentarioid);
 		
 	//El sistema deberá poder asignar proyectos de clase a distintas materias.
 		public boolean asignarProyectosaMaterias(Proyecto proyecto, Materia materia);
