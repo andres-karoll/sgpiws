@@ -55,10 +55,8 @@ public class Producto implements Serializable {
     @Basic(optional = false)
     @Column(name = "url_repo", nullable = false, length = 150)
     private String urlRepo;
-    /*
     @Column(name = "fecha", nullable = false, columnDefinition = "date")
-    private LocalDate fecha;*/
-   
+    private LocalDate fecha;
 	@JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Proyecto proyecto;

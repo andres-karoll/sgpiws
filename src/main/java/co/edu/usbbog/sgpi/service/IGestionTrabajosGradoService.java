@@ -13,11 +13,9 @@ import co.edu.usbbog.sgpi.model.Usuario;
 
 public interface IGestionTrabajosGradoService {
 	
-	public List<Proyecto> todosLosProyectos();
-	public List<Proyecto> todosLosProyectosPorTipoProyecto(TipoProyecto tipoProyecto);
+	public List<Proyecto> todosLosProyectos(String tipo);
 	public boolean eliminarProyecto(int id);
-	public boolean crearProyecto(Proyecto proyecto);
-	public boolean asignarTipoProyecto(Proyecto proyecto, TipoProyecto grado);
+	public boolean crearProyecto(Proyecto proyecto,String tipo,Participantes participante,String rol);
 	//actualizar Proyectos
 	
 	public List<Producto> todosLosProductos();
@@ -26,18 +24,18 @@ public interface IGestionTrabajosGradoService {
 	public boolean crearProducto(Producto producto);
 	//actualizar Productos
 	
-	public List<Usuario> todosLosParticipantesPorProyecto(Proyecto proyecto);
-	public boolean crearParticipante(Participantes participante);
+	public List<Participantes> todosLosParticipantesPorProyecto(Proyecto proyecto);
+	public boolean crearParticipante(Participantes participante, String rol);
 	public boolean eliminarParticipante(LocalDate fecha_inicio);
 	//actualizar participante
 	
 	public List<Comentario> ComentariosPorProducto(Producto producto);
 	public boolean eliminarComentario(int id);
-	public boolean crearComentario(Comentario comentario);
+	public boolean crearComentario(Comentario comentario, String cedula);
 	//actualizar comentario
 	
 	//LA NOTA????
-	public List<Comentario> todosLosComentariosPorProducto(Producto producto);
+	public List<Comentario> todosLosComentariosPorProducto(int productoid);
 	public boolean asignarCalificacion(double calificacion);
 	public boolean eliminarCalificacion(Comentario comentario);
 		
@@ -46,5 +44,7 @@ public interface IGestionTrabajosGradoService {
 	public boolean asignarProgramaAcademico(Proyecto grado, Programa programa);
 	
 	//El sistema debe permitir realizar un listado de los trabajos de grado finalizados
-	public List<Proyecto> todosLosProyectosFinalizados(String estado);
+	public List<Proyecto> todosLosProyectosFinalizados(String grado,String estado);
+	public Proyecto buscarProyecto(int proyectoId);
+	public Producto buscarProducto(int productoId);
 }

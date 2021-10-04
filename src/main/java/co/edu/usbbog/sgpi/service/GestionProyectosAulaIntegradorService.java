@@ -181,6 +181,7 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	public Proyecto buscarProyecto(int proyectoId) {
 		Proyecto proyecto = iProyectoRepository.getById(proyectoId);
 		return proyecto;
+		
 	}
 
 	@Override

@@ -21,12 +21,11 @@ import co.edu.usbbog.sgpi.model.Usuario;
 public interface IGestionProyectosInvestigacionService {
 
 	public List<Proyecto> todosLosProyectos();
-	public List<Proyecto> todosLosProyectosPorTipoProyecto(TipoProyecto tipoProyecto);
-	public List<Proyecto> todosLosProyectosPorSemillero(Semillero semillero);
+	public List<Proyecto> todosLosProyectosPorSemillero(int semillero);
 	public List<Proyecto> todosLosProyectosPorFacultad(Facultad facultad);
 	public List<Proyecto> todosLosProyectosPorPrograma(Programa programa);
 	public boolean eliminarProyecto(int id);
-	public boolean crearProyecto(Proyecto proyecto);
+	public boolean crearProyecto(Proyecto proyecto,String tipo,Participantes participante, String rol,String semillero);
 	public boolean asignarTipoProyecto(Proyecto proyecto, TipoProyecto investigacion);
 	
 	//actualizar Proyectos
