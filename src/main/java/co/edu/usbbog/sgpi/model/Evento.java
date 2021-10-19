@@ -181,10 +181,11 @@ public class Evento implements Serializable {
     	JSONObject eventoJson=new JSONObject();
     	eventoJson.put("id",this.getId());
     	eventoJson.put("nombre",this.getNombre());
-    	eventoJson.put("fecha_inicio",this.getFecha());
+    	eventoJson.put("fecha",this.getFecha());
     	eventoJson.put("entidad",this.getEntidad());
     	eventoJson.put("sitio_web",this.getSitioWeb());
     	eventoJson.put("url_memoria",this.getUrlMemoria());
+    	eventoJson.put("estado",this.getEstado());
     	return eventoJson;
     	
     }

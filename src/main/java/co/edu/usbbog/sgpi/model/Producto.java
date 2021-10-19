@@ -117,7 +117,7 @@ public class Producto implements Serializable {
     public void setUrlRepo(String urlRepo) {
         this.urlRepo = urlRepo;
     }
-    /*
+
     public LocalDate getFecha() {
 		return fecha;
 	}
@@ -125,7 +125,7 @@ public class Producto implements Serializable {
 	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
-*/
+
     public Proyecto getProyecto() {
         return proyecto;
     }
@@ -175,7 +175,7 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.Producto[ id=" + id + " ]";
+        return toJson().toString();
     }
     public JSONObject toJson() {
     	JSONObject productoJson=new JSONObject();
@@ -183,6 +183,7 @@ public class Producto implements Serializable {
     	productoJson.put("titulo_producto",this.getTituloProducto());
     	productoJson.put("tipo_producto",this.getTipoProducto());
     	productoJson.put("url_repo",this.getUrlRepo());
+    	productoJson.put("fecha",this.getFecha());
     	return productoJson;
     }
 }

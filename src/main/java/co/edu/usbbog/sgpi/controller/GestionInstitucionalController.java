@@ -1,6 +1,8 @@
 package co.edu.usbbog.sgpi.controller;
 
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Convocatoria;
+import co.edu.usbbog.sgpi.model.Evento;
 import co.edu.usbbog.sgpi.model.Facultad;
 import co.edu.usbbog.sgpi.model.GrupoInvestigacion;
+import co.edu.usbbog.sgpi.model.LineaInvestigacion;
 import co.edu.usbbog.sgpi.model.Materia;
 import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
@@ -65,12 +70,14 @@ public class GestionInstitucionalController {
 				LocalDate.parse(entrada.getAsString("fechaFun")) ,
 				entrada.getAsString("categoria"),
 				LocalDate.parse(entrada.getAsString("fechaCat")));
+		/*
 		if(gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion)) {
 			salida.put("respuesta", "el grupo se creo");
 		}
 		else {
 			salida.put("respuesta", "el grupo ya existe");
-		}
+		}*/
+		gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion);
 		return salida;
 	}
 	
@@ -101,8 +108,12 @@ public class GestionInstitucionalController {
 	@GetMapping(value = "/listarprogramadelgrupo/{grupo_investigacion}")
 	public JSONArray listarProgramaDelGrupo(@PathVariable int grupo_investigacion) {		
 		JSONArray salida = new JSONArray(); 
-		List<JSONObject> grupo = gestionInstitucionalService.programaDelGrupo(grupo_investigacion);
-		salida.add(grupo);
+		List<Programa> grupo = gestionInstitucionalService.programaDelGrupo(grupo_investigacion);
+		for (Iterator iterator = grupo.iterator(); iterator.hasNext();) {
+			Programa programa = (Programa) iterator.next();
+			salida.add(programa.toJson());
+		}
+		//salida.add(grupo);
 		return salida;		
 	}
 	
@@ -133,8 +144,13 @@ public class GestionInstitucionalController {
 	@GetMapping(value = "/listarlineasdelgrupo/{grupo_investigacion}")
 	public JSONArray listarLineasDelGrupo(@PathVariable int grupo_investigacion) {		
 		JSONArray salida = new JSONArray(); 
-		List<JSONObject> grupo = gestionInstitucionalService.lineaDelGrupo(grupo_investigacion);
-		salida.add(grupo);
+		List<LineaInvestigacion> linea = gestionInstitucionalService.lineaDelGrupo(grupo_investigacion);
+		for (Iterator iterator = linea.iterator(); iterator.hasNext();) {
+			
+			LineaInvestigacion lineaInvestigacion = (LineaInvestigacion) iterator.next();
+			salida.add(lineaInvestigacion.toJson());
+		}
+		//salida.add(grupo);
 		return salida;		
 	}
 	
@@ -156,8 +172,9 @@ public class GestionInstitucionalController {
 		
 		JSONArray salida = new JSONArray(); 
 		List<Usuario> usu = gestionInstitucionalService.usuariosPorSemillero(semillero_id);
-		for (Usuario usuario : usu) {
-			salida.add(usuario.toJson()) ;
+		for (Iterator iterator = usu.iterator(); iterator.hasNext();) {
+			Usuario usuario = (Usuario) iterator.next();
+			salida.add(usuario.toJson());
 		}
 		return salida;		
 	}
@@ -167,11 +184,10 @@ public class GestionInstitucionalController {
 		
 		JSONArray salida = new JSONArray(); 
 		List<Proyecto> pro = gestionInstitucionalService.proyectosPorSemillero(semillero);
-		for (Proyecto proyecto : pro) {
-			salida.add(proyecto.toJson()) ;
+		for (Iterator iterator = pro.iterator(); iterator.hasNext();) {
+			Proyecto proyecto = (Proyecto) iterator.next();
+			salida.add(proyecto.toJson());
 		}
-		System.out.println();
-		System.out.println(salida);
 		return salida;		
 	}
 	@GetMapping(value = "/listarsemillerosporgrupo/{grupo_investigacion}")
@@ -239,13 +255,16 @@ public class GestionInstitucionalController {
 		return salida;
 	}
 	
-	@GetMapping(value = "/listarelprogramadelsemillero/{semillero}")
+	@GetMapping(value = "/listarprogramadelsemillero/{semillero}")
 	public JSONArray listarElProgramaDelSemillero(@PathVariable int semillero) {
 		
-		JSONArray salida = new JSONArray(); 
-		List<JSONObject> programa = gestionInstitucionalService.programaDelSemillero(semillero);
-		salida.add(programa);
-		return salida;	
+		JSONArray salida = new JSONArray();
+		List<Programa> pro = gestionInstitucionalService.programaDelSemillero(semillero);
+		for (Iterator iterator = pro.iterator(); iterator.hasNext();) {
+			Programa programa = (Programa) iterator.next();
+			salida.add(programa.toJson());
+		}
+		return salida;
 	}
 	
 	@PostMapping(value = "/desasignarsemilleroaprograma")
@@ -328,16 +347,14 @@ public class GestionInstitucionalController {
 		return "no se pudo eliminar";
 	}
 	
-	@PostMapping(value = "/crearprograma")
+	@PostMapping( "/crearprograma")
 	public JSONObject crearPrograma(@RequestBody JSONObject entrada) {		
 
 		JSONObject salida = new JSONObject();
 		Programa programa =  new Programa(	
 				Integer.parseInt(entrada.getAsString("id")), 
 				entrada.getAsString("nombre"));
-		System.out.println(programa);
-		System.out.println(entrada);
-		if (gestionInstitucionalService.crearPrograma(programa, Integer.parseInt( entrada.getAsString("facultad_id")))) {
+		if (gestionInstitucionalService.crearPrograma(programa, Integer.parseInt( entrada.getAsString("facultad_id")),entrada.getAsString("director"))) {
 
 			salida.put("respuesta", "se creo el programa");
 
@@ -351,17 +368,23 @@ public class GestionInstitucionalController {
 	@GetMapping(value = "/listargruposdelprograma/{programa}")
 	public JSONArray listargruposdelprograma(@PathVariable int programa) {	
 		JSONArray salida = new JSONArray(); 
-		List<JSONObject> grupos = gestionInstitucionalService.gruposDelPrograma(programa);
-		salida.add(grupos);
+		List<GrupoInvestigacion> gru = gestionInstitucionalService.gruposDelPrograma(programa);
+		for (Iterator iterator = gru.iterator(); iterator.hasNext();) {
+			GrupoInvestigacion grupoInvestigacion = (GrupoInvestigacion) iterator.next();
+			salida.add(grupoInvestigacion.toJson());
+		}
 		return salida;	
 	}
 	
 	@GetMapping(value = "/listarsemillerosdelprograma/{programa}")
 	public JSONArray listarsemillerosdelprograma(@PathVariable int programa) {	
 		JSONArray salida = new JSONArray(); 
-		List<JSONObject> grupos = gestionInstitucionalService.semillerosDelPrograma(programa);
-		salida.add(grupos);
-		return salida;	
+		List<Semillero> semi = gestionInstitucionalService.semillerosDelPrograma(programa);
+		for (Iterator iterator = semi.iterator(); iterator.hasNext();) {
+			Semillero semillero = (Semillero) iterator.next();
+			salida.add(semillero.toJson());
+		}
+		return salida;
 	}
 	
 	
@@ -378,7 +401,7 @@ public class GestionInstitucionalController {
 		return salida;		
 	}
 	
-	@GetMapping(value = "/listarprogramadelamateria/{programa}")
+	@GetMapping(value = "/listarmateriasdeprograma/{programa}")
 	public JSONArray listarProgramaDeLaMateria(@PathVariable int programa) {	
 		JSONArray salida = new JSONArray(); 
 		List<Materia> mate = gestionInstitucionalService.todasLasMateriasPorPrograma(programa);
@@ -456,7 +479,7 @@ public class GestionInstitucionalController {
 				entrada.getAsString("nombre"),
 				entrada.getAsString("semestre"));
 
-		if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"))) {
+		if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))) {
 
 			salida.put("respuesta", "se creo la clase");
 
@@ -483,9 +506,12 @@ public class GestionInstitucionalController {
 	public JSONArray listarLosProyectosDeClase(@PathVariable int clase) {
 		
 		JSONArray salida = new JSONArray(); 
-		List<JSONObject> clas = gestionInstitucionalService.proyectosPorClase(clase);
-		salida.add(clas);
-		return salida;	
+		List<Proyecto> pro = gestionInstitucionalService.proyectosPorClase(clase);
+		for (Iterator iterator = pro.iterator(); iterator.hasNext();) {
+			Proyecto proyecto = (Proyecto) iterator.next();
+			salida.add(proyecto.toJson());
+		}
+		return salida;
 	}
 	
 	@PostMapping(value = "/desasignarproyectodeclase")
@@ -500,6 +526,7 @@ public class GestionInstitucionalController {
 		return salida;
 	}
 	
+	//CONVOCATORIAS////////////////////////////
 	@GetMapping(value = "/convocatoriasestado/{estado}")
 	public JSONArray listarLosProyectosDeClase(@PathVariable String estado) {
 		
@@ -509,6 +536,137 @@ public class GestionInstitucionalController {
 			salida.add(convocatoria.toJson());
 		}
 		return salida;
+	}
+	
+	@GetMapping(value = "/convocatoriaporid/{id}")
+	public JSONObject listarPorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();	
+		if(gestionInstitucionalService.convocatoriaPorID(id) !=null) {
+			Convocatoria con = gestionInstitucionalService.convocatoriaPorID(id);
+			return con.toJson();
+		}
+		else {
+			return x;
+		}	
+	}
+	//LINEAS/////////////////////////////////////////////
+	
+	
+	@GetMapping(value = "/listarlineas")
+	public JSONArray listarLineas() {
+
+		JSONArray salida = new JSONArray(); 
+		List<LineaInvestigacion> li = gestionInstitucionalService.todasLasLineas();
+		for(LineaInvestigacion linea : li) {
+			salida.add(linea.toJson());
+		}	
+		return salida;		
+	}
+	@PostMapping(value = "/crearlinea")
+	public boolean crearLinea(@RequestBody LineaInvestigacion linea) {		
+		boolean salida = gestionInstitucionalService.crearLinea(linea);	
+		return salida;
+	}
+	@GetMapping(value = "/eliminarlinea/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String eliminarMateria(@PathVariable String nombre) {		
+		if(gestionInstitucionalService.eliminarLinea(nombre)) {
+			return"eliminado con Exito";			
+		}
+		return "no se pudo eliminar";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//AREAS//////////////////////////////////////////////////
+	@GetMapping(value = "/listarareas")
+	public JSONArray listarAreas() {
+
+		JSONArray salida = new JSONArray(); 
+		List<AreaConocimiento> are = gestionInstitucionalService.todasLasAreasConocimiento();
+		for(AreaConocimiento area : are) {
+			salida.add(area.toJson());
+		}	
+		return salida;		
+	}
+	
+	@PostMapping(value = "/creararea")
+	public JSONObject crearArea(@RequestBody JSONObject entrada) {		
+		JSONObject salida = new JSONObject();
+		AreaConocimiento area =  new AreaConocimiento(Integer.parseInt(entrada.getAsString("id")),
+				entrada.getAsString("nombre"),
+				entrada.getAsString("descripcion"));
+
+		if (gestionInstitucionalService.crearArea(area,entrada.getAsString("gran_area"))) {
+
+			salida.put("respuesta", "se creo la area");
+
+		} else {
+			salida.put("respuesta", "no se pudo crear");
+		}
+
+		return salida;
+	}
+	
+	@GetMapping(value = "/eliminararea/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String eliminarArea(@PathVariable int id) {		
+		if(gestionInstitucionalService.eliminarArea(id)) {
+			return"eliminado con Exito";			
+		}
+		return "no se pudo eliminar";
+	}
+	
+	
+	
+	
+	
+	
+	//EVENTOS////////////////////////////////////////////////
+	@GetMapping(value = "/listareventos")
+	public JSONArray listarEventos() {
+
+		JSONArray salida = new JSONArray(); 
+		List<Evento> eve = gestionInstitucionalService.todosLosEventos();
+		for(Evento evento : eve) {
+			salida.add(evento.toJson());
+		}	
+		return salida;		
+	}
+	
+	
+	
+	@PostMapping(value = "/crearevento")
+	public JSONObject crearEvento(@RequestBody JSONObject entrada) {		
+		JSONObject salida = new JSONObject();
+		Evento evento =  new Evento(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("nombre"), LocalDate.parse( entrada.getAsString("fecha")), entrada.getAsString("estado"));
+
+		if (gestionInstitucionalService.crearEvento(evento,entrada.getAsString("entidad"),entrada.getAsString("sitio_web"),entrada.getAsString("url_memoria"))) {
+
+			salida.put("respuesta", "se creo la area");
+
+		} else {
+			salida.put("respuesta", "no se pudo crear");
+		}
+
+		return salida;
+	}
+	
+	
+	@GetMapping(value = "/eliminarevento/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String eliminarEvento(@PathVariable int id) {		
+		if(gestionInstitucionalService.eliminarEvento(id)) {
+			return"eliminado con Exito";			
+		}
+		return "no se pudo eliminar";
 	}
 
 

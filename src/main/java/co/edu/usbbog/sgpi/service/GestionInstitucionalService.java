@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Convocatoria;
+import co.edu.usbbog.sgpi.model.Evento;
 import co.edu.usbbog.sgpi.model.Facultad;
 import co.edu.usbbog.sgpi.model.GrupoInvestigacion;
 import co.edu.usbbog.sgpi.model.LineaInvestigacion;
@@ -19,8 +21,10 @@ import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.Usuario;
+import co.edu.usbbog.sgpi.repository.IAreaConocimientoRepository;
 import co.edu.usbbog.sgpi.repository.IClaseRepository;
 import co.edu.usbbog.sgpi.repository.IConvocatoriaRepository;
+import co.edu.usbbog.sgpi.repository.IEventoRepository;
 import co.edu.usbbog.sgpi.repository.IFacultadRepository;
 import co.edu.usbbog.sgpi.repository.IGrupoInvestigacionRepository;
 import co.edu.usbbog.sgpi.repository.ILineaInvestigacionRepository;
@@ -29,6 +33,7 @@ import co.edu.usbbog.sgpi.repository.IProgramaRepository;
 import co.edu.usbbog.sgpi.repository.IProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ISemilleroRepository;
 import co.edu.usbbog.sgpi.repository.IUsuarioRepository;
+import javassist.expr.NewArray;
 import net.minidev.json.JSONObject;
 
 @Service
@@ -63,6 +68,14 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	
 	@Autowired
 	private IConvocatoriaRepository convocatoriaRepo;
+	
+	@Autowired
+	private IAreaConocimientoRepository areaRepo;
+	
+	@Autowired
+	private IEventoRepository eventoRepo;
+	
+
 
 	private static Logger logger = LoggerFactory.getLogger(BibliotecaService.class);
 
@@ -74,8 +87,8 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 	@Override
 	public boolean eliminarGrupoInvestigacion(int id) {
-		List<JSONObject> programa = grupoIRepo.findByPrograma(id);
-		List<JSONObject> linea = grupoIRepo.findByLinea(id);
+		JSONObject programa = grupoIRepo.findByPrograma(id);
+		JSONObject linea = grupoIRepo.findByLinea(id);
 		boolean grupo = grupoIRepo.existsById(id);		
 		List<JSONObject> x = new ArrayList<JSONObject>();
 		if(programa.isEmpty() && linea.isEmpty() && grupo ==true) {
@@ -89,9 +102,10 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 	@Override
 	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
+		/*
 		if (grupoIRepo.existsById(grupoInvestigacion.getId())) {
 			return false;
-		}
+		}*/
 		grupoIRepo.save(grupoInvestigacion);
 		return true;
 	}
@@ -109,7 +123,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		Programa pro = programaRepo.getById(programa);
 		GrupoInvestigacion grupoInvestigacion = grupoIRepo.getById(grupo_investigacion);
 		System.out.println(grupoInvestigacion);
-		grupoInvestigacion.setProgramas(new ArrayList<>());		
+		//grupoInvestigacion.setProgramas(new ArrayList<>());		
 		grupoInvestigacion.getProgramas().add(pro);
 		grupoIRepo.save(grupoInvestigacion);
 		return true;
@@ -130,14 +144,13 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 	
 	@Override
-	public List<JSONObject> programaDelGrupo(int grupo_investigacion) {
-		List<JSONObject> x= new ArrayList<>();
-		if(!grupoIRepo.existsById(grupo_investigacion)) {
-			System.out.println("no existe el grupo");
-			return x;
-		}		
-		List<JSONObject> grupo = grupoIRepo.findByPrograma(grupo_investigacion);
-		return grupo;
+	public List<Programa> programaDelGrupo(int grupo_investigacion) {
+		GrupoInvestigacion grupo = grupoIRepo.getById(grupo_investigacion);
+		List<Programa> programas = grupo.getProgramas();
+		if(programas == null) {
+			programas = new ArrayList<Programa>();
+		}
+		return programas;
 	}
 
 	@Override
@@ -152,7 +165,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}
 		LineaInvestigacion linea = lineaRepo.getById(linea_investigacion);
 		GrupoInvestigacion grupoInvestigacion = grupoIRepo.getById(grupo_investigacion);
-		grupoInvestigacion.setLineasInvestigacion(new ArrayList<>());	
+		//grupoInvestigacion.setLineasInvestigacion(new ArrayList<>());	
 		grupoInvestigacion.getLineasInvestigacion().add(linea);
 		grupoIRepo.save(grupoInvestigacion);
 		return true;
@@ -160,14 +173,15 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	
 	
 	@Override
-	public List<JSONObject> lineaDelGrupo(int grupo_investigacion) {
-		List<JSONObject> x= new ArrayList<>();
-		if(!grupoIRepo.existsById(grupo_investigacion)) {
-			System.out.println("no existe el grupo");
-			return x;
-		}		
-		List<JSONObject> grupo = grupoIRepo.findByLinea(grupo_investigacion);
-		return grupo;
+	public List<LineaInvestigacion> lineaDelGrupo(int grupo_investigacion) {
+		GrupoInvestigacion grupo = grupoIRepo.getById(grupo_investigacion); 
+		List<LineaInvestigacion> lineas = grupo.getLineasInvestigacion();
+		
+		if(lineas == null) {
+			lineas = new ArrayList<LineaInvestigacion>();	
+		}
+		return lineas;
+		
 	}
 	
 	@Override
@@ -289,14 +303,13 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 	
 	@Override
-	public List<JSONObject> programaDelSemillero(int semillero) {
-		List<JSONObject> x= new ArrayList<>();
-		if(!semilleroRepo.existsById(semillero)) {
-			System.out.println("no existe el semillero");
-			return x;
+	public List<Programa> programaDelSemillero(int semillero) {
+		Semillero semi = semilleroRepo.getById(semillero);
+		List<Programa> programas = semi.getProgramas();
+		if(programas.equals(null)) {
+			programas = new ArrayList<Programa>();
 		}		
-		List<JSONObject> semi = semilleroRepo.findByPrograma(semillero);
-		return semi;
+		return programas;
 	}
 	/*
 	@Override
@@ -386,37 +399,39 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 	
 	@Override
-	public boolean crearPrograma(Programa programa, int facultad) {
+	public boolean crearPrograma(Programa programa, int facultad, String director) {
 		Facultad facul = facultadRepo.getById(facultad);
-		System.out.println("facultad    "+facul);
 		if(facul == null) {
 			return false;
 		}
+		Usuario direc = usuarioRepo.getById(director);
+		if(direc == null) {
+			return false;
+		}
 		programa.setFacultadId(facul);
+		programa.setDirector(direc);
 		programaRepo.save(programa);
 		return true;
 	}
 	
 	
 	@Override
-	public List<JSONObject> gruposDelPrograma(int grupo_investigacion) {
-		List<JSONObject> x= new ArrayList<>();
-		if(!programaRepo.existsById(grupo_investigacion)){
-			System.out.println("no existe el grupo");
-			return x;
+	public List<GrupoInvestigacion> gruposDelPrograma(int programa) {
+		Programa pro = programaRepo.getById(programa);
+		List<GrupoInvestigacion> grupos = pro.getGruposInvestigacion();
+		if(grupos.equals(null)) {
+			grupos = new ArrayList<GrupoInvestigacion>();
 		}
-		List<JSONObject> grupos = programaRepo.findByGrupo(grupo_investigacion);
 		return grupos;
 	}
 
 	@Override
-	public List<JSONObject> semillerosDelPrograma(int grupo_investigacion) {
-		List<JSONObject> x= new ArrayList<>();
-		if(!programaRepo.existsById(grupo_investigacion)){
-			System.out.println("no existe el grupo");
-			return x;
+	public List<Semillero> semillerosDelPrograma(int programa) {
+		Programa pro = programaRepo.getById(programa);
+		List<Semillero> semilleros = pro.getSemilleros();
+		if(semilleros.equals(null)) {
+			semilleros = new ArrayList<Semillero>();			
 		}
-		List<JSONObject> semilleros = programaRepo.findBySemillero(grupo_investigacion);
 		return semilleros;
 	}
 	
@@ -440,6 +455,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public boolean eliminarMateria(String catalogo) {
 		List<JSONObject> clase = materiaRepo.findByClase(catalogo);
+		
 		boolean materia = materiaRepo.existsById(catalogo);
 		if(clase.isEmpty() && materia == true) {
 			materiaRepo.deleteById(catalogo);
@@ -498,12 +514,18 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 	
 	@Override
-	public boolean crearClase(Clase clase, String materia) {
+	public boolean crearClase(Clase clase, String materia, String profesor) {
 		Materia mate = materiaRepo.getById(materia);
 		if(mate == null) {
 			return false; 	
 		}
+		Usuario pro = usuarioRepo.getById(profesor);
+		if(pro == null) {
+			return false;
+		}
+		
 		clase.setMateria(mate);
+		clase.setProfesor(pro);
 		claseRepo.save(clase);
 		return true;
 	}
@@ -529,13 +551,12 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 
 	@Override
-	public List<JSONObject> proyectosPorClase(int clase) {
-		List<JSONObject> x= new ArrayList<>();
-		if(!claseRepo.existsById(clase)){
-			System.out.println("no la clase");
-			return x;
+	public List<Proyecto> proyectosPorClase(int clase) {
+		Clase cla = claseRepo.getById(clase);
+		List<Proyecto> proyectos = cla.getProyectos();
+		if(proyectos.equals(null)) {
+			proyectos = new ArrayList<Proyecto>();
 		}
-		List<JSONObject> proyectos = claseRepo.findByProyecto(clase);
 		return proyectos;
 	}
 
@@ -560,7 +581,108 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		List<Convocatoria> con= convocatoriaRepo.findByEstadoAbierto(estado);
 		return con;
 	}
-
+	
+	@Override
+	public Convocatoria convocatoriaPorID(int id) {
+		if(convocatoriaRepo.existsById(id)) {
+			Convocatoria convocatoria = convocatoriaRepo.getById(id);
+			return convocatoria;
+		}
+		return null;
+	}
+	
+	//lineas////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public List<LineaInvestigacion> todasLasLineas() {
+		List<LineaInvestigacion> lineas = lineaRepo.findAll();
+		
+		return lineas;
+	} 
+	@Override
+	public boolean crearLinea(LineaInvestigacion linea) {
+		lineaRepo.save(linea);
+		return lineaRepo.existsById(linea.getNombre());
+	}
+	@Override
+	public boolean eliminarLinea(String nombre) {
+		List<Semillero> semilleros= semilleroRepo.findByLineaInvestigacion(nombre);
+		List<JSONObject> grupos = lineaRepo.findByGrupoInvestigacion(nombre);
+		boolean linea = lineaRepo.existsById(nombre);
+		if(semilleros.isEmpty() && linea == true && grupos.isEmpty()) {
+			lineaRepo.deleteById(nombre);
+			return true;
+			}
+		return false;
+	}
+	
+	
+	
+	
+	
+	//Areas de conocimiento////////////////////////////////////////////////////////////////////////////
+	@Override
+	public List<AreaConocimiento> todasLasAreasConocimiento() {
+		List<AreaConocimiento> areas = areaRepo.findAll();	
+		return areas;
+	}
+	@Override
+	public boolean crearArea(AreaConocimiento area, String gran_area) {
+		
+		area.setGranArea(gran_area);
+		areaRepo.save(area);
+		return true;
+	}
+	@Override
+	public boolean eliminarArea(int id) {
+		List<JSONObject> proyectos = areaRepo.findByProyecto(id);
+		boolean area = areaRepo.existsById(id);
+		if(proyectos.isEmpty() && area == true ) {
+			areaRepo.deleteById(id);
+			return true;
+			}
+		return false;
+	}
+	
+	
+	
+	
+	
+	//EVENTOS ////////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public List<Evento> todosLosEventos() {
+		List<Evento> eventos = eventoRepo.findAll();	
+		return eventos;
+	}
+	@Override
+	public boolean crearEvento(Evento evento, String entidad, String sitio_web, String url_memoria) {
+		evento.setEntidad(entidad);
+		evento.setSitioWeb(sitio_web);
+		evento.setUrlMemoria(url_memoria);
+		eventoRepo.save(evento);
+		return eventoRepo.existsById(evento.getId());
+	}
+	@Override
+	public boolean eliminarEvento(int id) {
+		List<JSONObject> participaciones = eventoRepo.findByParticipaciones(id);
+		boolean evento = eventoRepo.existsById(id);
+		if(participaciones.isEmpty() && evento == true ) {
+			eventoRepo.deleteById(id);
+			return true;
+			}
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// METODOS DE SI EXISTE
 	@Override
 	public boolean existeUsuario(String cedula) {
@@ -573,21 +695,22 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 	@Override
 	public List<Usuario> usuariosPorSemillero(int semillero) {
-		List<Usuario> x = new ArrayList<>();
-		if(!semilleroRepo.existsById(semillero)){
-			return x;
+		Semillero semi = semilleroRepo.getById(semillero);
+		List<Usuario> usuarios = semi.getUsuarios();
+		if(usuarios.equals(null)) {
+			usuarios = new ArrayList<Usuario>();
 		}
-		List<Usuario> usuarios = semilleroRepo.findByUsuarios(semillero);
 		return usuarios;	
 	}
 
 	@Override
 	public List<Proyecto> proyectosPorSemillero(int semillero) {
-		List<Proyecto> x = new ArrayList<>();
-		if(!semilleroRepo.existsById(semillero)){
-			return x;
+		Semillero semi = semilleroRepo.getById(semillero);
+		List<Proyecto> proyectos = semi.getProyectos();	
+		if(proyectos.equals(null)) {
+			proyectos = new ArrayList<Proyecto>();
 		}
-		List<Proyecto> proyectos = semilleroRepo.findByProyectos(semillero);
+
 		return proyectos;	
 	}
 

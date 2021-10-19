@@ -17,7 +17,7 @@ import co.edu.usbbog.sgpi.repository.ITipoProyectoRepository;
 
 
 @Service
-public class GestionFiltroProyectos implements IGestionFiltroProyectosService{
+public class GestionFiltroProyectosService implements IGestionFiltroProyectosService{
 
 	@Autowired
 	private IProyectoRepository proyectoRepo;

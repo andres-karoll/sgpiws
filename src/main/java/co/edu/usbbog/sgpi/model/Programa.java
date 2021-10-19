@@ -214,6 +214,14 @@ public class Programa implements Serializable {
     	JSONObject programaJson=new JSONObject();
     	programaJson.put("id",this.getId());
     	programaJson.put("nombre",this.getNombre());
+    	programaJson.put("facultad",this.getFacultadId().getNombre());
+    	//programaJson.put("facultad",this.getDirector().getNombres());
+    	if(this.getDirector()==null) {
+    		programaJson.put("director","NO TIENE DIRECTOR");
+    	}else {
+    		programaJson.put("director",this.getDirector().getNombres());
+    	}
+    	
     	return programaJson;
     }
     @Override

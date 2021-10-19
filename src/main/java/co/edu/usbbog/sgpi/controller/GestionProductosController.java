@@ -1,6 +1,7 @@
 package co.edu.usbbog.sgpi.controller;
 
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,15 +41,16 @@ public class GestionProductosController {
 		return salida;		
 	}
 	
-	@GetMapping(value = "/listarproductosporproyecto/{proyecto}")
+	@GetMapping(value = "/listarproductosproyecto/{proyecto}")
 	public JSONArray listaProductosPorProyecto(@PathVariable int proyecto) {
 		
 		JSONArray salida = new JSONArray(); 
 		List<Producto> pro = gestionProductos.todosLosProductosPorProyecto(proyecto);
-		for (Producto producto : pro) {
-			salida.add(producto.toJson()) ;
+		
+		for (Iterator iterator = pro.iterator(); iterator.hasNext();) {
+			Producto producto = (Producto) iterator.next();
+			salida.add(producto.toJson());
 		}
-		System.out.println(salida);
 		return salida;		
 	}
 	
@@ -85,10 +87,10 @@ public class GestionProductosController {
 		
 		JSONArray salida = new JSONArray(); 
 		List<Comentario> comen = gestionProductos.ComentariosPorProducto(producto_id);
-		for (Comentario comentario : comen) {
-			salida.add(comentario.toJson()) ;
+		for (Iterator iterator = comen.iterator(); iterator.hasNext();) {
+			Comentario comentario = (Comentario) iterator.next();
+			salida.add(comentario.toJson());
 		}
-		System.out.println(comen);
 		return salida;		
 	}
 	

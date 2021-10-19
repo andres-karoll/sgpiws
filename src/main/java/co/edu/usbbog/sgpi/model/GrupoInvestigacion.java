@@ -231,7 +231,11 @@ public class GrupoInvestigacion implements Serializable {
     	grupoInvestigacionJson.put("fecha_fun",this.getFechaFun());
     	grupoInvestigacionJson.put("categoria",this.getCategoria());
     	grupoInvestigacionJson.put("fecha_cat",this.getFechaCat());
-    	
+    	if(this.getDirectorGrupo()==null) {
+    		grupoInvestigacionJson.put("director_grupo","NO TIENE DIRECTOR ASIGNADO");
+    	}else {
+    		grupoInvestigacionJson.put("director_grupo",this.getDirectorGrupo().getNombres());
+    	}
     	return grupoInvestigacionJson;
     	
     }

@@ -218,6 +218,24 @@ public class Semillero implements Serializable {
     	semilleroJson.put("nombre",this.getNombre());
     	semilleroJson.put("descripcion",this.getDescripcion());
     	semilleroJson.put("fecha_fun",this.getFechaFun());
+    	if(this.getGrupoInvestigacion()==null) {
+    		semilleroJson.put("grupo_investigacion","NO TIENE GRUPO DE INVESTIGACIÓN");
+    	}else {
+    		semilleroJson.put("grupo_investigacion",this.getGrupoInvestigacion().getNombre());
+    	}
+    	if(this.getLineaInvestigacion()==null) {
+    		semilleroJson.put("linea_investigacion","NO TIENE LINEA DE INVESTIGACIÓN");
+    	}else {
+    		semilleroJson.put("linea_investigacion",this.getLineaInvestigacion().getNombre());
+    	}
+
+    	if(this.getLiderSemillero()==null) {
+    		semilleroJson.put("lider_semillero","NO TIENE LIDER DE SEMILLERO");
+    	}else {
+    		semilleroJson.put("lider_semillero",this.getLiderSemillero().getNombres());
+    	}
+    	
+    	
     	return semilleroJson;
     }
 

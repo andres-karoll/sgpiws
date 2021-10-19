@@ -16,7 +16,7 @@ import co.edu.usbbog.sgpi.repository.IProductoRepository;
 import co.edu.usbbog.sgpi.repository.IProyectoRepository;
 
 @Service
-public class GestionProductos implements IGestionProductosService{
+public class GestionProductosService implements IGestionProductosService{
 
 	@Autowired
 	private IProductoRepository productoRepo;
@@ -36,13 +36,11 @@ public class GestionProductos implements IGestionProductosService{
 	@Override
 	public List<Producto> todosLosProductosPorProyecto(int proyecto) {
 		Proyecto pro = proyectoRepo.getById(proyecto);
-		List<Producto> x = new ArrayList<>();
-		if(pro != null) {
-			List<Producto> productos = productoRepo.findByProyecto(proyecto);
-			return productos;
-		}else {
-			return x;
+		List<Producto> productos = pro.getProductos();
+		if(productos.equals(null)) {
+			productos = new ArrayList<Producto>();
 		}
+		return productos;
 	}
 	
 
@@ -72,12 +70,11 @@ public class GestionProductos implements IGestionProductosService{
 	@Override
 	public List<Comentario> ComentariosPorProducto(int producto_id) {
 		Producto pro = productoRepo.getById(producto_id);
-		List<Comentario> x = new ArrayList<>();
-		if(pro != null) {
-			List<Comentario> comentarios = comentarioRepo.findByProducto(producto_id);
-			return comentarios;
+		List<Comentario> comentarios = pro.getComentarios();
+		if(comentarios.equals(null)) {
+			 comentarios = new ArrayList<Comentario>();
 		}
-		return x;
+		return comentarios;
 	}
 
 	@Override

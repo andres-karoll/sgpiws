@@ -56,14 +56,9 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 
 	@Override
 	public boolean crearPresupuesto(Presupuesto presupuesto) {
-		if(presupuestoRepo.existsById(presupuesto.getId())) {
-			System.out.println("ya existe y no se puede guardar");
-			return false;
-			
-		}else {
-		System.out.println(" se guardado");
+
 		presupuestoRepo.save(presupuesto);
-		return true;}
+		return presupuestoRepo.existsById(presupuesto.getId());
 	}
 
 	

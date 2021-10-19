@@ -145,8 +145,17 @@ public class Facultad implements Serializable {
     	JSONObject facultadJson=new JSONObject();
     	facultadJson.put("id",this.getId());
     	facultadJson.put("nombre",this.getNombre());
-    	facultadJson.put("coor_inv",this.getCoorInv());
-    	facultadJson.put("decano",this.getDecano());
+    	
+    	if(this.getCoorInv()==null) {
+    		facultadJson.put("coor_inv","NO TIENE UN COORDINADOR ASGINADO");
+    	}else {
+    		facultadJson.put("coor_inv",this.getCoorInv().getNombres());
+    	}
+    	if(this.getDecano()==null) {
+    		facultadJson.put("decano","NO TIENE UN DECANO ASIGNADO");
+    	}else {
+    		facultadJson.put("decano",this.getDecano().getNombres());
+    	}
     	
     	return facultadJson;
     	
