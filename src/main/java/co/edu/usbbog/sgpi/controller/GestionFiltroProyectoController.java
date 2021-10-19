@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbbog.sgpi.model.Proyecto;
+import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.service.IGestionFiltroProyectosService;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -59,6 +60,15 @@ public class GestionFiltroProyectoController {
 		List<Proyecto> proyectos = gestionFiltroProyectosService.todosLosProyectosPorNombre(titulo);
 		for (Proyecto proyecto : proyectos) {
 			salida.add(proyecto.toJson()) ;
+		}
+		return salida;		
+	}
+	@GetMapping(value = "/todoslostiposproyecto")
+	public JSONArray todosLosTiposProyecto() {		
+		JSONArray salida = new JSONArray(); 
+		List<TipoProyecto> tipos = gestionFiltroProyectosService.todosLosTiposProyecto();
+		for (TipoProyecto tipo : tipos) {
+			salida.add(tipo.toJson()) ;
 		}
 		return salida;		
 	}

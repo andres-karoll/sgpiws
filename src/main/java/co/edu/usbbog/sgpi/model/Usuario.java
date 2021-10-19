@@ -88,8 +88,8 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "programa_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Programa programaId;
-    @JoinColumn(name = "semillero_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "semillero_id", referencedColumnName = "id",nullable = true)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Semillero semilleroId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "coorInv")
     private List<Facultad> coorIncFacultad;
@@ -386,9 +386,9 @@ public class Usuario implements Serializable {
     		usuarioJson.put("semillero_id",this.getSemilleroId().getId());
     	}
     	if(this.getProgramaId()==null) {
-    		usuarioJson.put("programa_id","");
+    		usuarioJson.put("programa","");
     	}else {
-    		usuarioJson.put("programa_id",this.getProgramaId().getId());
+    		usuarioJson.put("programa",this.getProgramaId().getNombre());
     	}
     	return usuarioJson;
     	

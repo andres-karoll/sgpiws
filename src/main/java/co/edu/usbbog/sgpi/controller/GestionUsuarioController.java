@@ -35,7 +35,6 @@ import net.minidev.json.JSONObject;
 public class GestionUsuarioController {
 	@Autowired
 	private IGestionUsuariosService iGestionUsuariosService;
-
 	// usuario
 	@GetMapping("/listarusuarios")
 	public JSONArray getAllUsuarios() {
@@ -61,16 +60,12 @@ public class GestionUsuarioController {
 	@GetMapping("/buscarusuario/{cedula}")
 	public JSONObject buscarUsuario(@PathVariable String cedula) {
 		Usuario usuario = iGestionUsuariosService.buscarUsuario(cedula);
+		
 		JSONObject salida = usuario.toJson();
 		if (usuario.getSemilleroId() != null) {
 			salida.put("semillero_id", usuario.getSemilleroId().getId());
 		} else {
 			salida.put("semillero_id", "este usuario no tiene semillero");
-		}
-		if (usuario.getProgramaId() != null) {
-			salida.put("programa_id", usuario.getProgramaId().getId());
-		} else {
-			salida.put("programa_id", "este usuario no tiene programa");
 		}
 		return salida;
 	}
@@ -85,14 +80,21 @@ public class GestionUsuarioController {
 	@PostMapping("/guardarusuario")
 	public JSONObject guardarUsuario(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
+		 String tipoUsuario="";
 		Usuario usuario = new Usuario(entrada.getAsString("cedula"),
 				Integer.parseInt(entrada.getAsString("codUniversitario")), entrada.getAsString("correoEst"),
 				entrada.getAsString("contrasena"), entrada.getAsString("nombres"), entrada.getAsString("apellidos"),
 				entrada.getAsString("visibilidad"));
 		usuario.setTelefono(entrada.getAsString("telefono"));
-		usuario.setCorreoPersonal(entrada.getAsString("correopersonal"));
-		if (iGestionUsuariosService.crearUsuario(usuario, entrada.getAsString("semillero"),
-				entrada.getAsString("programa"), entrada.getAsString("tipousuario"))) {		
+		
+		usuario.setCorreoPersonal(entrada.getAsString("correoPersonal"));
+		if ( entrada.getAsString("correoEst").contains("@") && ( entrada.getAsString("correoEst").contains("academia.usbbog.edu.co")))    {
+		   tipoUsuario="estudiante";
+		}else if( entrada.getAsString("correoEst").contains("@") && ( entrada.getAsString("correoEst").contains("usbbog.edu.co"))){
+			tipoUsuario="Profesor";
+		}
+		if (iGestionUsuariosService.crearUsuario(usuario,
+				entrada.getAsString("programa"),tipoUsuario)) {		
 				salida.put("respuesta", "usuario creado");
 
 		} else {
@@ -100,6 +102,17 @@ public class GestionUsuarioController {
 		}
 		return salida;
 	}
+	@PostMapping("/modificarusuario")
+	public JSONObject modificarUsuario(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(iGestionUsuariosService.modificarUsuario(entrada.getAsString("cedula"),entrada.getAsString("telefono"),entrada.getAsString("clave"),entrada.getAsString("correoP"))) {
+			salida.put("respuesta", "el usuario fue actualizado");
+		}else {
+			salida.put("respuesta", "el usuario no fue actualizado");
+		}
+		return salida;
+	}
+
 
 	@GetMapping("/existesemillero/{id}")
 	public boolean isExistSemillero(@PathVariable Integer id) {
@@ -306,10 +319,36 @@ public class GestionUsuarioController {
 			return false;
 		}
 	}
-	@GetMapping("/login")
+	@PostMapping("/login")
 	private JSONObject Login(@RequestBody JSONObject entrada) {
-		JSONObject salida= iGestionUsuariosService.login(entrada.getAsString("correoEstudiantil"),entrada.getAsString("contrasena"));
+		JSONObject salida=new JSONObject();
+		salida= iGestionUsuariosService.login(entrada.getAsString("correoEstudiantil"),entrada.getAsString("contrasena"),entrada.getAsString("tipoUsuario")); 
+		if(salida.equals(null)) {
+			return salida;
+		}else {
 		return salida;
 	}
+		}
 	
-}
+	@GetMapping("/roles/{cedula}")
+	private JSONArray roles(@PathVariable String cedula) {
+		JSONArray salida = new JSONArray();
+		List<TipoUsuario> tiposUsuario = iGestionUsuariosService.roles(cedula);
+		for (Iterator iterator = tiposUsuario.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			salida.add(tipoUsuario.toJson());
+		}
+		return salida;
+	}
+	@GetMapping("/todosroles")
+	private JSONArray todosRoles() {
+		JSONArray salida = new JSONArray();
+		List<TipoUsuario> tiposUsuario = iGestionUsuariosService.todosLosRoles();
+		for (Iterator iterator = tiposUsuario.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			salida.add(tipoUsuario.toJson());
+		}
+		return salida;
+	}
+	}
+

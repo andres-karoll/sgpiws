@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.usbbog.sgpi.model.AreaConocimiento;
+import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.LineaInvestigacion;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.Semillero;
@@ -14,6 +15,7 @@ import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.repository.IAreaConocimientoRepository;
 import co.edu.usbbog.sgpi.repository.IProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ITipoProyectoRepository;
+import co.edu.usbbog.sgpi.repository.ITipoUsuarioRepository;
 
 
 @Service
@@ -27,7 +29,8 @@ public class GestionFiltroProyectos implements IGestionFiltroProyectosService{
 	
 	@Autowired
 	private IAreaConocimientoRepository areaRepo;
-
+	@Autowired
+	private ITipoProyectoRepository iTipoProyectoRepository;
 	
 	@Override
 	public List<Proyecto> todosLosProyectos() {
@@ -86,6 +89,15 @@ public class GestionFiltroProyectos implements IGestionFiltroProyectosService{
 	public List<Proyecto> todosLosProyectosPorLinea(String lineainvestigacion) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<TipoProyecto> todosLosTiposProyecto() {
+		List<TipoProyecto> tipo=iTipoProyectoRepository.findAll();
+		if (tipo.equals(null)) {
+			tipo = new ArrayList<TipoProyecto>();
+		}
+		return tipo;
 	}
 
 	

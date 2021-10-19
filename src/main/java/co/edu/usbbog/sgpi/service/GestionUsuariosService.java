@@ -77,24 +77,22 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	}
 
 	@Override
-	public boolean crearUsuario(Usuario usuario, String semillero, String programa, String tipousuario) {
+	public boolean crearUsuario(Usuario usuario, String programa, String tipousuario) {
 		if (existeUsuario(usuario.getCedula())) {
 			return false;
 		}
 		TipoUsuario tp = iTipoUsuarioRepository.getById(tipousuario);
 		Programa pro = iProgramaRepository.getById(Integer.parseInt(programa));
+		if (pro == null) {
+			return false;
+		}
 		try {
-			Semillero se = iSemilleroRepository.getById(Integer.parseInt(semillero));
-			if (se != null) {
-				usuario.setSemilleroId(se);
-			} else {
-				usuario.setSemilleroId(null);
-			}
+			usuario.setSemilleroId(null);
 		} catch (Exception e) {
 			usuario.setSemilleroId(null);
 		}
-		if (pro == null) {
-			return false;
+		finally {
+			usuario.setSemilleroId(null);
 		}
 		usuario.setProgramaId(pro);
 		tp.getUsuarios().add(usuario);
@@ -251,9 +249,12 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	}
 
 	@Override
-	public JSONObject login(String correo, String contrasena) {
+	public JSONObject login(String correo, String contrasena,String tipo) {
 		JSONObject salida = new JSONObject();
-		salida = iUsuarioRepository.Login(correo, contrasena);
+		Usuario usu = iUsuarioRepository.getByCorreo(correo);
+		TipoUsuario tips= iTipoUsuarioRepository.getById(tipo);
+		List<TipoUsuario> tipos = usu.getTiposUsuario();
+		salida = iUsuarioRepository.Login(correo, contrasena,tipo);
 		return salida;
 	}
 
@@ -321,6 +322,42 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	public boolean cambiarContrasenaUsuario(String contrasena) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public List<TipoUsuario> roles(String cedula) {
+		Usuario usu = iUsuarioRepository.getById(cedula);
+		List<TipoUsuario> tiposUsuario = usu.getTiposUsuario();
+		if (tiposUsuario.equals(null)) {
+			tiposUsuario = new ArrayList<TipoUsuario>();
+		}
+		return tiposUsuario;
+	}
+
+	@Override
+	public boolean modificarUsuario(String cedula, String telefono, String clave, String correoP) {
+		Usuario usuario=iUsuarioRepository.getById(cedula);
+		if(clave!=null) {
+		usuario.setContrasena(clave);
+		}
+		if(correoP!=null){
+		usuario.setCorreoPersonal(correoP);
+		}
+		if(telefono!=null) {
+			usuario.setTelefono(telefono);
+		}
+		iUsuarioRepository.save(usuario);	
+		return iUsuarioRepository.existsById(usuario.getCedula());
+	}
+
+	@Override
+	public List<TipoUsuario> todosLosRoles() {
+		List<TipoUsuario> tipo = iTipoUsuarioRepository.findAll();
+		if (tipo.equals(null)) {
+			tipo = new ArrayList<TipoUsuario>();
+		}
+		return tipo;
+		
 	}
 
 }

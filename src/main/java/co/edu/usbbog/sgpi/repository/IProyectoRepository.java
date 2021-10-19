@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 
@@ -34,4 +36,6 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	
 	@Query(value = "SELECT * FROM sgpi_db.proyecto where titulo = ?1", nativeQuery = true)
 	List<Proyecto> findByTitulo(String titulo);
+	@Query(value="SELECT distinct id, titulo,descripcion,estado	,rol FROM sgpi_db.participantes,proyecto where proyecto.tipo_proyecto="+"'Aula'"+" and sgpi_db.participantes.usuario=?1",nativeQuery = true)
+	List<JSONObject> proyectosParticipa(String cedula);
 }

@@ -3,6 +3,7 @@ package co.edu.usbbog.sgpi.controller;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +57,18 @@ public class GestionProyectosAulaIntegradorController {
 
 	@PostMapping("/agregarParticipante")
 	public JSONObject agregarParticipante(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		Participantes participante = new Participantes(entrada.getAsString("usuario"),
+				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
+		if (iGestionProyectosAulaIntegradorService.crearParticipante(participante, entrada.getAsString("rol"))) {
+			salida.put("respuesta", "el participante fue agregado");
+		} else {
+			salida.put("respuesta", "el participante no pudo ser agregado");
+		}
+		return salida;
+	}
+	@PostMapping("/eliminarparticipante")
+	public JSONObject eliminarParticipante(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		Participantes participante = new Participantes(entrada.getAsString("usuario"),
 				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
@@ -254,5 +267,34 @@ public class GestionProyectosAulaIntegradorController {
 		}
 		return salida;
 	}
+	@GetMapping(value = "/listarporid/{id}")
+	public JSONObject listarPorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();
+		if(iGestionProyectosAulaIntegradorService.buscarProyecto(id) !=null) {
+			Proyecto pro = iGestionProyectosAulaIntegradorService.buscarProyecto(id);
+			return pro.toJson();
+		}
+		else {
+			return x;
+		}	
+	}
+	@GetMapping(value = "/proyectosAI/{cedula}")
+	public  List<JSONObject>  poryectosParparticipante(@PathVariable String cedula	) {
+		 List<JSONObject> x = iGestionProyectosAulaIntegradorService.proyectosParticipante(cedula);
+		 return x;
+		}	
+	@PostMapping(value = "/actualizarproyecto")
+	public  JSONObject ActualizarProyecto(@RequestBody JSONObject entrada	) {
+		JSONObject salida=new JSONObject();
+		
+		if(iGestionProyectosAulaIntegradorService.actualizarProyecto(Integer.parseInt( entrada.getAsString("id")),entrada.getAsString("titulo"),entrada.getAsString("descripcion"),entrada.getAsString("metodologia"),entrada.getAsString("justificacion"))) {
+			salida.put("respuesta", "Actualizacion exitosa");
+			
+		}else {
+			salida.put("respuesta", "Actualizacion no valida");
+			
+		}
+		return salida;
+		}	
 
 }

@@ -132,6 +132,11 @@ public class Materia implements Serializable {
     	JSONObject materiaJson=new JSONObject();
     	materiaJson.put("catalogo",this.getCatalogo());
     	materiaJson.put("nombre",this.getNombre());
+    	if (this.getPrograma()==null) {
+    		materiaJson.put("programa","esta materia no cuenta con un programa");
+		}else {
+			materiaJson.put("programa",this.getPrograma().getNombre());
+		}
     	return materiaJson;
     }
 }
