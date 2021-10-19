@@ -19,7 +19,7 @@ import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Proyecto;
-import co.edu.usbbog.sgpi.repository.ISemilleroRepository;
+
 import co.edu.usbbog.sgpi.service.IGestionProyectosInvestigacionService;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;

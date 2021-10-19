@@ -21,7 +21,7 @@ public interface IGestionUsuariosService {
 	//eliminar un usuario
 	public boolean eliminarUsuario(String cedula);
 	//crear un usuario
-	public boolean crearUsuario(Usuario usuario, String semillero, String programa, String tipousuario);
+	public boolean crearUsuario(Usuario usuario, String programa, String tipousuario);
 	//existe semillero
 	public boolean existeSemillero(Integer id);
 	//asignar un usuario a un semillero
@@ -69,7 +69,7 @@ public interface IGestionUsuariosService {
 	//remover director de grupo de investigacion
 	public boolean eliminarDirectorGrupo(String cedula, String grupo);
 	//Login
-	public JSONObject login(String correo, String contrasena);
+	public JSONObject login(String correo, String contrasena,String tipo);
 	//asignar tipo de usuario
 	boolean asignarTipoUsuario(Usuario usuario, TipoUsuario tipoUsuario);
 	
@@ -80,6 +80,9 @@ public interface IGestionUsuariosService {
 	//El sistema deberá permitir cambiar la contraseña del usuario de manera que él pueda escoger la contraseña de su preferencia
 	public boolean cambiarContrasenaUsuario(String contrasena);
 	//crear metodos para asignar decano, coordinador de investigaciones y director de facultad
+	public List<TipoUsuario> roles(String cedula);
+	public boolean modificarUsuario(String cedula,String telefono,String clave, String correoP);
+	public List<TipoUsuario> todosLosRoles();
 	
 	
 	

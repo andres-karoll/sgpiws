@@ -2,6 +2,7 @@ package co.edu.usbbog.sgpi.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,7 @@ import co.edu.usbbog.sgpi.repository.ISemilleroRepository;
 import co.edu.usbbog.sgpi.repository.ITipoProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ITipoUsuarioRepository;
 import co.edu.usbbog.sgpi.repository.IUsuarioRepository;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 @Service
@@ -202,7 +204,20 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		iParticipantesRepository.save(participante);
 		return iParticipantesRepository.existsById(participante.getParticipantesPK());
 	}
-
+	@Override
+	public boolean eliminarParticipante(Participantes participante, String fecha,int id,String cedula) {
+		Proyecto pro =iProyectoRepository.getById(id);
+		List<Participantes> part= pro.getParticipantes();
+		Usuario usu=iUsuarioRepository.getById(cedula);
+		for (Iterator iterator = part.iterator(); iterator.hasNext();) {
+			Participantes participantes = (Participantes) iterator.next();
+		 if(participantes.getUsuario().getCedula().equals(usu.getCedula())) {
+			 participantes.setFechaFin(fecha);
+		 }	
+		}
+		return true;
+		
+	}
 	@Override
 	public boolean eliminarParticipante(LocalDate fecha_inicio) {
 		// TODO Auto-generated method stub
@@ -356,4 +371,32 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		return areas;
 	}
 
+	@Override
+	public List<JSONObject> proyectosParticipante(String cedula) {
+		List<JSONObject> x = iProyectoRepository.proyectosParticipa(cedula);
+		return x;
+	}
+
+	@Override
+	public boolean actualizarProyecto(int id, String titulo, String descripcion, String metodologia,
+			String justificacion) {
+
+		Proyecto pro=iProyectoRepository.getById(id);
+		if(titulo!=null) {
+			pro.setTitulo(titulo);
+		}
+		if(descripcion!=null) {
+			pro.setDescripcion(descripcion);
+		}
+		if(metodologia!=null) {
+			pro.setMetodologia(metodologia);
+		}
+		if(justificacion!=null) {
+			pro.setJustificacion(justificacion);
+		}
+		iProyectoRepository.save(pro);
+		return iProyectoRepository.existsById(pro.getId());
+	}
+	
+	
 }

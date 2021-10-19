@@ -126,7 +126,7 @@ public class Facultad implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+
         if (!(object instanceof Facultad)) {
             return false;
         }
@@ -145,17 +145,20 @@ public class Facultad implements Serializable {
     	JSONObject facultadJson=new JSONObject();
     	facultadJson.put("id",this.getId());
     	facultadJson.put("nombre",this.getNombre());
-    	
+
     	if(this.getCoorInv()==null) {
-    		facultadJson.put("coor_inv","NO TIENE UN COORDINADOR ASGINADO");
+    		facultadJson.put("coor_inv","no tiene un Coordinador de investigacion asignado");
+
     	}else {
     		facultadJson.put("coor_inv",this.getCoorInv().getNombres());
     	}
     	if(this.getDecano()==null) {
-    		facultadJson.put("decano","NO TIENE UN DECANO ASIGNADO");
+
+    		facultadJson.put("coor_inv","no tiene un Decano asignado");
     	}else {
-    		facultadJson.put("decano",this.getDecano().getNombres());
+    			facultadJson.put("decano",this.getDecano().getNombres());
     	}
+
     	
     	return facultadJson;
     	

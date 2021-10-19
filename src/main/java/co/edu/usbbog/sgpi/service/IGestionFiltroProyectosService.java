@@ -18,4 +18,5 @@ public interface IGestionFiltroProyectosService {
 	public List<Proyecto> todosLosProyectosPorNombre(String titulo);
 	//El sistema deberá contar con un filtro que evidencie la línea de investigación a la cual se está aplicando el proyecto.
 	public List<Proyecto> todosLosProyectosPorLinea(String lineainvestigacion);
+	public List<TipoProyecto> todosLosTiposProyecto();
 }

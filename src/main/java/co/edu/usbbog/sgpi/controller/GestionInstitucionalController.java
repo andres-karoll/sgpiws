@@ -1,7 +1,9 @@
 package co.edu.usbbog.sgpi.controller;
 
 import java.time.LocalDate;
+
 import java.util.Date;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -281,11 +283,11 @@ public class GestionInstitucionalController {
 	//FACULTADES
 	@GetMapping(value = "/listarfacultades")
 	public JSONArray listarFacultades() {
-		
 		JSONArray salida = new JSONArray(); 
 		List<Facultad> facul = gestionInstitucionalService.todasLasFacultades();
-		for (Facultad facultad : facul) {
-			salida.add(facultad.toJson()) ;
+		for (Iterator<Facultad> iterator = facul.iterator(); iterator.hasNext();) {
+			Facultad facultad = (Facultad) iterator.next();
+			salida.add(facultad.toJson());
 		}
 		return salida;		
 	}
@@ -354,7 +356,9 @@ public class GestionInstitucionalController {
 		Programa programa =  new Programa(	
 				Integer.parseInt(entrada.getAsString("id")), 
 				entrada.getAsString("nombre"));
+
 		if (gestionInstitucionalService.crearPrograma(programa, Integer.parseInt( entrada.getAsString("facultad_id")),entrada.getAsString("director"))) {
+
 
 			salida.put("respuesta", "se creo el programa");
 
@@ -449,7 +453,7 @@ public class GestionInstitucionalController {
 		}
 		return salida;		
 	}
-	
+		
 	@GetMapping(value = "/listarclasespormateria/{materia}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONArray listarProgramasPorMateria(@PathVariable String materia) {
 		JSONArray salida = new JSONArray(); 

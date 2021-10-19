@@ -113,7 +113,7 @@ public class Materia implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof Materia)) {
             return false;
         }
@@ -132,11 +132,13 @@ public class Materia implements Serializable {
     	JSONObject materiaJson=new JSONObject();
     	materiaJson.put("catalogo",this.getCatalogo());
     	materiaJson.put("nombre",this.getNombre());
-    	if(this.getPrograma()==null) {
-    		materiaJson.put("programa","NO TIENE PROGRAMA");
-    	}else {
-    		materiaJson.put("programa",this.getPrograma().getNombre());
-    	}
+
+    	if (this.getPrograma()==null) {
+    		materiaJson.put("programa","esta materia no cuenta con un programa");
+		}else {
+			materiaJson.put("programa",this.getPrograma().getNombre());
+		}
+
     	return materiaJson;
     }
 }

@@ -20,6 +20,7 @@ import co.edu.usbbog.sgpi.model.Materia;
 import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.Semillero;
+import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.Usuario;
 import co.edu.usbbog.sgpi.repository.IAreaConocimientoRepository;
 import co.edu.usbbog.sgpi.repository.IClaseRepository;
@@ -334,6 +335,10 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public List<Facultad> todasLasFacultades() {
 		List<Facultad> facultades = facultadRepo.findAll();
+		if (facultades.equals(null)) {
+			facultades = new ArrayList<Facultad>();
+		}
+		
 		return facultades;
 	}
 

@@ -175,13 +175,13 @@ public class Programa implements Serializable {
         this.usuarios = usuarios;
     }
     public Usuario addUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
+
 		getUsuarios().add(usuario);
 		usuario.setProgramaId(this);
 		return usuario;
 	}
     public Usuario removeUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
+
 		getUsuarios().remove(usuario);
 		usuario.setProgramaId(null);
 		return usuario;
@@ -197,7 +197,7 @@ public class Programa implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+
         if (!(object instanceof Programa)) {
             return false;
         }
@@ -214,14 +214,16 @@ public class Programa implements Serializable {
     	JSONObject programaJson=new JSONObject();
     	programaJson.put("id",this.getId());
     	programaJson.put("nombre",this.getNombre());
-    	programaJson.put("facultad",this.getFacultadId().getNombre());
-    	//programaJson.put("facultad",this.getDirector().getNombres());
     	if(this.getDirector()==null) {
-    		programaJson.put("director","NO TIENE DIRECTOR");
+    		programaJson.put("Director","este programa no cuenta con un director");
     	}else {
-    		programaJson.put("director",this.getDirector().getNombres());
+    		programaJson.put("Director",this.getDirector().getNombres());
     	}
-    	
+    	if(this.getFacultadId()==null) {
+    		programaJson.put("Facultad","este programa no cuenta con una facultadr");
+    	}else {
+    		programaJson.put("Facultad",this.getFacultadId().getNombre());
+    	}
     	return programaJson;
     }
     @Override

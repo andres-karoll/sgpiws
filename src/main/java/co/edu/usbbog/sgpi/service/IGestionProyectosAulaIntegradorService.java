@@ -13,6 +13,8 @@ import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.Usuario;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 public interface IGestionProyectosAulaIntegradorService {
 	
@@ -52,5 +54,8 @@ public interface IGestionProyectosAulaIntegradorService {
 		public boolean agregarAntecedente(Proyecto proyeto, Proyecto antecedente);
 		public boolean agregarAreaConocimiento(int proyecto, int area);
 		public List<AreaConocimiento> buscarAreasProyecto(int proyecto);
-		
+		public List<JSONObject> proyectosParticipante(String cedula);
+		public boolean actualizarProyecto(int id, String titulo, String descripcion, String metodologia,
+				String justificacion);
+		boolean eliminarParticipante(Participantes participante, String fecha, int id);
 }
