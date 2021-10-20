@@ -205,20 +205,6 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		return iParticipantesRepository.existsById(participante.getParticipantesPK());
 	}
 	@Override
-	public boolean eliminarParticipante(Participantes participante, String fecha,int id,String cedula) {
-		Proyecto pro =iProyectoRepository.getById(id);
-		List<Participantes> part= pro.getParticipantes();
-		Usuario usu=iUsuarioRepository.getById(cedula);
-		for (Iterator iterator = part.iterator(); iterator.hasNext();) {
-			Participantes participantes = (Participantes) iterator.next();
-		 if(participantes.getUsuario().getCedula().equals(usu.getCedula())) {
-			 participantes.setFechaFin(fecha);
-		 }	
-		}
-		return true;
-		
-	}
-	@Override
 	public boolean eliminarParticipante(LocalDate fecha_inicio) {
 		// TODO Auto-generated method stub
 		return false;
@@ -396,6 +382,22 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		}
 		iProyectoRepository.save(pro);
 		return iProyectoRepository.existsById(pro.getId());
+	}
+
+	@Override
+	public boolean eliminarParticipante(Participantes participante, String fecha, int id) {
+		Proyecto pro =iProyectoRepository.getById(id);
+		List<Participantes> part= pro.getParticipantes();
+		//Usuario usu=iUsuarioRepository.getById(cedula);
+		for (Iterator iterator = part.iterator(); iterator.hasNext();) {
+			Participantes participantes = (Participantes) iterator.next();
+		// if(participantes.getUsuario().getCedula().equals(usu.getCedula())) {
+		//	 participantes.setFechaFin(	fecha);
+		// }	
+		}
+		return true;
+		
+		
 	}
 	
 	

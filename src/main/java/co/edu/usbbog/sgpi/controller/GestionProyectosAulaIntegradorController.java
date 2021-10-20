@@ -72,7 +72,7 @@ public class GestionProyectosAulaIntegradorController {
 		JSONObject salida = new JSONObject();
 		Participantes participante = new Participantes(entrada.getAsString("usuario"),
 				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
-		if (iGestionProyectosAulaIntegradorService.crearParticipante(participante, entrada.getAsString("rol"))) {
+		if (iGestionProyectosAulaIntegradorService.crearParticipante(participante, entrada.getAsString("usuario"))) {
 			salida.put("respuesta", "el participante fue agregado");
 		} else {
 			salida.put("respuesta", "el participante no pudo ser agregado");
