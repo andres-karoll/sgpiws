@@ -70,19 +70,13 @@ public class Producto implements Serializable {
         this.id = id;
     }
 
-    public Producto(Integer id, String tituloProducto, String tipoProducto, String urlRepo) {
-        this.id = id;
-        this.tituloProducto = tituloProducto;
-        this.tipoProducto = tipoProducto;
-        this.urlRepo = urlRepo;
-    }
-    public Producto(Integer id, String tituloProducto, String tipoProducto, String urlRepo,LocalDate fecha,Proyecto proyecto) {
+    public Producto(Integer id, String tituloProducto, String tipoProducto, String urlRepo,LocalDate fecha) {
         this.id = id;
         this.tituloProducto = tituloProducto;
         this.tipoProducto = tipoProducto;
         this.urlRepo = urlRepo;
         this.fecha=fecha;
-        this.proyecto=proyecto;
+    
     }
 
 

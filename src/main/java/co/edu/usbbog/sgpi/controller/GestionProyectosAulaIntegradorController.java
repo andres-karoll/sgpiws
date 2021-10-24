@@ -124,12 +124,13 @@ public class GestionProyectosAulaIntegradorController {
 		}
 		return salida;
 	}
-
+/*
 	@PostMapping("/crearproducto")
 	public JSONObject crearProducto(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		Proyecto proyecto = iGestionProyectosAulaIntegradorService
 				.buscarProyecto(Integer.parseInt(entrada.getAsString("proyectoid")));
+		
 		Producto producto = new Producto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
 				entrada.getAsString("tipo"), entrada.getAsString("url"), LocalDate.parse(entrada.getAsString("fecha")),
 				proyecto);
@@ -139,7 +140,7 @@ public class GestionProyectosAulaIntegradorController {
 			salida.put("respuesta", "el producto no fue guardado");
 		}
 		return salida;
-	}
+	}*/
 
 	@GetMapping("/eliminarproducto/{id}")
 	public JSONObject elinimarProducto(@PathVariable String id) {

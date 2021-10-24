@@ -93,12 +93,21 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 		if(presu == null) {
 			return false;
 		}
+		if(fecha_compra.isBefore(compra.getFechaSolicitud())) {
+			return false;
+		}
+		try {
 		compra.setCodigoCompra(codigo_compra);
 		compra.setValor(valor);
 		compra.setFechaCompra(fecha_compra);
 		compra.setLink(link);
 		compra.setPresupuesto(presu);
-		
+		}catch (Exception e) {
+			compra.setCodigoCompra(null);
+			compra.setValor(null);
+			compra.setFechaCompra(null);
+			compra.setLink(null);
+		}
 
 		compraRepo.save(compra);
 		return true;

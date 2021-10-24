@@ -27,6 +27,7 @@ import co.edu.usbbog.sgpi.model.LineaInvestigacion;
 import co.edu.usbbog.sgpi.model.Materia;
 import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
+import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.Usuario;
 import co.edu.usbbog.sgpi.service.IGestionInstitucionalService;
@@ -552,6 +553,19 @@ public class GestionInstitucionalController {
 		else {
 			return x;
 		}	
+	}
+	
+	
+	@GetMapping(value = "/listarlosproyectosdeconvocatoria/{convocatoria}")
+	public JSONArray listarLosProyectosDeConvocatoria(@PathVariable int convocatoria) {
+		
+		JSONArray salida = new JSONArray(); 
+		List<ProyectosConvocatoria> pro = gestionInstitucionalService.proyectosPorConvocatoria(convocatoria);
+		for (Iterator iterator = pro.iterator(); iterator.hasNext();) {
+			ProyectosConvocatoria proyectosConvocatoria = (ProyectosConvocatoria) iterator.next();
+			salida.add(proyectosConvocatoria.toJson());
+		}
+		return salida;
 	}
 	//LINEAS/////////////////////////////////////////////
 	

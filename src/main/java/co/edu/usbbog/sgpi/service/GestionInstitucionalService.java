@@ -19,6 +19,7 @@ import co.edu.usbbog.sgpi.model.LineaInvestigacion;
 import co.edu.usbbog.sgpi.model.Materia;
 import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
+import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.Usuario;
@@ -91,11 +92,9 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		JSONObject programa = grupoIRepo.findByPrograma(id);
 		JSONObject linea = grupoIRepo.findByLinea(id);
 		boolean grupo = grupoIRepo.existsById(id);		
-		List<JSONObject> x = new ArrayList<JSONObject>();
-		if(programa.isEmpty() && linea.isEmpty() && grupo ==true) {
-			
+		if(programa ==null && linea ==null && grupo ==true) {			
 			grupoIRepo.deleteById(id);
-			return !grupoIRepo.existsById(id);
+			return true;
 		}
 
 		return false;
@@ -717,6 +716,17 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}
 
 		return proyectos;	
+	}
+
+	@Override
+	public List<ProyectosConvocatoria> proyectosPorConvocatoria(int convocatoria) {
+		Convocatoria con = convocatoriaRepo.getById(convocatoria);
+		List<ProyectosConvocatoria> proyectos = con.getProyectosConvocatorias();
+	
+		if(proyectos.equals(null)) {
+			proyectos = new ArrayList<ProyectosConvocatoria>();		
+		}
+		return proyectos;
 	}
 
 	
