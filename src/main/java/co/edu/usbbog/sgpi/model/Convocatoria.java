@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -53,13 +54,11 @@ public class Convocatoria implements Serializable {
     @Column(name = "nombre_convocatoria", nullable = false, length = 45)
     private String nombreConvocatoria;
     @Basic(optional = false)
-    @Column(name = "fecha_inicio", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaInicio;
+    @Column(name = "fecha_inicio", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaInicio;
     @Basic(optional = false)
-    @Column(name = "fecha_final", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaFinal;
+    @Column(name = "fecha_final", nullable = false, columnDefinition = "DATE")
+    private LocalDate fechaFinal;
     @Basic(optional = false)
     @Lob
     @Column(nullable = false, length = 2147483647)
@@ -86,7 +85,7 @@ public class Convocatoria implements Serializable {
         this.id = id;
     }
 
-    public Convocatoria(Integer id, String nombreConvocatoria, Date fechaInicio, Date fechaFinal, String contexto, String estado, String tipo) {
+    public Convocatoria(Integer id, String nombreConvocatoria, LocalDate fechaInicio, LocalDate fechaFinal, String contexto, String estado, String tipo) {
         this.id = id;
         this.nombreConvocatoria = nombreConvocatoria;
         this.fechaInicio = fechaInicio;
@@ -112,19 +111,19 @@ public class Convocatoria implements Serializable {
         this.nombreConvocatoria = nombreConvocatoria;
     }
 
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFinal() {
+    public LocalDate getFechaFinal() {
         return fechaFinal;
     }
 
-    public void setFechaFinal(Date fechaFinal) {
+    public void setFechaFinal(LocalDate fechaFinal) {
         this.fechaFinal = fechaFinal;
     }
 

@@ -87,8 +87,7 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 	}
 
 	@Override
-	public boolean crearCompra(Compra compra, String codigo_compra, double valor, LocalDate fecha_compra, String link,
-			int presupuesto) {
+	public boolean crearCompra(Compra compra, String codigo_compra, double valor, LocalDate fecha_compra, String link,int presupuesto) {
 		Presupuesto presu = presupuestoRepo.getById(presupuesto);
 		if(presu == null) {
 			return false;
@@ -96,18 +95,11 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 		if(fecha_compra.isBefore(compra.getFechaSolicitud())) {
 			return false;
 		}
-		try {
 		compra.setCodigoCompra(codigo_compra);
 		compra.setValor(valor);
 		compra.setFechaCompra(fecha_compra);
 		compra.setLink(link);
 		compra.setPresupuesto(presu);
-		}catch (Exception e) {
-			compra.setCodigoCompra(null);
-			compra.setValor(null);
-			compra.setFechaCompra(null);
-			compra.setLink(null);
-		}
 
 		compraRepo.save(compra);
 		return true;

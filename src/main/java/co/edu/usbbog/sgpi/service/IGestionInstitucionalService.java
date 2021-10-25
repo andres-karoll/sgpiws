@@ -108,6 +108,9 @@ public interface IGestionInstitucionalService {
 	public List<Convocatoria> todasLasConvocatoriasAbiertas(String estado);
 	public Convocatoria convocatoriaPorID(int id);
 	public List<ProyectosConvocatoria> proyectosPorConvocatoria(int convocatoria);
+	public List<Convocatoria> todasLasConvocatorias();
+	public boolean crearConvocatoria(Convocatoria convocatoria, String numero_productos, String entidad);
+	public boolean eliminarConvocatoria(int id);
 	
 	
 	

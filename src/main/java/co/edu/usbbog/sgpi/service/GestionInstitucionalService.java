@@ -728,6 +728,34 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}
 		return proyectos;
 	}
+	@Override
+	public List<Convocatoria> todasLasConvocatorias() {
+		List<Convocatoria> convocatorias = convocatoriaRepo.findAll();	
+		return convocatorias;
+	}
+	
+	@Override
+	public boolean crearConvocatoria(Convocatoria convocatoria, String numero_productos, String entidad) {
+		convocatoria.setNumeroProductos(numero_productos);
+		convocatoria.setEntidad(entidad);
+		convocatoriaRepo.save(convocatoria);
+		if(convocatoria.getFechaFinal().isBefore(convocatoria.getFechaInicio())) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean eliminarConvocatoria(int id) {
+		boolean convo = convocatoriaRepo.existsById(id);		
+		if(convo ==true) {			
+			convocatoriaRepo.deleteById(id);;
+			return true;
+		}
+		return false;
+	}
+	
+	
 
 	
 
