@@ -1,10 +1,12 @@
 package co.edu.usbbog.sgpi.controller;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,11 +68,18 @@ public class GestionProductosController {
 	@PostMapping(value = "/crearproducto")
 	public JSONObject crearProducto(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
+		
+
+		
 		Producto producto = new Producto(
 				Integer.parseInt(entrada.getAsString("id")),
 				entrada.getAsString("titulo_producto"),
 				entrada.getAsString("tipo_producto"),
-				entrada.getAsString("url_repo"));
+				entrada.getAsString("url_repo"),
+				LocalDate.parse(entrada.getAsString("fecha"), 
+				DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		
+		
 
 		if(gestionProductos.crearProducto(producto, Integer.parseInt( entrada.getAsString("proyecto")))) {
 			salida.put("respuesta", "el producto se creo");

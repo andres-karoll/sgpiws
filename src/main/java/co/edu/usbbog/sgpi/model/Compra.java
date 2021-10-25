@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -58,18 +59,22 @@ public class Compra implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false, length = 45)
     private String tipo;
-    @Column(name = "codigo_compra", length = 45)
+    @Column(name = "codigo_compra", length = 45, nullable = true)    
     private String codigoCompra;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(precision = 22)
+    @Column(name = "valor",precision = 22, nullable = true)//-------------------------------------------------------------
+    
     private Double valor;
     @Basic(optional = true)
-    @Column(nullable = true , name="fecha_compra", columnDefinition = "DATE")
+
+    @Column(nullable = true , name="fecha_compra", columnDefinition = "DATE")//----------------------------------------------
+    
+
     private LocalDate fechaCompra;
     @Basic(optional = false)
     @Column(nullable = false)
     private int estado;
-    @Column(length = 45)
+    @Column(name = "link", length = 45, nullable = true)
     private String link;
     @Basic(optional = false)
     @Column(nullable = false, length = 45)

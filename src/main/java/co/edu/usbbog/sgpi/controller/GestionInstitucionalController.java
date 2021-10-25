@@ -27,6 +27,7 @@ import co.edu.usbbog.sgpi.model.LineaInvestigacion;
 import co.edu.usbbog.sgpi.model.Materia;
 import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
+import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.Usuario;
 import co.edu.usbbog.sgpi.service.IGestionInstitucionalService;
@@ -553,6 +554,65 @@ public class GestionInstitucionalController {
 			return x;
 		}	
 	}
+	
+	
+	@GetMapping(value = "/listarlosproyectosdeconvocatoria/{convocatoria}")
+	public JSONArray listarLosProyectosDeConvocatoria(@PathVariable int convocatoria) {
+		
+		JSONArray salida = new JSONArray(); 
+		List<ProyectosConvocatoria> pro = gestionInstitucionalService.proyectosPorConvocatoria(convocatoria);
+		for (Iterator iterator = pro.iterator(); iterator.hasNext();) {
+			ProyectosConvocatoria proyectosConvocatoria = (ProyectosConvocatoria) iterator.next();
+			salida.add(proyectosConvocatoria.toJson());
+		}
+		return salida;
+	}
+	
+	
+	@GetMapping(value = "/listarconvocatorias")
+	public JSONArray listarConvocatorias() {
+
+		JSONArray salida = new JSONArray(); 
+		List<Convocatoria> li = gestionInstitucionalService.todasLasConvocatorias();
+		for (Iterator iterator = li.iterator(); iterator.hasNext();) {
+			Convocatoria convocatoria = (Convocatoria) iterator.next();
+			salida.add(convocatoria.toJson());
+		}
+		
+		return salida;		
+	}
+	
+	@PostMapping(value = "/crearconvocatoria")
+	public JSONObject crearConvocatoria(@RequestBody JSONObject entrada) {		
+		JSONObject salida = new JSONObject();
+		Convocatoria convocatoria = new Convocatoria(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("nombre_convocatoria"),LocalDate.parse( entrada.getAsString("fecha_inicio")), LocalDate.parse( entrada.getAsString("fecha_final")), entrada.getAsString("contexto"), entrada.getAsString("estado"), entrada.getAsString("tipo"));
+
+		if (gestionInstitucionalService.crearConvocatoria(convocatoria, entrada.getAsString("numero_productos"), entrada.getAsString("entidad"))) {
+
+			salida.put("respuesta", "se creo la convocatoria");
+
+		} else {
+			salida.put("respuesta", "no se pudo crear");
+		}
+
+		return salida;
+	}
+	
+	@GetMapping(value = "/eliminarconvocatoria/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String eliminarConvocatoria(@PathVariable int id) {		
+		if(gestionInstitucionalService.eliminarConvocatoria(id)) {
+			return"eliminado con Exito";			
+		}
+		return "no se pudo eliminar";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	//LINEAS/////////////////////////////////////////////
 	
 	

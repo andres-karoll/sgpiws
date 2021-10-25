@@ -120,8 +120,11 @@ public class ProyectosConvocatoria implements Serializable {
     }
     public JSONObject toJson() {
     	JSONObject proyectosConovocatoriaJson=new JSONObject();
-    	proyectosConovocatoriaJson.put("id_proyecto",this.getIdProyecto());
-    	proyectosConovocatoriaJson.put("convocatoria",this.getConvocatoria());
+    	proyectosConovocatoriaJson.put("id_proyecto",this.getProyecto().getId());
+    	proyectosConovocatoriaJson.put("titulo_proyecto",this.getProyecto().getTitulo());
+    	proyectosConovocatoriaJson.put("descripcion_proyecto",this.getProyecto().getDescripcion());
+    	proyectosConovocatoriaJson.put("estado_proyecto",this.getProyecto().getEstado());
+    	proyectosConovocatoriaJson.put("convocatoria",this.getConvocatoria().getNombreConvocatoria());
     	return proyectosConovocatoriaJson;
     }
 

@@ -206,6 +206,7 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		return iParticipantesRepository.existsById(participante.getParticipantesPK());
 	}
 
+
 	@Override
 	public boolean eliminarComentario(int id) {
 		Comentario comentario = iComentarioRepository.getById(id);
@@ -381,19 +382,7 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		return iProyectoRepository.existsById(pro.getId());
 	}
 
-	//@Override
-	//public boolean eliminarParticipante(String id, String cedula, String fechafin) {
-		/*
-		 * Proyecto pro =iProyectoRepository.getById(id); List<Participantes> part=
-		 * pro.getParticipantes(); Usuario usu=iUsuarioRepository.getById(cedula); for
-		 * (Iterator iterator = part.iterator(); iterator.hasNext();) { Participantes
-		 * participantes = (Participantes) iterator.next();
-		 * if(participantes.getUsuario().getCedula().equals(usu.getCedula())) {
-		 * participantes.setFechaFin(fecha); System.out.println("asdqwe"); return true;
-		 * } } return true;
-		 */
-		//return true;
-	//}
+
 
 	@Override
 	public List<Participantes> listarParticipantesPorPoryecto(int id) {
@@ -407,6 +396,7 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 
 	@Override
 	public boolean actualizarParticipante(int id, String cedula, LocalDate fechafin) {
+
 	
 	  Proyecto pro =iProyectoRepository.getById(id); 
 	  List<Participantes> part=pro.getParticipantes(); 

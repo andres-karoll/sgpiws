@@ -13,6 +13,7 @@ import co.edu.usbbog.sgpi.model.LineaInvestigacion;
 import co.edu.usbbog.sgpi.model.Materia;
 import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
+import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.Usuario;
@@ -103,9 +104,16 @@ public interface IGestionInstitucionalService {
 	
 	
 	
-	//Consultar convocatorias abiertas
+	//Consultar convocatorias 
 	public List<Convocatoria> todasLasConvocatoriasAbiertas(String estado);
 	public Convocatoria convocatoriaPorID(int id);
+	public List<ProyectosConvocatoria> proyectosPorConvocatoria(int convocatoria);
+	public List<Convocatoria> todasLasConvocatorias();
+	public boolean crearConvocatoria(Convocatoria convocatoria, String numero_productos, String entidad);
+	public boolean eliminarConvocatoria(int id);
+	
+	
+	
 	
 	//Listar usuarios de un semillero
 	public List<Usuario> usuariosPorSemillero(int semillero);

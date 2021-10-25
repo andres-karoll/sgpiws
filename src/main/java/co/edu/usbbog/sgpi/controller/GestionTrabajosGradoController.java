@@ -73,8 +73,7 @@ public class GestionTrabajosGradoController {
 		
 		if(proyecto.getTipoProyecto().getNombre().equals("Grado")) {
 			Producto producto = new Producto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
-					entrada.getAsString("tipo"), entrada.getAsString("url"), LocalDate.parse(entrada.getAsString("fecha")),
-					proyecto);
+					entrada.getAsString("tipo"), entrada.getAsString("url"), LocalDate.parse(entrada.getAsString("fecha")));
 		
 		if (iGestionTrabajosGradoService.crearProducto(producto)) {
 			salida.put("respuesta", "el producto fue guardado");

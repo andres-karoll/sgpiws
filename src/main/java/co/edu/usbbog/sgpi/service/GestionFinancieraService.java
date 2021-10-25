@@ -87,8 +87,9 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 	}
 
 	@Override
+
 	public boolean crearCompra(Compra compra,int presupuesto) {
-		
+
 		Presupuesto presu = presupuestoRepo.getById(presupuesto);
 		if(presu == null) {
 			return false;
@@ -97,7 +98,12 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 			compra.setPresupuesto(presu);
 			compraRepo.save(compra);
 		}
+		if(fecha_compra.isBefore(compra.getFechaSolicitud())) {
+			return false;
+		}
+
 		return compraRepo.existsById(compra.getId());
+
 	}
 
 	
