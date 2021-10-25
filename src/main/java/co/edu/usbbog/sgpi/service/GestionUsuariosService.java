@@ -110,9 +110,12 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	}
 
 	@Override
-	public boolean asignarSemillero(Usuario usuario) {
-		iUsuarioRepository.save(usuario);
-		return true;
+	public boolean asignarSemillero(String cedula,int semillero) {
+		Usuario usu=iUsuarioRepository.getById(cedula);
+		Semillero semi=iSemilleroRepository.getById(semillero);
+		usu.setSemilleroId(semi);
+		iUsuarioRepository.save(usu);
+		return iUsuarioRepository.existsById(usu.getCedula());
 	}
 
 	public boolean eliminarUsuarioSemillero(String cedula) {
@@ -358,6 +361,16 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		}
 		return tipo;
 		
+	}
+
+	@Override
+	public List<Usuario> todosPorRol(String tipo) {
+		TipoUsuario tipoU= iTipoUsuarioRepository.getById(tipo);
+		List<Usuario> usu= tipoU.getUsuarios();
+		if (usu.equals(null)) {
+			usu = new ArrayList<Usuario>();
+		}
+		return usu;
 	}
 
 }

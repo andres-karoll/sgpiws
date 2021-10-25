@@ -12,6 +12,7 @@ import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Compra;
+import co.edu.usbbog.sgpi.model.Convocatoria;
 import co.edu.usbbog.sgpi.model.Facultad;
 import co.edu.usbbog.sgpi.model.MacroProyecto;
 import co.edu.usbbog.sgpi.model.Participaciones;
@@ -20,6 +21,8 @@ import co.edu.usbbog.sgpi.model.Presupuesto;
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
+import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
+import co.edu.usbbog.sgpi.model.ProyectosConvocatoriaPK;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.TipoUsuario;
@@ -27,15 +30,18 @@ import co.edu.usbbog.sgpi.model.Usuario;
 import co.edu.usbbog.sgpi.repository.IAreaConocimientoRepository;
 import co.edu.usbbog.sgpi.repository.IComentarioRepository;
 import co.edu.usbbog.sgpi.repository.ICompraRepository;
+import co.edu.usbbog.sgpi.repository.IConvocatoriaRepository;
 import co.edu.usbbog.sgpi.repository.IParticipacionesRepository;
 import co.edu.usbbog.sgpi.repository.IParticipantesRepository;
 import co.edu.usbbog.sgpi.repository.IPresupuestoRepository;
 import co.edu.usbbog.sgpi.repository.IProductoRepository;
+import co.edu.usbbog.sgpi.repository.IProyectoConvocatoriaRepository;
 import co.edu.usbbog.sgpi.repository.IProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ISemilleroRepository;
 import co.edu.usbbog.sgpi.repository.ITipoProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ITipoUsuarioRepository;
 import co.edu.usbbog.sgpi.repository.IUsuarioRepository;
+import net.minidev.json.JSONObject;
 @Service
 public class GestionProyectosInvestigacionService implements IGestionProyectosInvestigacionService {
 	@Autowired
@@ -62,18 +68,19 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	private IParticipacionesRepository iParticipacionesRepository;
 	@Autowired
 	private IAreaConocimientoRepository iAreaConocimientoRepository;
+	@Autowired
+	private IConvocatoriaRepository iConvocatoriaRepository;
+	@Autowired
+	private IProyectoConvocatoriaRepository iProyectoConvocatoriaRepository;
 	@Override
-	public List<Proyecto> todosLosProyectos() {
-		TipoProyecto tipoPro=iTipoProyectoRepository.getById("Investigacion");
+	public List<Proyecto> todosLosProyectosSemillero() {
+		TipoProyecto tipoPro=iTipoProyectoRepository.getById("semillero");
 		List<Proyecto> proyectos = tipoPro.getProyectos();
 		if (proyectos.equals(null)) {
 			proyectos = new ArrayList<Proyecto>();
 		}
 		return proyectos;
 	}
-
-	
-
 	@Override
 	public List<Proyecto> todosLosProyectosPorSemillero(int semilleroId) {
 		Semillero semillero =iSemilleroRepository.getById(semilleroId);
@@ -86,19 +93,16 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		}
 		return proyectos;
 	}
-
 	@Override
 	public List<Proyecto> todosLosProyectosPorFacultad(Facultad facultad) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public List<Proyecto> todosLosProyectosPorPrograma(Programa programa) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public boolean eliminarProyecto(int id) {
 		if (iProyectoRepository.existsById(id)) {
@@ -107,34 +111,29 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		}
 		return false;
 	}
-	
-
 	@Override
 	public boolean crearProyecto(Proyecto proyecto,String tipo,Participantes participante, String rol,String semillero) {
 		Semillero se=iSemilleroRepository.getById(Integer.parseInt(semillero));
 		if (iProyectoRepository.existsById(proyecto.getId())) {
+		
 			return false;
 		}
 		TipoProyecto tp = iTipoProyectoRepository.getById(tipo);
 		if (tp == null) {
+			
 			return false;
 		}
 		try {
-			proyecto.setSemillero(se);
 			proyecto.setMacroProyecto(null);
 		} catch (Exception e) {
-			
 			proyecto.setMacroProyecto(null);
 		}
-		if(tp.getNombre().equals("Investigacion")) {
+		proyecto.setSemillero(se);
 		participante.setRol(rol);
 		proyecto.setTipoProyecto(tp);
 		iProyectoRepository.save(proyecto);
 		iParticipantesRepository.save(participante);
 		return iProyectoRepository.existsById(proyecto.getId());
-		}else {
-			return false;
-		}
 	}
 
 	@Override
@@ -186,21 +185,17 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		return participantes;
 
 	}
-
 	@Override
 	public boolean crearParticipante(Participantes participante,String rol) {
 		participante.setRol(rol);
 		iParticipantesRepository.save(participante);
 		return iParticipantesRepository.existsById(participante.getParticipantesPK());
-		
 	}
-
 	@Override
 	public boolean eliminarParticipante(LocalDate fecha_inicio) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 	@Override
 	public List<Comentario> ComentariosPorProducto(int productoid) {
 		Producto producto = iProductoRepository.getById(productoid);
@@ -210,7 +205,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		}
 		return comentarios;
 	}
-
 	@Override
 	public boolean eliminarComentario(int id) {
 		Comentario comentario = iComentarioRepository.getById(id);
@@ -222,7 +216,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 			return true;
 		}
 	}
-
 	@Override
 	public boolean crearComentario(Comentario comentario,String cedula) {
 		Usuario usu = iUsuarioRepository.getById(cedula);
@@ -239,8 +232,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		}
 		return false;
 	}
-	
-
 	@Override
 	public List<Presupuesto> PresupuestoPorProyecto(Proyecto proyecto) {
 		List<Presupuesto> presupuestos=proyecto.getPresupuestos();
@@ -248,9 +239,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 			presupuestos = new ArrayList<Presupuesto>();
 		}
 		return presupuestos;
-		
 	}
-
 	@Override
 	public boolean eliminarPresupuesto(int id) {
 		Presupuesto presupuesto=iPresupuestoRepository.getById(id);
@@ -260,9 +249,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		}else {
 			return false;
 		}
-		
 	}
-
 	@Override
 	public boolean crearPresupuesto(Presupuesto presupuesto,String cedula) {
 		Usuario usu = iUsuarioRepository.getById(cedula);
@@ -279,7 +266,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 			return false;
 		}
 	}
-
 	@Override
 	public List<Compra> CompraPorPresupuesto(Presupuesto presupuesto) {
 		List<Compra> compras=presupuesto.getCompras();
@@ -328,7 +314,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 			return false;
 		}
 	}
-
 	@Override
 	public boolean eliminarCalificacion(int comentarioid) {
 		Comentario comentario=iComentarioRepository.getById(comentarioid);
@@ -344,15 +329,12 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	public Proyecto buscarProyecto(int proyectoId) {
 		Proyecto proyecto = iProyectoRepository.getById(proyectoId);
 		return proyecto;
-		
 	}
-
 	@Override
 	public Producto buscarProducto(int productoId) {
 		Producto producto = iProductoRepository.getById(productoId);
 		return producto;
 	}
-	
 	@Override
 	public boolean eliminarProducto(int id) {
 		Producto producto = iProductoRepository.getById(id);
@@ -363,12 +345,9 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 			iProductoRepository.deleteById(id);
 			return true;
 		}
-
 	}
-	
 	@Override
 	public boolean participarEvento(Participaciones participaciones, LocalDate fecha, String reconocimiento) {
-
 		if (participaciones != null) {
 			participaciones.setFechaPart(fecha);
 			try {
@@ -391,13 +370,11 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		}
 		return participaciones;
 	}
-
 	@Override
 	public boolean agregarAntecedente(Proyecto proyecto, Proyecto antecedente) {
 		if (antecedente != null && proyecto != null) {
 			if (proyecto.getFechaInicio().isAfter(antecedente.getFechaFin())) {
 				if (proyecto.getAntecedentes().isEmpty()) {
-					
 					proyecto.setAntecedentes(new ArrayList<Proyecto>());
 					proyecto.getAntecedentes().add(antecedente);
 					iProyectoRepository.save(proyecto);
@@ -417,7 +394,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 			return false;
 		}
 	}
-
 	@Override
 	public boolean agregarAreaConocimiento(int proyecto, int area) {
 		Proyecto pro = iProyectoRepository.getById(proyecto);
@@ -429,9 +405,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 			iAreaConocimientoRepository.save(are);
 			return true;
 		}
-
 	}
-
 	@Override
 	public List<AreaConocimiento> buscarAreasProyecto(int proyecto) {
 		Proyecto pro = iProyectoRepository.getById(proyecto);
@@ -441,6 +415,21 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		}
 		return areas;
 	}
-
-
+	@Override
+	public boolean participarConvocatoria(ProyectosConvocatoria proyectosConvocatoria,String estado) {	
+		proyectosConvocatoria.setIdProyecto(estado);
+		iProyectoConvocatoriaRepository.save(proyectosConvocatoria); 
+		return iProyectoConvocatoriaRepository.existsById(proyectosConvocatoria.getProyectosConvocatoriaPK());
+	}
+	@Override
+	public List<JSONObject> todosLosProyectosUsuarioSemillero(String cedula) {
+		List<JSONObject> proyectos=iProyectoRepository.proyectosParticipaSemillero(cedula);
+		
+		return proyectos;
+	}
+	@Override
+	public List<JSONObject> proyectosParticipanteSemillero(String cedula) {
+		List<JSONObject> x = iProyectoRepository.proyectosParticipaSemillero(cedula);
+		return x;
+	}
 }

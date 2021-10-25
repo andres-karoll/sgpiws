@@ -41,7 +41,7 @@ public class Participantes implements Serializable {
     protected ParticipantesPK participantesPK;
     @Column(name = "fecha_fin",columnDefinition = "DATE")
     private LocalDate fechaFin;
-    @Basic(optional = false)
+	@Basic(optional = false)
     @Column(nullable = false, length = 45)
     private String rol;
     @JoinColumn(name = "proyecto", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
@@ -51,7 +51,7 @@ public class Participantes implements Serializable {
     @ManyToOne(optional = false)
     private Usuario usuario;
 
-    public Participantes() {
+    public Participantes() { 
     }
 
     public Participantes(ParticipantesPK participantesPK) {
@@ -108,7 +108,6 @@ public class Participantes implements Serializable {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -131,12 +130,22 @@ public class Participantes implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.Participantes[ participantesPK=" + participantesPK + " ]";
+        return toJson().toString();
     }
     public JSONObject toJson() {
     	JSONObject paticipantesJson=new JSONObject();
-    	paticipantesJson.put("fecha_fin",this.getFechaFin());
+    	if(this.getFechaFin()==null) {
+    		paticipantesJson.put("fecha_fin","Este usuario aun participa en este proyecto");
+    	}else { 
+    		paticipantesJson.put("fecha_fin",this.getFechaFin());
+    	}
+    	//paticipantesJson.put("fecha_fin",this.getFechaInicio());
     	paticipantesJson.put("rol",this.getRol());
+    	paticipantesJson.put("nombre",this.getUsuario().getNombres());
+    	paticipantesJson.put("programa",this.getUsuario().getProgramaId().getNombre());
+    	paticipantesJson.put("cedula",this.getUsuario().getCedula());
+    	paticipantesJson.put("titulo",this.getProyecto().getTitulo());
+    	paticipantesJson.put("id",this.getProyecto().getId()	);
     	return paticipantesJson;
     }
 

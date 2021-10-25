@@ -98,11 +98,24 @@ public class GestionFinancieraController {
 				Integer.parseInt(entrada.getAsString("estado")),
 				entrada.getAsString("descripcion"));
 		if(gestionFinancieraService.crearCompra(
-				compra,entrada.getAsString("codigo_compra"), 
-				Double.parseDouble(entrada.getAsString("valor")),
+				compra,
+				Integer.parseInt(entrada.getAsString("presupuesto")))) {
+			salida.put("respuesta", "se creo");
+		}else {
+			salida.put("respuesta", "NO se creo");
+		}
+		return salida;
+	}
+	@PostMapping(value = "/realizarcompra")
+	public JSONObject realizarCompra(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(gestionFinancieraService.realziarCompra(
+				Integer.parseInt(entrada.getAsString("id")),
+				entrada.getAsString("codigo_compra"),
 				LocalDate.parse(entrada.getAsString("fecha_compra")),
 				entrada.getAsString("link"),
-				Integer.parseInt(entrada.getAsString("presupuesto")))) {
+				 Double.parseDouble(entrada.getAsString("valor"))
+			)) {
 			salida.put("respuesta", "se creo");
 		}else {
 			salida.put("respuesta", "NO se creo");

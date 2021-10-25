@@ -66,8 +66,10 @@ public class Compra implements Serializable {
     
     private Double valor;
     @Basic(optional = true)
+
     @Column(nullable = true , name="fecha_compra", columnDefinition = "DATE")//----------------------------------------------
     
+
     private LocalDate fechaCompra;
     @Basic(optional = false)
     @Column(nullable = false)
@@ -221,7 +223,6 @@ public class Compra implements Serializable {
     	compraJson.put("estado",this.getEstado());
     	compraJson.put("link",this.getLink());
     	compraJson.put("descripcion",this.getDescripcion());
-
     	return compraJson;
     	
     }

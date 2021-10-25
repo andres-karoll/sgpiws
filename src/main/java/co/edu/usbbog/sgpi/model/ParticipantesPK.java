@@ -20,9 +20,6 @@ import net.minidev.json.JSONObject;
 @Embeddable
 public class ParticipantesPK implements Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	@Basic(optional = false)
     @Column(nullable = false, length = 20)
@@ -33,16 +30,13 @@ public class ParticipantesPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "fecha_inicio", nullable = false, columnDefinition = "DATE")
     private LocalDate fechaInicio;
-
     public ParticipantesPK() {
     }
-
     public ParticipantesPK(String usuario, int proyecto, LocalDate fechaInicio) {
         this.usuario = usuario;
         this.proyecto = proyecto;
         this.fechaInicio = fechaInicio;
     }
-
     public String getUsuario() {
         return usuario;
     }
@@ -97,14 +91,7 @@ public class ParticipantesPK implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.ParticipantesPK[ usuario=" + usuario + ", proyecto=" + proyecto + ", fechaInicio=" + fechaInicio + " ]";
-    }
-    public JSONObject toJson() {
-    	JSONObject paticipantesPKJson=new JSONObject();
-    	paticipantesPKJson.put("usuario",this.getUsuario());
-    	paticipantesPKJson.put("proyecto",this.getProyecto());
-    	paticipantesPKJson.put("fecha_inicio",this.getFechaInicio());
-    	return paticipantesPKJson;
+        return toString();
     }
     
 }

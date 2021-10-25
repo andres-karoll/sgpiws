@@ -33,7 +33,6 @@ public interface IGestionProyectosAulaIntegradorService {
 	boolean crearProducto(Producto producto);
 	public List<Usuario> todosLosParticipantesPorProyecto(Proyecto proyecto);
 	public boolean crearParticipante(Participantes participante,String rol);
-	public boolean eliminarParticipante(LocalDate fecha_inicio);
 	//actualizar participante
 	
 	public List<Comentario> ComentariosPorProducto(int productoId);
@@ -54,8 +53,10 @@ public interface IGestionProyectosAulaIntegradorService {
 		public boolean agregarAntecedente(Proyecto proyeto, Proyecto antecedente);
 		public boolean agregarAreaConocimiento(int proyecto, int area);
 		public List<AreaConocimiento> buscarAreasProyecto(int proyecto);
-		public List<JSONObject> proyectosParticipante(String cedula);
+		public List<JSONObject> proyectosParticipanteClase(String cedula);
 		public boolean actualizarProyecto(int id, String titulo, String descripcion, String metodologia,
 				String justificacion);
-		boolean eliminarParticipante(Participantes participante, String fecha, int id);
+		public List<Participantes> listarParticipantesPorPoryecto(int id);		
+		public boolean actualizarParticipante(int id, String cedula, LocalDate fechafin);
+
 }
