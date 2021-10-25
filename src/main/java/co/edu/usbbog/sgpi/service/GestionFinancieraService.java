@@ -98,9 +98,7 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 			compra.setPresupuesto(presu);
 			compraRepo.save(compra);
 		}
-		if(fecha_compra.isBefore(compra.getFechaSolicitud())) {
-			return false;
-		}
+		
 
 		return compraRepo.existsById(compra.getId());
 
@@ -122,7 +120,11 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 		comp.setFechaCompra(fechaCompra);
 		comp.setLink(link);
 		comp.setValor(valor);
+		if(fechaCompra.isBefore(comp.getFechaSolicitud())) {
+			return false;
+		}
 		compraRepo.save(comp);
+		
 		return compraRepo.existsById(comp.getId());
 	}
 
