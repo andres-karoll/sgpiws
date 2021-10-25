@@ -383,6 +383,7 @@ public class Usuario implements Serializable {
     	if(this.getSemilleroId()==null) {
     		usuarioJson.put("semillero_id","");
     	}else {
+    		usuarioJson.put("semillero",this.getSemilleroId().getNombre());
     		usuarioJson.put("semillero_id",this.getSemilleroId().getId());
     	}
     	if(this.getProgramaId()==null) {

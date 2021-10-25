@@ -25,7 +25,7 @@ public interface IGestionUsuariosService {
 	//existe semillero
 	public boolean existeSemillero(Integer id);
 	//asignar un usuario a un semillero
-	public boolean asignarSemillero(Usuario usuario);
+	public boolean asignarSemillero(String cedula,int semillero);
 	//existe tipo de usuario
 	public boolean existeTipoUsuario(String nombre);
 	//todos los tipos de usuario
@@ -83,6 +83,7 @@ public interface IGestionUsuariosService {
 	public List<TipoUsuario> roles(String cedula);
 	public boolean modificarUsuario(String cedula,String telefono,String clave, String correoP);
 	public List<TipoUsuario> todosLosRoles();
+	public List<Usuario> todosPorRol(String tipo);
 	
 	
 	

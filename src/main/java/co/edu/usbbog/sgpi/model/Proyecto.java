@@ -128,7 +128,7 @@ public class Proyecto implements Serializable {
         this.id = id;
         this.titulo = titulo;
         this.estado = estado;
-        this.descripcion = descripcion;
+        this.descripcion = descripcion; 
         this.fechaInicio = fechaInicio;
         this.visibilidad = visibilidad;
         this.ciudad = ciudad;

@@ -63,8 +63,8 @@ public class Compra implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(precision = 22)
     private Double valor;
-    @Basic(optional = false)
-    @Column(nullable = false , name="fecha_compra", columnDefinition = "DATE")
+    @Basic(optional = true)
+    @Column(nullable = true , name="fecha_compra", columnDefinition = "DATE")
     private LocalDate fechaCompra;
     @Basic(optional = false)
     @Column(nullable = false)
@@ -218,7 +218,6 @@ public class Compra implements Serializable {
     	compraJson.put("estado",this.getEstado());
     	compraJson.put("link",this.getLink());
     	compraJson.put("descripcion",this.getDescripcion());
-
     	return compraJson;
     	
     }

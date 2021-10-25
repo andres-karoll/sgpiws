@@ -60,13 +60,7 @@ public class GestionUsuarioController {
 	@GetMapping("/buscarusuario/{cedula}")
 	public JSONObject buscarUsuario(@PathVariable String cedula) {
 		Usuario usuario = iGestionUsuariosService.buscarUsuario(cedula);
-		
 		JSONObject salida = usuario.toJson();
-		if (usuario.getSemilleroId() != null) {
-			salida.put("semillero_id", usuario.getSemilleroId().getId());
-		} else {
-			salida.put("semillero_id", "este usuario no tiene semillero");
-		}
 		return salida;
 	}
 
@@ -87,12 +81,23 @@ public class GestionUsuarioController {
 				entrada.getAsString("visibilidad"));
 		usuario.setTelefono(entrada.getAsString("telefono"));
 		
-		usuario.setCorreoPersonal(entrada.getAsString("correoPersonal"));
-		if ( entrada.getAsString("correoEst").contains("@") && ( entrada.getAsString("correoEst").contains("academia.usbbog.edu.co")))    {
-		   tipoUsuario="estudiante";
-		}else if( entrada.getAsString("correoEst").contains("@") && ( entrada.getAsString("correoEst").contains("usbbog.edu.co"))){
-			tipoUsuario="Profesor";
+		if ( entrada.getAsString("correoEst").contains("academia.usbbog.edu.co")){
+			System.out.println(entrada.getAsString("tipo"));
+		    if(entrada.getAsString("tipo").equals("Estudiante")) {
+		    	tipoUsuario=entrada.getAsString("tipo");
+		    }
 		}
+		
+		System.out.println(entrada.getAsString("correoEst").contains("@usbbog.edu.co"));
+		if(entrada.getAsString("correoEst").contains("@usbbog.edu.co")){	
+			if(entrada.getAsString("tipo").equals("Profesor" )|| 
+					entrada.getAsString("tipo").equals("Administrador") || 
+					entrada.getAsString("tipo").equals("Biblioteca")||
+					entrada.getAsString("tipo").equals("Profesional de investigacion")) {
+			tipoUsuario=entrada.getAsString("tipo");
+			}
+			}
+		
 		if (iGestionUsuariosService.crearUsuario(usuario,
 				entrada.getAsString("programa"),tipoUsuario)) {		
 				salida.put("respuesta", "usuario creado");
@@ -126,18 +131,12 @@ public class GestionUsuarioController {
 	}
 
 	@PostMapping("/asignarsemillero")
-	public JSONObject asignarsemillero(@RequestBody Usuario usuario) {
+	public JSONObject asignarsemillero(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		if (isExistUsuario(usuario.getCedula())) {
-
-			if (isExistSemillero(usuario.getSemilleroId().getId())) {
-				iGestionUsuariosService.asignarSemillero(usuario);
-				salida.put("respuesta", "el usuario fue asignado existosamente");
-			} else {
-				salida.put("respuesta", "el usuario o el semillero no existe ");
-			}
-		} else {
-			salida.put("respuesta", "el usuario o el tipo de usuario no existe ");
+		if (iGestionUsuariosService.asignarSemillero(entrada.getAsString("cedula"), Integer.parseInt(entrada.getAsString("semillero")))) {
+			salida.put("respuesta", "el usuario fue asignado exitosamente");
+		}else {
+			salida.put("respuesta", "el usuario fue no asignado ");
 		}
 		return salida;
 	}
@@ -348,6 +347,17 @@ public class GestionUsuarioController {
 			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
 			salida.add(tipoUsuario.toJson());
 		}
+		return salida;
+	}
+	@GetMapping("/litarusuariosportipo/{tipo}")
+	private JSONArray litarUsuariosPorTipo(@PathVariable String tipo) {
+		JSONArray salida = new JSONArray();
+		List<Usuario> tiposUsuario = iGestionUsuariosService.todosPorRol(tipo);
+		for (Iterator iterator = tiposUsuario.iterator(); iterator.hasNext();) {
+			Usuario usuario = (Usuario) iterator.next();
+			salida.add(usuario.toJson());
+		}
+		
 		return salida;
 	}
 	}

@@ -98,7 +98,7 @@ public class ProyectosConvocatoria implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (proyectosConvocatoriaPK != null ? proyectosConvocatoriaPK.hashCode() : 0);
-        return hash;
+        return hash; 
     }
 
     @Override
