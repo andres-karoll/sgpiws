@@ -87,22 +87,17 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 	}
 
 	@Override
-	public boolean crearCompra(Compra compra, String codigo_compra, double valor, LocalDate fecha_compra, String link,
-			int presupuesto) {
+	public boolean crearCompra(Compra compra,int presupuesto) {
+		
 		Presupuesto presu = presupuestoRepo.getById(presupuesto);
 		if(presu == null) {
 			return false;
+		}else {
+	
+			compra.setPresupuesto(presu);
+			compraRepo.save(compra);
 		}
-		compra.setCodigoCompra(codigo_compra);
-		compra.setValor(valor);
-		compra.setFechaCompra(fecha_compra);
-		compra.setLink(link);
-		compra.setPresupuesto(presu);
-		
-
-		compraRepo.save(compra);
-		return true;
-
+		return compraRepo.existsById(compra.getId());
 	}
 
 	
@@ -112,6 +107,17 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 	public boolean autorizarCompra(int Estado) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean realziarCompra(int compra,String codigo,LocalDate fechaCompra,String link,Double valor) {
+		Compra comp=compraRepo.getById(compra);
+		comp.setCodigoCompra(codigo);
+		comp.setFechaCompra(fechaCompra);
+		comp.setLink(link);
+		comp.setValor(valor);
+		compraRepo.save(comp);
+		return compraRepo.existsById(comp.getId());
 	}
 
 	

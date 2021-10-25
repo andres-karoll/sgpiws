@@ -13,10 +13,10 @@ public interface IGestionFinancieraService {
 	public boolean eliminarPresupuesto(int id);
 	public boolean crearPresupuesto(Presupuesto presupuesto);
 	//actualizar presupuesto
-	
 	public List<Compra> CompraPorPresupuesto(int presupuesto);
 	public boolean eliminarCompra(int id);
-	public boolean crearCompra(Compra compra,String codigo_compra, double valor,LocalDate fecha_compra, String link, int presupuesto);
+	public boolean crearCompra(Compra compra, int presupuesto);
 	public boolean autorizarCompra(int Estado);
 	//actualizar compra
+	public boolean realziarCompra(int compra,String codigo,LocalDate fechaCompra,String link,Double valor);
 }

@@ -19,7 +19,7 @@ import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Proyecto;
-
+import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.service.IGestionProyectosInvestigacionService;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -50,7 +50,6 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
 	@PostMapping("/agregarParticipante")
 	public JSONObject agregarParticipante(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -63,20 +62,17 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
-	@GetMapping("/todosLosproyectos")
-	public JSONArray todosLosProyectos() {
-		JSONArray salida = new JSONArray();
-		List<Proyecto> proyectos = iGestionProyectosInvestigacionService.todosLosProyectos();
-		for (Iterator iterator = proyectos.iterator(); iterator.hasNext();) {
-			Proyecto proyecto = (Proyecto) iterator.next();
-			salida.add(proyecto.toJson());
+	@GetMapping(value = "/proyectossemillero/{cedula}")
+	public  List<JSONObject>  poryectosDeSemilleroParparticipante(@PathVariable String cedula	) {
+		 List<JSONObject> x = iGestionProyectosInvestigacionService.proyectosParticipanteSemillero(cedula);
+		 return x;
 		}
-		return salida;
+	@GetMapping("/todosLosproyectosusuariosemillero/{cedula}")
+	public  List<JSONObject> todosLosProyectosUsuarioSemillero(@PathVariable String cedula) {
+		List<JSONObject> proyectos = iGestionProyectosInvestigacionService.todosLosProyectosUsuarioSemillero(cedula);
+		
+		return proyectos;
 	}
-
-
-
 	@GetMapping("/eliminarproyecto/{id}")
 	public JSONObject elinimarProyecto(@PathVariable String id) {
 		JSONObject salida = new JSONObject();
@@ -227,6 +223,17 @@ public class GestionProyectosInvestigacionController {
 		for (Iterator<AreaConocimiento> iterator = areaConocimientos.iterator(); iterator.hasNext();) {
 			AreaConocimiento areas = (AreaConocimiento) iterator.next();
 			salida.add(areas.toJson());
+		}
+		return salida;
+	}
+	@PostMapping("/participarconvocatoria/")
+	public JSONObject participarconvocatoria(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		ProyectosConvocatoria proyectoConvocatoria= new ProyectosConvocatoria(Integer.parseInt(entrada.getAsString("proyecto")),Integer.parseInt(entrada.getAsString("convocatoria")) );
+		if (iGestionProyectosInvestigacionService.participarConvocatoria(proyectoConvocatoria,entrada.getAsString("proyecto_id"))) {
+			salida.put("respuesta", "se agrego exitosamente a la convocatoria");
+		} else {
+			salida.put("respuesta", "No se agrego a la convocatoria");
 		}
 		return salida;
 	}

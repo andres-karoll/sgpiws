@@ -16,13 +16,15 @@ import co.edu.usbbog.sgpi.model.Presupuesto;
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
+import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.Usuario;
+import net.minidev.json.JSONObject;
 
 public interface IGestionProyectosInvestigacionService {
 
-	public List<Proyecto> todosLosProyectos();
+	public List<Proyecto> todosLosProyectosSemillero();
 	public List<Proyecto> todosLosProyectosPorSemillero(int semillero);
 	public List<Proyecto> todosLosProyectosPorFacultad(Facultad facultad);
 	public List<Proyecto> todosLosProyectosPorPrograma(Programa programa);
@@ -70,4 +72,7 @@ public interface IGestionProyectosInvestigacionService {
 		public boolean agregarAntecedente(Proyecto proyecto, Proyecto antecedente);
 		public boolean agregarAreaConocimiento(int parseInt, int parseInt2);
 		public List<AreaConocimiento> buscarAreasProyecto(int parseInt);
+		public boolean participarConvocatoria(ProyectosConvocatoria proyectosConvocatoria,String estado);
+		public List<JSONObject> todosLosProyectosUsuarioSemillero(String cedula);
+		public List<JSONObject> proyectosParticipanteSemillero(String cedula);
 }

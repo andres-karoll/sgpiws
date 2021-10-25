@@ -32,6 +32,7 @@ public class GestionFiltroProyectoController {
 			salida.add(proyecto.toJson()) ;
 		}
 		return salida;		
+		return salida;	
 	}
 	
 	@GetMapping(value = "/listarproyectosportipo/{tipo_proyecto}")

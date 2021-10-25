@@ -47,7 +47,7 @@ public class Presupuesto implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private double monto;
-    @Basic(optional = false)
+   
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate fecha;
     @Lob
@@ -154,7 +154,7 @@ public class Presupuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.Presupuesto[ id=" + id + " ]";
+        return toJson().toString();
     }
     public JSONObject toJson() {
     	JSONObject presupuestoJson=new JSONObject();
@@ -162,6 +162,7 @@ public class Presupuesto implements Serializable {
     	presupuestoJson.put("monto",this.getMonto());
     	presupuestoJson.put("fecha",this.getFecha());
     	presupuestoJson.put("descripcion",this.getDescripcion());
+    	//presupuestoJson.put("proyecto", this.getProyecto().getTitulo());
     	return presupuestoJson;
     }
 	

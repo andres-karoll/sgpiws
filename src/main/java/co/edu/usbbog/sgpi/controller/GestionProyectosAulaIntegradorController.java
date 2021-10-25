@@ -22,8 +22,11 @@ import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
+import co.edu.usbbog.sgpi.model.ParticipantesPK;
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Proyecto;
+import co.edu.usbbog.sgpi.model.TipoProyecto;
+import co.edu.usbbog.sgpi.repository.ITipoProyectoRepository;
 import co.edu.usbbog.sgpi.service.IGestionProyectosAulaIntegradorService;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -70,12 +73,13 @@ public class GestionProyectosAulaIntegradorController {
 	@PostMapping("/eliminarparticipante")
 	public JSONObject eliminarParticipante(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		Participantes participante = new Participantes(entrada.getAsString("usuario"),
-				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
-		if (iGestionProyectosAulaIntegradorService.crearParticipante(participante, entrada.getAsString("usuario"))) {
-			salida.put("respuesta", "el participante fue agregado");
+		if (iGestionProyectosAulaIntegradorService.actualizarParticipante(Integer.parseInt( entrada.getAsString("id")),
+				entrada.getAsString("cedula"),
+				 LocalDate.parse(entrada.getAsString("fechafin"))
+				)) {
+			salida.put("respuesta", "el participante termino su proceso em el proyecto");
 		} else {
-			salida.put("respuesta", "el participante no pudo ser agregado");
+			salida.put("respuesta", "hubo un error");
 		}
 		return salida;
 	}
@@ -86,10 +90,12 @@ public class GestionProyectosAulaIntegradorController {
 		List<Proyecto> proyectos = iGestionProyectosAulaIntegradorService.todosLosProyectos();
 		for (Iterator iterator = proyectos.iterator(); iterator.hasNext();) {
 			Proyecto proyecto = (Proyecto) iterator.next();
-			salida.add(proyecto.toJson());
+			salida.add(proyecto.toJson()); 
 		}
 		return salida;
 	}
+
+
 
 	// duda por la facultad
 	@GetMapping("/todoslosproyectosporclase/{clase}")
@@ -280,9 +286,10 @@ public class GestionProyectosAulaIntegradorController {
 	}
 	@GetMapping(value = "/proyectosAI/{cedula}")
 	public  List<JSONObject>  poryectosParparticipante(@PathVariable String cedula	) {
-		 List<JSONObject> x = iGestionProyectosAulaIntegradorService.proyectosParticipante(cedula);
+		 List<JSONObject> x = iGestionProyectosAulaIntegradorService.proyectosParticipanteClase(cedula);
 		 return x;
 		}	
+
 	@PostMapping(value = "/actualizarproyecto")
 	public  JSONObject ActualizarProyecto(@RequestBody JSONObject entrada	) {
 		JSONObject salida=new JSONObject();
@@ -296,5 +303,15 @@ public class GestionProyectosAulaIntegradorController {
 		}
 		return salida;
 		}	
+	@GetMapping(value = "/listarparticipantesporporyecto/{id}")
+	public  JSONArray listarParticipantesPorPoryecto(@PathVariable int id	) {
+		JSONArray salida=new JSONArray();
+		List<Participantes> parti= iGestionProyectosAulaIntegradorService.listarParticipantesPorPoryecto(id);
+		for (Iterator iterator = parti.iterator(); iterator.hasNext();) {
+			Participantes participantes = (Participantes) iterator.next();
+			salida.add(participantes.toJson());
+		}
+		  return salida;
+		}
 
 }
