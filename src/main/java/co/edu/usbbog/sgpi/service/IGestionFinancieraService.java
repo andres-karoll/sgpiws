@@ -18,5 +18,5 @@ public interface IGestionFinancieraService {
 	public boolean crearCompra(Compra compra, int presupuesto);
 	public boolean autorizarCompra(int Estado);
 	//actualizar compra
-	public boolean realziarCompra(int compra,String codigo,LocalDate fechaCompra,String link,Double valor);
+	public boolean realziarCompra(int compra,String codigo,LocalDate fechaCompra,Double valor, int estado);
 }

@@ -90,13 +90,14 @@ public class Compra implements Serializable {
         this.id = id;
     }
 
-    public Compra(Integer id, LocalDate fechaSolicitud, String nombre, String tipo, int estado, String descripcion) {
+    public Compra(Integer id, LocalDate fechaSolicitud, String nombre, String tipo, int estado, String descripcion, String link) {
         this.id = id;
         this.fechaSolicitud = fechaSolicitud;
         this.nombre = nombre;
         this.tipo = tipo;
         this.estado = estado;
         this.descripcion = descripcion;
+        this.link = link;
     }
 
     public Integer getId() {

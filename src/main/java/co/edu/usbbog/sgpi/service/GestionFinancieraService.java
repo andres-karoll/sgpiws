@@ -114,11 +114,11 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 	}
 
 	@Override
-	public boolean realziarCompra(int compra,String codigo,LocalDate fechaCompra,String link,Double valor) {
+	public boolean realziarCompra(int compra,String codigo,LocalDate fechaCompra,Double valor,int estado) {
 		Compra comp=compraRepo.getById(compra);
 		comp.setCodigoCompra(codigo);
 		comp.setFechaCompra(fechaCompra);
-		comp.setLink(link);
+		comp.setEstado(estado);
 		comp.setValor(valor);
 		if(fechaCompra.isBefore(comp.getFechaSolicitud())) {
 			return false;
