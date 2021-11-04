@@ -103,7 +103,6 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 			compraRepo.save(compra);
 		}
 		
-
 		return compraRepo.existsById(compra.getId());
 
 	}
@@ -161,8 +160,8 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 		}
 		comp.setEstado(estado);
 		compraRepo.save(comp);
-		
-		return true;
+
+		return compraRepo.existsById(comp.getId());
 	}
 	
 	@Override

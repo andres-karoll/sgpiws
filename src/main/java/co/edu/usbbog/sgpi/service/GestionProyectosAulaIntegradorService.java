@@ -356,7 +356,17 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 
 	@Override
 	public List<JSONObject> proyectosParticipanteClase(String cedula) {
+		Usuario usu= iUsuarioRepository.getById(cedula);
+		List<Participantes> par=usu.getParticipantes();
+		
+		
 		List<JSONObject> x = iProyectoRepository.proyectosParticipaClase(cedula);
+		List<Proyecto> pro=null;
+		for (Iterator iterator = x.iterator(); iterator.hasNext();) {
+			JSONObject jsonObject = (JSONObject) iterator.next();
+			//Proyecto proye =iProyectoRepository.getById();
+			//pro.add(proye);
+		}
 		return x;
 	}
 
@@ -413,4 +423,21 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	  return true;
 	  //iParticipantesRepository.actualizarParticipante(id,cedula,fechafin);	
 	}
+
+	@Override
+	public List<AreaConocimiento> listarAreaConocimiento() {
+		List<AreaConocimiento> area =iAreaConocimientoRepository.findAll();
+		if (area.equals(null)) {
+			area = new ArrayList<AreaConocimiento>();
+		}
+		return area;
+	}
+
+	@Override
+	public List<JSONObject> listarEvento() {
+		List<JSONObject> x = iEventoRepository.listarEventos();
+		return x;
+	}
+
+	
 }

@@ -441,7 +441,11 @@ public class Proyecto implements Serializable {
     	proyectoJson.put("metodologia",this.getMetodologia());
     	proyectoJson.put("conclusiones",this.getConclusiones());
     	proyectoJson.put("justificacion",this.getJustificacion());
-    	
+    	if(this.getSemillero()==null) {
+    	proyectoJson.put("semillero","este proyecto no tiene asociado ningun semillero");
+    	}else {
+    		proyectoJson.put("semillero", this.getSemillero().getNombre());
+    	}
     	return proyectoJson;
     }
 }

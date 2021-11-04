@@ -10,6 +10,7 @@ import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.Usuario;
+import net.minidev.json.JSONObject;
 
 public interface IGestionTrabajosGradoService {
 	
@@ -47,4 +48,5 @@ public interface IGestionTrabajosGradoService {
 	public List<Proyecto> todosLosProyectosFinalizados(String grado,String estado);
 	public Proyecto buscarProyecto(int proyectoId);
 	public Producto buscarProducto(int productoId);
+	public List<JSONObject> proyectosParticipante(String cedula);
 }

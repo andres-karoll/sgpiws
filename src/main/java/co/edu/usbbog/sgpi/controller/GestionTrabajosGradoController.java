@@ -131,4 +131,9 @@ public class GestionTrabajosGradoController {
 		}
 		return salida;
 	}
+	@GetMapping(value = "/proyectosgrado/{cedula}")
+	public  List<JSONObject>  poryectosParparticipante(@PathVariable String cedula	) {
+		 List<JSONObject> x = iGestionTrabajosGradoService.proyectosParticipante(cedula);
+		 return x;
+		}	
 }
