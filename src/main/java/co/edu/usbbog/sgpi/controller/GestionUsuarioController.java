@@ -81,21 +81,15 @@ public class GestionUsuarioController {
 				entrada.getAsString("visibilidad"));
 		usuario.setTelefono(entrada.getAsString("telefono"));
 		
-		if ( entrada.getAsString("correoEst").contains("academia.usbbog.edu.co")){
-			System.out.println(entrada.getAsString("tipo"));
+		if ( entrada.getAsString("correoEst").contains("@academia.usbbog.edu.co")){
 		    if(entrada.getAsString("tipo").equals("Estudiante")) {
 		    	tipoUsuario=entrada.getAsString("tipo");
+		    }else {
+		        salida.put("respuesta", "el tipo de usuario es incorrecto ");
+		        return salida;
 		    }
-		}
-		
-		System.out.println(entrada.getAsString("correoEst").contains("@usbbog.edu.co"));
-		if(entrada.getAsString("correoEst").contains("@usbbog.edu.co")){	
-			if(entrada.getAsString("tipo").equals("Profesor" )|| 
-					entrada.getAsString("tipo").equals("Administrador") || 
-					entrada.getAsString("tipo").equals("Biblioteca")||
-					entrada.getAsString("tipo").equals("Profesional de investigacion")) {
+		}else if(entrada.getAsString("correoEst").contains("@usbbog.edu.co")){	
 			tipoUsuario=entrada.getAsString("tipo");
-			}
 			}
 		
 		if (iGestionUsuariosService.crearUsuario(usuario,
@@ -323,11 +317,11 @@ public class GestionUsuarioController {
 		JSONObject salida=new JSONObject();
 		salida= iGestionUsuariosService.login(entrada.getAsString("correoEstudiantil"),entrada.getAsString("contrasena"),entrada.getAsString("tipoUsuario")); 
 		if(salida.equals(null)) {
-			return salida;
-		}else {
-		return salida;
-	}
+			salida.put("respuesta", "el usuario o contraseña son incorrectos ");		
 		}
+		return salida;
+	
+	}
 	
 	@GetMapping("/roles/{cedula}")
 	private JSONArray roles(@PathVariable String cedula) {

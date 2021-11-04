@@ -255,12 +255,17 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	public JSONObject login(String correo, String contrasena,String tipo) {
 		JSONObject salida = new JSONObject();
 		Usuario usu = iUsuarioRepository.getByCorreo(correo);
-		TipoUsuario tips= iTipoUsuarioRepository.getById(tipo);
-		List<TipoUsuario> tipos = usu.getTiposUsuario();
-		salida = iUsuarioRepository.Login(correo, contrasena,tipo);
+		if(usu!=null) {
+			if(usu.getTiposUsuario().equals(null)) {
+				salida.put("respuesta","el usuario o la contraseña son incorrectos o el tipo e rol son incorrectos");
+			}else {
+				salida = iUsuarioRepository.Login(correo, contrasena,tipo);
+			}	
+			}else {
+				salida.put("respuesta",null);
+			}
 		return salida;
 	}
-
 	@Override
 	public boolean asignarDirectorPrograma(Programa programa, String direct) {
 		Usuario usu = iUsuarioRepository.getById(direct);
@@ -268,7 +273,6 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		iProgramaRepository.save(programa);
 		return iProgramaRepository.existsById(programa.getId());
 	}
-
 	@Override
 	public GrupoInvestigacion buscarGrpo(int director) {
 		return iGrupoInvestigacionRepository.getById(director);

@@ -36,8 +36,10 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	
 	@Query(value = "SELECT * FROM sgpi_db.proyecto where titulo = ?1", nativeQuery = true)
 	List<Proyecto> findByTitulo(String titulo);
-	@Query(value="SELECT distinct id, titulo,descripcion,estado	 FROM sgpi_db.participantes,proyecto where proyecto.tipo_proyecto="+"'Aula'"+" and sgpi_db.participantes.usuario=?1",nativeQuery = true)
+	@Query(value="SELECT usuario.cedula as \"cedula\", proyecto.id, proyecto.titulo, proyecto.estado, proyecto.descripcion, proyecto.fecha_inicio, proyecto.fecha_fin, proyecto.metodologia, proyecto.visibilidad from participantes inner join usuario on participantes.usuario =  usuario.cedula inner join proyecto on proyecto.id = participantes.proyecto where participantes.usuario=?1 and proyecto.tipo_proyecto=\"Aula\" ",nativeQuery = true)
 	List<JSONObject> proyectosParticipaClase(String cedula);
 	@Query(value="SELECT distinct id, titulo,descripcion,estado FROM sgpi_db.participantes,proyecto where proyecto.tipo_proyecto='Semillero' and sgpi_db.participantes.usuario=?1",nativeQuery = true)
 	List<JSONObject> proyectosParticipaSemillero(String cedula);
+	@Query(value="SELECT distinct id, titulo,descripcion,estado FROM sgpi_db.participantes,proyecto where proyecto.tipo_proyecto='Grado' and sgpi_db.participantes.usuario=?1",nativeQuery = true)
+	List<JSONObject> proyectosParticipaGrado(String cedula);
 }

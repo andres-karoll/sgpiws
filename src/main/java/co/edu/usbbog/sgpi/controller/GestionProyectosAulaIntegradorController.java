@@ -20,6 +20,7 @@ import java.util.List;
 import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
+import co.edu.usbbog.sgpi.model.Evento;
 import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.ParticipantesPK;
@@ -76,8 +77,8 @@ public class GestionProyectosAulaIntegradorController {
 		if (iGestionProyectosAulaIntegradorService.actualizarParticipante(Integer.parseInt( entrada.getAsString("id")),
 				entrada.getAsString("cedula"),
 				 LocalDate.parse(entrada.getAsString("fechafin"))
-				)) {
-			salida.put("respuesta", "el participante termino su proceso em el proyecto");
+				)) { 
+			salida.put("respuesta", "el participante termino su proceso en el proyecto");
 		} else {
 			salida.put("respuesta", "hubo un error");
 		}
@@ -203,7 +204,6 @@ public class GestionProyectosAulaIntegradorController {
 		JSONObject salida = new JSONObject();
 		Participaciones participaciones = new Participaciones(Integer.parseInt(entrada.getAsString("evento")),
 				Integer.parseInt(entrada.getAsString("proyecto")));
-		System.out.println("holass");
 		if (iGestionProyectosAulaIntegradorService.participarEvento(participaciones,
 				LocalDate.parse(entrada.getAsString("fecha")), entrada.getAsString("reconocimiento"))) {
 			salida.put("respuesta", "se unio al evento exitosamente");
@@ -225,6 +225,7 @@ public class GestionProyectosAulaIntegradorController {
 		}
 		return salida;
 	}
+	
 
 	@PostMapping("/agregarantecedente")
 	public JSONObject agregarAntecedente(@RequestBody JSONObject entrada) {
@@ -262,7 +263,17 @@ public class GestionProyectosAulaIntegradorController {
 		}
 		return salida;
 	}
-
+	@GetMapping("/listarareas")
+	public JSONArray listarAreas() {
+		JSONArray salida = new JSONArray();
+		List<AreaConocimiento> areaConocimientos = iGestionProyectosAulaIntegradorService
+				.listarAreaConocimiento();
+		for (Iterator<AreaConocimiento> iterator = areaConocimientos.iterator(); iterator.hasNext();) {
+			AreaConocimiento areas = (AreaConocimiento) iterator.next();
+			salida.add(areas.toJson());
+		}
+		return salida;
+	}
 	@GetMapping("/listarareasproyecto/{proyecto}")
 	public JSONArray listarAreasProyecto(@PathVariable String proyecto) {
 		JSONArray salida = new JSONArray();
@@ -285,12 +296,16 @@ public class GestionProyectosAulaIntegradorController {
 			return x;
 		}	
 	}
+	@GetMapping(value = "/listareventos")
+	public  List<JSONObject>  listarEventos() {
+		 List<JSONObject> x = iGestionProyectosAulaIntegradorService.listarEvento();
+		 return x;
+		}	
 	@GetMapping(value = "/proyectosAI/{cedula}")
 	public  List<JSONObject>  poryectosParparticipante(@PathVariable String cedula	) {
 		 List<JSONObject> x = iGestionProyectosAulaIntegradorService.proyectosParticipanteClase(cedula);
 		 return x;
 		}	
-
 	@PostMapping(value = "/actualizarproyecto")
 	public  JSONObject ActualizarProyecto(@RequestBody JSONObject entrada	) {
 		JSONObject salida=new JSONObject();

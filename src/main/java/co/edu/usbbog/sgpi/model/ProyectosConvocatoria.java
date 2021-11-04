@@ -116,15 +116,19 @@ public class ProyectosConvocatoria implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.usbbog.sgpi.model.ProyectosConvocatoria[ proyectosConvocatoriaPK=" + proyectosConvocatoriaPK + " ]";
+        return toJson().toString();
     }
     public JSONObject toJson() {
     	JSONObject proyectosConovocatoriaJson=new JSONObject();
+    	if(this.getProyecto()==null) {
+    		proyectosConovocatoriaJson.put("Convocatoria", "esta convocatoria no tiene proyectos asociados");
+    	}else {
     	proyectosConovocatoriaJson.put("id_proyecto",this.getProyecto().getId());
     	proyectosConovocatoriaJson.put("titulo_proyecto",this.getProyecto().getTitulo());
     	proyectosConovocatoriaJson.put("descripcion_proyecto",this.getProyecto().getDescripcion());
     	proyectosConovocatoriaJson.put("estado_proyecto",this.getProyecto().getEstado());
     	proyectosConovocatoriaJson.put("convocatoria",this.getConvocatoria().getNombreConvocatoria());
+    	}
     	return proyectosConovocatoriaJson;
     }
 

@@ -25,6 +25,7 @@ import co.edu.usbbog.sgpi.repository.IProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ITipoProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ITipoUsuarioRepository;
 import co.edu.usbbog.sgpi.repository.IUsuarioRepository;
+import net.minidev.json.JSONObject;
 @Service
 public class GestionTrabajosGradoService implements IGestionTrabajosGradoService {
 	@Autowired 
@@ -248,6 +249,13 @@ public class GestionTrabajosGradoService implements IGestionTrabajosGradoService
 	public Producto buscarProducto(int productoId) {
 		Producto producto = iProductoRepository.getById(productoId);
 		return producto;
+	}
+
+
+	@Override
+	public List<JSONObject> proyectosParticipante(String cedula) {
+		List<JSONObject> x = iProyectoRepository.proyectosParticipaGrado(cedula);
+		return x;
 	}
 
 }

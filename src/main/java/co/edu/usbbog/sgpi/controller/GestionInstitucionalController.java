@@ -322,7 +322,6 @@ public class GestionInstitucionalController {
 	
 	@GetMapping(value = "/listarprogramasporfacultad/{facultad_id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONArray listarProgramasPorFacultad(@PathVariable int facultad_id) {
-		
 		JSONArray salida = new JSONArray(); 
 		List<Programa> progra = gestionInstitucionalService.todosLosProgramasPorFacultad(facultad_id);
 		for (Programa programa : progra) {
@@ -343,7 +342,6 @@ public class GestionInstitucionalController {
 	
 	@GetMapping(value = "/eliminarprograma/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String eliminarPrograma(@PathVariable int id) {		
-	
 		if(gestionInstitucionalService.eliminarPrograma(id)) {
 			return"eliminado con Exito";			
 		}
@@ -352,21 +350,15 @@ public class GestionInstitucionalController {
 	
 	@PostMapping( "/crearprograma")
 	public JSONObject crearPrograma(@RequestBody JSONObject entrada) {		
-
 		JSONObject salida = new JSONObject();
 		Programa programa =  new Programa(	
 				Integer.parseInt(entrada.getAsString("id")), 
 				entrada.getAsString("nombre"));
-
 		if (gestionInstitucionalService.crearPrograma(programa, Integer.parseInt( entrada.getAsString("facultad_id")),entrada.getAsString("director"))) {
-
-
 			salida.put("respuesta", "se creo el programa");
-
 		} else {
 			salida.put("respuesta", "no se pudo el programa");
 		}
-
 		return salida;
 	}
 	

@@ -417,10 +417,14 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	}
 	@Override
 	public boolean participarConvocatoria(ProyectosConvocatoria proyectosConvocatoria,String estado) {	
+		if(iProyectoConvocatoriaRepository.existsById(proyectosConvocatoria.getProyectosConvocatoriaPK())) {
+			return false;
+		}else {
 		proyectosConvocatoria.setIdProyecto(estado);
 		iProyectoConvocatoriaRepository.save(proyectosConvocatoria); 
 		return iProyectoConvocatoriaRepository.existsById(proyectosConvocatoria.getProyectosConvocatoriaPK());
-	}
+		}
+		}
 	@Override
 	public List<JSONObject> todosLosProyectosUsuarioSemillero(String cedula) {
 		List<JSONObject> proyectos=iProyectoRepository.proyectosParticipaSemillero(cedula);

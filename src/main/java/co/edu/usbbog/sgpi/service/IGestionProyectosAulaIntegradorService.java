@@ -6,6 +6,7 @@ import java.util.List;
 import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
+import co.edu.usbbog.sgpi.model.Evento;
 import co.edu.usbbog.sgpi.model.Materia;
 import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
@@ -58,5 +59,7 @@ public interface IGestionProyectosAulaIntegradorService {
 				String justificacion);
 		public List<Participantes> listarParticipantesPorPoryecto(int id);		
 		public boolean actualizarParticipante(int id, String cedula, LocalDate fechafin);
+		public List<AreaConocimiento> listarAreaConocimiento();
+		public List<JSONObject> listarEvento();
 
 }
