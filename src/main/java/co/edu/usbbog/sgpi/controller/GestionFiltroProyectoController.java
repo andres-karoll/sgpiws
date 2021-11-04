@@ -34,6 +34,14 @@ public class GestionFiltroProyectoController {
 		return salida;	
 	}
 	
+	@GetMapping(value = "/listarproyectosvisibles")
+	public List<JSONObject> listarProyectosVisibles() {
+		
+		List<JSONObject> salida = gestionFiltroProyectosService.todosLosProyectosVisibles();
+
+		return salida;
+	}
+	
 	@GetMapping(value = "/listarproyectosportipo/{tipo_proyecto}")
 	public JSONArray listarProyectosPorTipo(@PathVariable String tipo_proyecto) {		
 		JSONArray salida = new JSONArray(); 
