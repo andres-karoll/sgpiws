@@ -311,6 +311,29 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}		
 		return programas;
 	}
+	
+	@Override
+	public boolean asignarSemilleroAUsuario(String cedula,int semillero) {
+		Usuario usu=usuarioRepo.getById(cedula);
+		Semillero semi=semilleroRepo.getById(semillero);
+		usu.setSemilleroId(semi);
+		usuarioRepo.save(usu);
+		return usuarioRepo.existsById(usu.getCedula());
+	}
+	
+	@Override
+	public boolean desasignarSemilleroAUsuario(String cedula) {
+		Usuario usu=usuarioRepo.getById(cedula);
+		semilleroRepo.setSemilleroNullById(cedula);
+		return usuarioRepo.existsById(usu.getCedula());
+	}
+	
+	@Override
+	public List<JSONObject> contarSemilleros() {
+		List<JSONObject> semilleros = semilleroRepo.contarSemilleros();	
+		return semilleros;
+	}
+	
 	/*
 	@Override
 	public List<Clase> usuariosPorSemillero(int semillero) {
@@ -655,6 +678,11 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public List<Evento> todosLosEventos() {
 		List<Evento> eventos = eventoRepo.findAll();	
+		return eventos;
+	}
+	@Override
+	public List<JSONObject> contarEventos() {
+		List<JSONObject> eventos = eventoRepo.contarEventos();	
 		return eventos;
 	}
 	@Override

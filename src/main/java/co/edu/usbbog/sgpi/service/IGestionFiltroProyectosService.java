@@ -7,10 +7,13 @@ import co.edu.usbbog.sgpi.model.LineaInvestigacion;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 public interface IGestionFiltroProyectosService {
 	
 	public List<Proyecto> todosLosProyectos();
+	public List<JSONObject> todosLosProyectosVisibles();
 	//listar por lugar?????????
 	public List<Proyecto> todosLosProyectosPorLugar();
 	public List<Proyecto> todosLosProyectosPorTipoProyecto(String tipo_proyecto);

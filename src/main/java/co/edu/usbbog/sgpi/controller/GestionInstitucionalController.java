@@ -281,6 +281,36 @@ public class GestionInstitucionalController {
 		}
 		return salida;
 	}
+	
+	
+	@PostMapping("/asignarsemillero")
+	public JSONObject asignarsemillero(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if (gestionInstitucionalService.asignarSemilleroAUsuario(entrada.getAsString("cedula"), Integer.parseInt(entrada.getAsString("semillero")))) {
+			salida.put("respuesta", "el usuario fue asignado exitosamente");
+		}else {
+			salida.put("respuesta", "el usuario fue no asignado ");
+		}
+		return salida;
+	}
+	
+	@PostMapping("/desasignarsemillero")
+	public JSONObject desasignarsemillero(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if (gestionInstitucionalService.desasignarSemilleroAUsuario(entrada.getAsString("cedula"))) {
+			salida.put("respuesta", "el usuario fue asignado exitosamente");
+		}else {
+			salida.put("respuesta", "el usuario fue no asignado ");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/contarsemilleros")
+	public List<JSONObject> contarSemilleros() {
+
+		List<JSONObject> salida = gestionInstitucionalService.contarSemilleros(); 
+		return salida;		
+	}
 	//FACULTADES
 	@GetMapping(value = "/listarfacultades")
 	public JSONArray listarFacultades() {
@@ -695,6 +725,13 @@ public class GestionInstitucionalController {
 		for(Evento evento : eve) {
 			salida.add(evento.toJson());
 		}	
+		return salida;		
+	}
+	
+	@GetMapping(value = "/contareventos")
+	public List<JSONObject> contarEventos() {
+
+		List<JSONObject> salida = gestionInstitucionalService.contarEventos(); 
 		return salida;		
 	}
 	

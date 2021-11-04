@@ -16,6 +16,8 @@ import co.edu.usbbog.sgpi.repository.IAreaConocimientoRepository;
 import co.edu.usbbog.sgpi.repository.IProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ITipoProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ITipoUsuarioRepository;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 
 @Service
@@ -35,6 +37,11 @@ public class GestionFiltroProyectosService implements IGestionFiltroProyectosSer
 	@Override
 	public List<Proyecto> todosLosProyectos() {
 		List<Proyecto> proyectos = proyectoRepo.findAll();
+		return proyectos;
+	}
+	@Override
+	public List<JSONObject> todosLosProyectosVisibles() {
+		List<JSONObject> proyectos = proyectoRepo.proyectosVisibles();
 		return proyectos;
 	}
 

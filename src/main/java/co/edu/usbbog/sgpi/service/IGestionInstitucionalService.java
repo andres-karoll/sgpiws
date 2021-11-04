@@ -46,6 +46,9 @@ public interface IGestionInstitucionalService {
 	public boolean asignarSemilleroAPrograma(int programa, int semillero);
 	public List<Programa> programaDelSemillero(int semillero);
 	public boolean desasignarSemilleroAPrograma(int programa, int semillero);
+	public boolean asignarSemilleroAUsuario(String cedula,int semillero);
+	public boolean desasignarSemilleroAUsuario(String cedula);
+	public List<JSONObject> contarSemilleros();
 	//actualizar semillero
 	
 	public List<Facultad> todasLasFacultades();
@@ -97,7 +100,7 @@ public interface IGestionInstitucionalService {
 	
 	
 	
-	
+	public List<JSONObject> contarEventos();
 	public List<Evento> todosLosEventos();
 	public boolean crearEvento(Evento evento, String entidad, String sitio_web, String url_memoria);
 	public boolean eliminarEvento(int id);
