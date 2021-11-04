@@ -52,5 +52,16 @@ public interface ISemilleroRepository extends JpaRepository<Semillero, Integer>{
 				//solo para consultar el programa
 				@Query(value = "SELECT * FROM sgpi_db.proyecto where semillero = ?1", nativeQuery = true)
 				List<Proyecto> findByProyectos(int semillero);
+				
+				
+				@Modifying
+				@Transactional
+				@Query(value= "UPDATE `sgpi_db`.`usuario` SET `semillero_id` = null WHERE (`cedula` = ?1)", nativeQuery=true)
+				void setSemilleroNullById(String cedula);
+				
+				
+				
+				@Query(value = "select count(*) as \"semilleros_contados\" from sgpi_db.semillero", nativeQuery = true)
+				List<JSONObject> contarSemilleros();
 		
 }

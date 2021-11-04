@@ -2,6 +2,7 @@ package co.edu.usbbog.sgpi.controller;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,31 +91,39 @@ public class GestionFinancieraController {
 	@PostMapping(value = "/crearcompra")
 	public JSONObject crearCompra(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		Compra compra = new Compra(
-				Integer.parseInt(entrada.getAsString("id")),
-				LocalDate.parse(entrada.getAsString("fecha_solicitud")), 
-				entrada.getAsString("nombre"),
-				entrada.getAsString("tipo"),
-				Integer.parseInt(entrada.getAsString("estado")),
-				entrada.getAsString("descripcion"));
-		if(gestionFinancieraService.crearCompra(
-				compra,
-				Integer.parseInt(entrada.getAsString("presupuesto")))) {
-			salida.put("respuesta", "se creo");
-		}else {
-			salida.put("respuesta", "NO se creo");
-		}
+			
+			Compra compra = new Compra(
+					Integer.parseInt(entrada.getAsString("id")),
+					LocalDate.parse(entrada.getAsString("fecha_solicitud")), 
+					entrada.getAsString("nombre"),
+					entrada.getAsString("tipo"),
+					Integer.parseInt(entrada.getAsString("estado")),
+					entrada.getAsString("descripcion"),
+					entrada.getAsString("link"));
+			
+			
+			
+			
+					gestionFinancieraService.crearCompra(
+					compra,
+					Integer.parseInt(entrada.getAsString("presupuesto")));
+
 		return salida;
+		
 	}
+	
+	
+	
+	
 	@PostMapping(value = "/realizarcompra")
-	public JSONObject realizarCompra(@RequestBody JSONObject entrada) {
+	public JSONObject realziarCompra(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		if(gestionFinancieraService.realziarCompra(
 				Integer.parseInt(entrada.getAsString("id")),
 				entrada.getAsString("codigo_compra"),
 				LocalDate.parse(entrada.getAsString("fecha_compra")),
-				entrada.getAsString("link"),
-				 Double.parseDouble(entrada.getAsString("valor"))
+				 Double.parseDouble(entrada.getAsString("valor")),
+						 Integer.parseInt(entrada.getAsString("estado"))
 			)) {
 			salida.put("respuesta", "se creo");
 		}else {
@@ -122,4 +131,69 @@ public class GestionFinancieraController {
 		}
 		return salida;
 	}
-}
+	
+	@PostMapping(value = "/actualizarestadocompra")
+	public JSONObject actualizarEstadoCompra(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(gestionFinancieraService.actualizarestadoCompra(
+				Integer.parseInt(entrada.getAsString("id_compra")),
+				Integer.parseInt(entrada.getAsString("estado"))
+			)) {
+			salida.put("respuesta", "se creo");
+		}else {
+			salida.put("respuesta", "NO se creo");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/comprastotalesporpresupuesto/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject comprasTotales(@PathVariable int id) {
+		JSONObject salida = new JSONObject();
+		JSONObject comprastotales = gestionFinancieraService.comprasTotales(id);
+		
+		if(comprastotales != null) {
+			salida.put("salida","$"+ comprastotales.getAsString("SUM(valor)"));
+			
+		}
+		else {
+			salida.put("salida", "no tiene compras realizadas");
+			
+		}
+		return salida;
+		
+		}
+	
+	
+	@GetMapping(value = "/comprassolicitadas/{presupuesto}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<JSONObject> compraCreadas(@PathVariable int presupuesto) {
+		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(1,presupuesto);
+		return comprasestado;
+		
+		}
+	
+	@GetMapping(value = "/comprasaceptadas/{presupuesto}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<JSONObject> comprasAceptadas(@PathVariable int presupuesto) {
+		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(2,presupuesto);
+		return comprasestado;
+		
+		}
+	@GetMapping(value = "/comprasrealizadas/{presupuesto}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<JSONObject> comprasRealizadas(@PathVariable int presupuesto) {
+		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(3,presupuesto);
+		return comprasestado;
+		
+		}
+	@GetMapping(value = "/comprasrechazadas/{presupuesto}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<JSONObject> comprasRechadas(@PathVariable int presupuesto) {
+		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(4,presupuesto);
+		return comprasestado;
+		
+		}
+	
+	
+	
+	
+	
+			
+	}
+

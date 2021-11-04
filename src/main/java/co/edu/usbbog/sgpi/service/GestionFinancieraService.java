@@ -56,8 +56,12 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 
 	@Override
 	public boolean crearPresupuesto(Presupuesto presupuesto) {
-
-		presupuestoRepo.save(presupuesto);
+		List<Presupuesto> a = PresupuestoPorProyecto(presupuesto.getProyecto().getId());
+		if(a !=null) {
+			presupuestoRepo.save(presupuesto);
+		System.out.println("hola");
+		}
+			
 		return presupuestoRepo.existsById(presupuesto.getId());
 	}
 
@@ -114,18 +118,69 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 	}
 
 	@Override
-	public boolean realziarCompra(int compra,String codigo,LocalDate fechaCompra,String link,Double valor) {
+	public boolean realziarCompra(int compra,String codigo,LocalDate fechaCompra,Double valor,int estado) {
 		Compra comp=compraRepo.getById(compra);
-		comp.setCodigoCompra(codigo);
-		comp.setFechaCompra(fechaCompra);
-		comp.setLink(link);
-		comp.setValor(valor);
+		
+		
+		
+		//JSONObject salida = new JSONObject();
+		JSONObject presupuestototal = presupuestoTotal(comp.getPresupuesto().getId());
+		JSONObject comprastotales = new JSONObject();
+		if(comprasTotales(comp.getPresupuesto().getId()) == null) {
+			comprastotales.put("SUM(valor)", "0");
+		}else {
+			comprastotales = comprasTotales(comp.getPresupuesto().getId());
+		}
+		String pre= presupuestototal.getAsString("monto");
+		String com = comprastotales.getAsString("SUM(valor)");
+
+		double presupuesto = Double.parseDouble(pre);
+		double compras = Double.parseDouble(com);
+		
+		if(presupuesto<(compras+valor)) {
+			return false;
+		}
+
 		if(fechaCompra.isBefore(comp.getFechaSolicitud())) {
 			return false;
 		}
+		comp.setCodigoCompra(codigo);
+		comp.setFechaCompra(fechaCompra);
+		comp.setEstado(estado);
+		comp.setValor(valor);
 		compraRepo.save(comp);
 		
-		return compraRepo.existsById(comp.getId());
+		return true;
+	}
+
+	@Override
+	public boolean actualizarestadoCompra(int compra,int estado) {
+		Compra comp=compraRepo.getById(compra);
+		if(!compraRepo.existsById(compra)) {
+			return false;
+		}
+		comp.setEstado(estado);
+		compraRepo.save(comp);
+		
+		return true;
+	}
+	
+	@Override
+	public JSONObject comprasTotales(int presupuesto) {
+		JSONObject comp = compraRepo.ComprasTotalesDelPresupuesto(presupuesto);
+		return comp;
+	}
+
+	@Override
+	public JSONObject presupuestoTotal(int presupuesto) {
+		JSONObject presu = compraRepo.Presupuestototal(presupuesto);
+		return presu;
+	}
+
+	@Override
+	public List<JSONObject> comprasPorEstado(int estado, int presupuesto) {
+		List<JSONObject> com = compraRepo.ComprasPorEstado(estado, presupuesto);
+		return com;
 	}
 
 	
