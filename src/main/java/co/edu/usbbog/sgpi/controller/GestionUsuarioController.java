@@ -314,13 +314,13 @@ public class GestionUsuarioController {
 	}
 	@PostMapping("/login")
 	private JSONObject Login(@RequestBody JSONObject entrada) {
-		JSONObject salida=new JSONObject();
-		salida= iGestionUsuariosService.login(entrada.getAsString("correoEstudiantil"),entrada.getAsString("contrasena"),entrada.getAsString("tipoUsuario")); 
-		if(salida.equals(null)) {
-			salida.put("respuesta", "el usuario o contraseña son incorrectos ");		
+		JSONObject salida=iGestionUsuariosService.login(entrada.getAsString("correoEstudiantil"),entrada.getAsString("contrasena"),entrada.getAsString("tipoUsuario")); 
+		JSONObject salida2=new JSONObject();
+		if(salida==null) {
+			salida2.put("respuesta", "el usuario o contraseña son incorrectos");		
+		return salida2;
 		}
 		return salida;
-	
 	}
 	
 	@GetMapping("/roles/{cedula}")
