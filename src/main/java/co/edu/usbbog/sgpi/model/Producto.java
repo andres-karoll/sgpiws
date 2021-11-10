@@ -13,6 +13,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -43,6 +45,7 @@ public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -66,12 +69,8 @@ public class Producto implements Serializable {
     public Producto() {
     }
 
-    public Producto(Integer id) {
-        this.id = id;
-    }
-
-    public Producto(Integer id, String tituloProducto, String tipoProducto, String urlRepo,LocalDate fecha) {
-        this.id = id;
+  
+    public Producto( String tituloProducto, String tipoProducto, String urlRepo,LocalDate fecha) {
         this.tituloProducto = tituloProducto;
         this.tipoProducto = tipoProducto;
         this.urlRepo = urlRepo;

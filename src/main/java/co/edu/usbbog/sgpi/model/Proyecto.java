@@ -13,6 +13,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -48,6 +50,7 @@ public class Proyecto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -120,12 +123,8 @@ public class Proyecto implements Serializable {
     public Proyecto() {
     }
 
-    public Proyecto(Integer id) {
-        this.id = id;
-    }
 
-    public Proyecto(Integer id, String titulo, String estado, String descripcion, LocalDate fechaInicio, short visibilidad, String ciudad, String metodologia, String justificacion) {
-        this.id = id;
+    public Proyecto( String titulo, String estado, String descripcion, LocalDate fechaInicio, short visibilidad, String ciudad, String metodologia, String justificacion) {
         this.titulo = titulo;
         this.estado = estado;
         this.descripcion = descripcion; 

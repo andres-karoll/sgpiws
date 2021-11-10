@@ -42,6 +42,7 @@ public class Comentario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -68,19 +69,14 @@ public class Comentario implements Serializable {
     public Comentario() {
     }
 
-    public Comentario(Integer id) {
-        this.id = id;
-    }
 
-    public Comentario(Integer id, String comentario, String fase, String nivel, LocalDate fecha) {
-        this.id = id;
+    public Comentario( String comentario, String fase, String nivel, LocalDate fecha) {
         this.comentario = comentario;
         this.fase = fase;
         this.nivel = nivel;
         this.fecha = fecha;
     }
-    public Comentario(Integer id, String comentario, String fase, String nivel,Double calificacion, LocalDate fecha,Producto producto) {
-        this.id = id;
+    public Comentario( String comentario, String fase, String nivel,Double calificacion, LocalDate fecha,Producto producto) {
         this.comentario = comentario;
         this.fase = fase;
         this.nivel = nivel;

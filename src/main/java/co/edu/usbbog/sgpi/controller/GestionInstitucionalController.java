@@ -29,6 +29,7 @@ import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.model.Semillero;
+import co.edu.usbbog.sgpi.model.TipoUsuario;
 import co.edu.usbbog.sgpi.model.Usuario;
 import co.edu.usbbog.sgpi.service.IGestionInstitucionalService;
 import net.minidev.json.JSONArray;
@@ -68,7 +69,7 @@ public class GestionInstitucionalController {
 	public JSONObject crearGruposI(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		GrupoInvestigacion grupoInvestigacion = new GrupoInvestigacion(
-				Integer.parseInt(entrada.getAsString("id")),
+				
 				entrada.getAsString("nombre"),
 				LocalDate.parse(entrada.getAsString("fechaFun")) ,
 				entrada.getAsString("categoria"),
@@ -382,7 +383,6 @@ public class GestionInstitucionalController {
 	public JSONObject crearPrograma(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
 		Programa programa =  new Programa(	
-				Integer.parseInt(entrada.getAsString("id")), 
 				entrada.getAsString("nombre"));
 		if (gestionInstitucionalService.crearPrograma(programa, Integer.parseInt( entrada.getAsString("facultad_id")),entrada.getAsString("director"))) {
 			salida.put("respuesta", "se creo el programa");
@@ -607,7 +607,7 @@ public class GestionInstitucionalController {
 	@PostMapping(value = "/crearconvocatoria")
 	public JSONObject crearConvocatoria(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
-		Convocatoria convocatoria = new Convocatoria(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("nombre_convocatoria"),LocalDate.parse( entrada.getAsString("fecha_inicio")), LocalDate.parse( entrada.getAsString("fecha_final")), entrada.getAsString("contexto"), entrada.getAsString("estado"), entrada.getAsString("tipo"));
+		Convocatoria convocatoria = new Convocatoria( entrada.getAsString("nombre_convocatoria"),LocalDate.parse( entrada.getAsString("fecha_inicio")), LocalDate.parse( entrada.getAsString("fecha_final")), entrada.getAsString("contexto"), entrada.getAsString("estado"), entrada.getAsString("tipo"));
 
 		if (gestionInstitucionalService.crearConvocatoria(convocatoria, entrada.getAsString("numero_productos"), entrada.getAsString("entidad"))) {
 
@@ -688,7 +688,7 @@ public class GestionInstitucionalController {
 	@PostMapping(value = "/creararea")
 	public JSONObject crearArea(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
-		AreaConocimiento area =  new AreaConocimiento(Integer.parseInt(entrada.getAsString("id")),
+		AreaConocimiento area =  new AreaConocimiento(
 				entrada.getAsString("nombre"),
 				entrada.getAsString("descripcion"));
 
@@ -740,7 +740,7 @@ public class GestionInstitucionalController {
 	@PostMapping(value = "/crearevento")
 	public JSONObject crearEvento(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
-		Evento evento =  new Evento(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("nombre"), LocalDate.parse( entrada.getAsString("fecha")), entrada.getAsString("estado"));
+		Evento evento =  new Evento( entrada.getAsString("nombre"), LocalDate.parse( entrada.getAsString("fecha")), entrada.getAsString("estado"));
 
 		if (gestionInstitucionalService.crearEvento(evento,entrada.getAsString("entidad"),entrada.getAsString("sitio_web"),entrada.getAsString("url_memoria"))) {
 
@@ -760,6 +760,15 @@ public class GestionInstitucionalController {
 			return"eliminado con Exito";			
 		}
 		return "no se pudo eliminar";
+	}
+	@GetMapping(value = "/roles")
+	public JSONArray listarRoles() {		
+		JSONArray salida = new JSONArray(); 
+		List<TipoUsuario> roles = gestionInstitucionalService.listarRoles();
+		for(TipoUsuario rol : roles) {
+			salida.add(rol.toJson());
+		}	
+		return salida;		
 	}
 
 

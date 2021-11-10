@@ -16,7 +16,9 @@ import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
+import co.edu.usbbog.sgpi.model.TipoUsuario;
 import co.edu.usbbog.sgpi.model.Usuario;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
  
@@ -123,6 +125,9 @@ public interface IGestionInstitucionalService {
 
 	//proyectos por semillero
 	public List<Proyecto> proyectosPorSemillero(int semillero);
+
+
+	public List<TipoUsuario> listarRoles();
 
 	
 }

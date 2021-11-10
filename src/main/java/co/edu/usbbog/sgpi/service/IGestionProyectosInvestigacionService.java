@@ -75,4 +75,5 @@ public interface IGestionProyectosInvestigacionService {
 		public boolean participarConvocatoria(ProyectosConvocatoria proyectosConvocatoria,String estado);
 		public List<JSONObject> todosLosProyectosUsuarioSemillero(String cedula);
 		public List<JSONObject> proyectosParticipanteSemillero(String cedula);
+		public List<Proyecto> buscarAntecedentes(int parseInt);
 }
