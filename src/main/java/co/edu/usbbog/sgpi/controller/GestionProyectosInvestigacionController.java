@@ -35,7 +35,7 @@ public class GestionProyectosInvestigacionController {
 	@PostMapping("/crearproyecto")
 	public JSONObject crearProyectoAulaIntegrador(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		Proyecto proyecto = new Proyecto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
+		Proyecto proyecto = new Proyecto(entrada.getAsString("titulo"),
 				entrada.getAsString("estado"), entrada.getAsString("descripcion"),
 				LocalDate.parse(entrada.getAsString("fechainicio")),
 				Short.parseShort(entrada.getAsString("visibilidad")), entrada.getAsString("ciudad"),
@@ -89,7 +89,7 @@ public class GestionProyectosInvestigacionController {
 		JSONObject salida = new JSONObject();
 		Proyecto proyecto = iGestionProyectosInvestigacionService
 				.buscarProyecto(Integer.parseInt(entrada.getAsString("proyectoid")));
-		Producto producto = new Producto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
+		Producto producto = new Producto( entrada.getAsString("titulo"),
 				entrada.getAsString("tipo"), entrada.getAsString("url"), LocalDate.parse(entrada.getAsString("fecha")));
 		if (iGestionProyectosInvestigacionService.crearProducto(producto)) {
 			salida.put("respuesta", "el producto fue guardado");
@@ -115,7 +115,7 @@ public class GestionProyectosInvestigacionController {
 		JSONObject salida = new JSONObject();
 		Producto producto = iGestionProyectosInvestigacionService
 				.buscarProducto(Integer.parseInt(entrada.getAsString("productoid")));
-		Comentario comentario = new Comentario(Integer.parseInt(entrada.getAsString("id")),
+		Comentario comentario = new Comentario(
 				entrada.getAsString("comentario"), entrada.getAsString("fase"), entrada.getAsString("nivel"),
 				LocalDate.parse(entrada.getAsString("fecha")));
 		if (iGestionProyectosInvestigacionService.crearComentario(comentario, entrada.getAsString("cedula"))) {
@@ -185,7 +185,7 @@ public class GestionProyectosInvestigacionController {
 		Proyecto antecedente = iGestionProyectosInvestigacionService
 				.buscarProyecto(Integer.parseInt(entrada.getAsString("antecedente")));
 		if (antecedente.getFechaFin() == null) {
-			salida.put("respuesta ", "el antecedente aun no a terminado");
+			salida.put("respuesta", "el antecedente aun no a terminado");
 		} else {
 			if (proyecto == antecedente) {
 				salida.put("respuesta", "el proyecto no puede ser antedente de si mismo");
@@ -199,6 +199,17 @@ public class GestionProyectosInvestigacionController {
 			}
 		}
 
+		return salida;
+	}
+	@GetMapping("/antecedentesporproyecto/{proyecto}")
+	public JSONArray antecedentesProyecto(@PathVariable String proyecto) {
+		JSONArray salida = new JSONArray();
+		List<Proyecto> antecedentes = iGestionProyectosInvestigacionService
+				.buscarAntecedentes(Integer.parseInt(proyecto));
+		for (Iterator iterator = antecedentes.iterator(); iterator.hasNext();) {
+			Proyecto proyecto2 = (Proyecto) iterator.next();
+			salida.add(proyecto2.toJson());
+		}
 		return salida;
 	}
 

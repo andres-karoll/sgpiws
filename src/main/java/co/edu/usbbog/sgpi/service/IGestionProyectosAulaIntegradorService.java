@@ -61,5 +61,6 @@ public interface IGestionProyectosAulaIntegradorService {
 		public boolean actualizarParticipante(int id, String cedula, LocalDate fechafin);
 		public List<AreaConocimiento> listarAreaConocimiento();
 		public List<JSONObject> listarEvento();
+		public List<AreaConocimiento> areasConocimientoProyecto(int proyecto);
 
 }
