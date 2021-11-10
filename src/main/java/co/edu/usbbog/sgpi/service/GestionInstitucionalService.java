@@ -106,13 +106,21 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 
 	@Override
-	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
+	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion,String director) {
 		/*
 		if (grupoIRepo.existsById(grupoInvestigacion.getId())) {
 			return false;
 		}*/
+		Usuario dir = usuarioRepo.getById(director);
+		
+		if(!usuarioRepo.existsById(dir.getCedula())) {
+			return false;
+		}
+		
+		
+		grupoInvestigacion.setDirectorGrupo(dir);
 		grupoIRepo.save(grupoInvestigacion);
-		return true;
+		return grupoIRepo.existsById(grupoInvestigacion.getId());
 	}
 
 	@Override
@@ -382,8 +390,20 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 
 	@Override
-	public boolean crearFacultad(Facultad facultad) {
+	public boolean crearFacultad(Facultad facultad, String coordinador, String decano) {
+		Usuario deca = usuarioRepo.getById(decano);
+		Usuario coor = usuarioRepo.getById(coordinador);
+		
+		if(!usuarioRepo.existsById(deca.getCedula())) {
+			return false;
+		}
+		if(!usuarioRepo.existsById(coor.getCedula())) {
+			return false;
+		}
+		facultad.setCoorInv(coor);
+		facultad.setDecano(deca);
 		facultadRepo.save(facultad);
+		
 		return facultadRepo.existsById(facultad.getId());
 	}
 

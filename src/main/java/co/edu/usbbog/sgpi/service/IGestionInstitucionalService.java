@@ -30,7 +30,7 @@ public interface IGestionInstitucionalService {
 	
 	public List<GrupoInvestigacion> todosLosGruposInvestigacion();
 	public boolean eliminarGrupoInvestigacion(int id);
-	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion);
+	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion, String director);
 	public boolean asignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion);
 	public List<Programa> programaDelGrupo(int grupo_investigacion);
 	public boolean desasignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion);
@@ -55,7 +55,7 @@ public interface IGestionInstitucionalService {
 	
 	public List<Facultad> todasLasFacultades();
 	public boolean eliminarFacultad(int id);
-	public boolean crearFacultad(Facultad facultad);
+	public boolean crearFacultad(Facultad facultad, String coordinador, String decano);
 	//actualizarFacultad
 	
 	public List<Programa> todosLosProgramas();
