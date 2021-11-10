@@ -66,8 +66,6 @@ public class Presupuesto implements Serializable {
         this.id = id;
     }
 
-    public Presupuesto(double monto, LocalDate fecha) {
-    
     public Presupuesto(Integer id, double monto, LocalDate fecha) {
         this.id = id;
         this.monto = monto;
