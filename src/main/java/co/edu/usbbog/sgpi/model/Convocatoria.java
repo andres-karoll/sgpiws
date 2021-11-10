@@ -13,8 +13,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
@@ -49,7 +47,6 @@ public class Convocatoria implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -84,10 +81,12 @@ public class Convocatoria implements Serializable {
     public Convocatoria() {
     }
 
+    public Convocatoria(Integer id) {
+        this.id = id;
+    }
 
-
-    public Convocatoria(String nombreConvocatoria, LocalDate fechaInicio, LocalDate fechaFinal, String contexto, String estado, String tipo) {
-        
+    public Convocatoria(Integer id, String nombreConvocatoria, LocalDate fechaInicio, LocalDate fechaFinal, String contexto, String estado, String tipo) {
+        this.id = id;
         this.nombreConvocatoria = nombreConvocatoria;
         this.fechaInicio = fechaInicio;
         this.fechaFinal = fechaFinal;

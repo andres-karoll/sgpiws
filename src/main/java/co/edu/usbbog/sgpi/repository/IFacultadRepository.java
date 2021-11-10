@@ -12,7 +12,7 @@ public interface IFacultadRepository extends JpaRepository<Facultad, Integer>{
 	@Transactional
 	@Modifying
 	@Query(value= "UPDATE `sgpi_db`.`facultad` SET `decano` = ?1 WHERE (`id` = ?2)", nativeQuery=true)
-	void setDecanoById(String decanoId,String string);
+	void setDecanoById(String decanoId,String facultadId);
 	@Transactional
 	@Modifying
 	@Query(value= "UPDATE `sgpi_db`.`facultad` SET `coor_inv` = ?1 WHERE (`id` = ?2)", nativeQuery=true)

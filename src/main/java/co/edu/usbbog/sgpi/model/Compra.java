@@ -12,8 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -49,7 +47,6 @@ public class Compra implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -89,8 +86,12 @@ public class Compra implements Serializable {
     public Compra() {
     }
 
+    public Compra(Integer id) {
+        this.id = id;
+    }
 
-    public Compra( LocalDate fechaSolicitud, String nombre, String tipo, int estado, String descripcion, String link) {
+    public Compra(Integer id, LocalDate fechaSolicitud, String nombre, String tipo, int estado, String descripcion, String link) {
+        this.id = id;
         this.fechaSolicitud = fechaSolicitud;
         this.nombre = nombre;
         this.tipo = tipo;

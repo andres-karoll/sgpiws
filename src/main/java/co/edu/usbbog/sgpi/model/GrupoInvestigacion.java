@@ -13,8 +13,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -49,7 +47,6 @@ public class GrupoInvestigacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -86,10 +83,12 @@ public class GrupoInvestigacion implements Serializable {
     public GrupoInvestigacion() {
     }
 
-  
+    public GrupoInvestigacion(Integer id) {
+        this.id = id;
+    }
 
-    public GrupoInvestigacion(String nombre, LocalDate fechaFun, String categoria, LocalDate fechaCat) {
-   
+    public GrupoInvestigacion(Integer id, String nombre, LocalDate fechaFun, String categoria, LocalDate fechaCat) {
+        this.id = id;
         this.nombre = nombre;
         this.fechaFun = fechaFun;
         this.categoria = categoria;

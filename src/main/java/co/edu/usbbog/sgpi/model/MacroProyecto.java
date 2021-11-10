@@ -12,8 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
@@ -45,7 +43,6 @@ public class MacroProyecto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -70,9 +67,12 @@ public class MacroProyecto implements Serializable {
     public MacroProyecto() {
     }
 
+    public MacroProyecto(Integer id) {
+        this.id = id;
+    }
 
-
-    public MacroProyecto( String nombre, String descripcion, LocalDate fechaInicio, String estado) {
+    public MacroProyecto(Integer id, String nombre, String descripcion, LocalDate fechaInicio, String estado) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;

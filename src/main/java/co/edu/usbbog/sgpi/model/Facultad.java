@@ -12,8 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -41,7 +39,6 @@ public class Facultad implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -60,8 +57,12 @@ public class Facultad implements Serializable {
     public Facultad() {
     }
 
+    public Facultad(Integer id) {
+        this.id = id;
+    }
 
-    public Facultad( String nombre) {
+    public Facultad(Integer id, String nombre) {
+        this.id = id;
         this.nombre = nombre;
     }
 

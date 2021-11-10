@@ -16,9 +16,7 @@ import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
-import co.edu.usbbog.sgpi.model.TipoUsuario;
 import co.edu.usbbog.sgpi.model.Usuario;
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
  
@@ -30,7 +28,7 @@ public interface IGestionInstitucionalService {
 	
 	public List<GrupoInvestigacion> todosLosGruposInvestigacion();
 	public boolean eliminarGrupoInvestigacion(int id);
-	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion, String director);
+	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion);
 	public boolean asignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion);
 	public List<Programa> programaDelGrupo(int grupo_investigacion);
 	public boolean desasignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion);
@@ -55,7 +53,7 @@ public interface IGestionInstitucionalService {
 	
 	public List<Facultad> todasLasFacultades();
 	public boolean eliminarFacultad(int id);
-	public boolean crearFacultad(Facultad facultad, String coordinador, String decano);
+	public boolean crearFacultad(Facultad facultad);
 	//actualizarFacultad
 	
 	public List<Programa> todosLosProgramas();
@@ -125,9 +123,6 @@ public interface IGestionInstitucionalService {
 
 	//proyectos por semillero
 	public List<Proyecto> proyectosPorSemillero(int semillero);
-
-
-	public List<TipoUsuario> listarRoles();
 
 	
 }

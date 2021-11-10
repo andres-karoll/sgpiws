@@ -40,7 +40,7 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, String> {
 	@Transactional
 	@Query(value="UPDATE `sgpi_db`.`grupo_investigacion` SET `director_grupo` = null WHERE (`id` = ?1)",nativeQuery=true)
 	void deleteDirectorById(String grupo);
-	@Query(value = "select * from usuario,usuarios where usuario.correo_est=?1 && usuario.contrasena=?2	 && usuarios.tipo_usuario=?3  && usuario.cedula=usuarios.usuario" , nativeQuery = true)
+	@Query(value = "select * from usuario,usuarios where usuario.correo_est=?1 && usuario.contrasena=?2	 && usuarios.tipo_usuario=?3 " , nativeQuery = true)
 	JSONObject Login(String correo, String contrasena,String tipo );
 	@Query(value = "select * from usuario where usuario.correo_est=?1", nativeQuery = true)
 	Usuario getByCorreo(String correo);
