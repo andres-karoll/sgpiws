@@ -73,14 +73,14 @@ public class GestionInstitucionalController {
 				LocalDate.parse(entrada.getAsString("fechaFun")) ,
 				entrada.getAsString("categoria"),
 				LocalDate.parse(entrada.getAsString("fechaCat")));
-		/*
-		if(gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion)) {
+		
+		if(gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion, entrada.getAsString("director"))) {
 			salida.put("respuesta", "el grupo se creo");
 		}
 		else {
-			salida.put("respuesta", "el grupo ya existe");
-		}*/
-		gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion);
+			salida.put("respuesta", "el grupo no se creo");
+		}
+
 		return salida;
 	}
 	
@@ -88,7 +88,7 @@ public class GestionInstitucionalController {
 	public JSONObject asignarFacultadAGrupo(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		if(gestionInstitucionalService.asignarProgramaAGrupoInvestigacion(Integer.parseInt(entrada.getAsString("programa")), Integer.parseInt(entrada.getAsString("grupo_investigacion")))) {
-			salida.put("respuesta", "se asigno la facultad correctamente");
+			salida.put("respuesta", "se asigno el programa correctamente");
 		}
 		else {
 			salida.put("respuesta", "no se pudo asignar la facultad");
@@ -100,7 +100,7 @@ public class GestionInstitucionalController {
 	public JSONObject desasignarFacultadAGrupo(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		if(gestionInstitucionalService.desasignarProgramaAGrupoInvestigacion(Integer.parseInt(entrada.getAsString("programa")), Integer.parseInt(entrada.getAsString("grupo_investigacion")))) {
-			salida.put("respuesta", "se desasigno el grupo correctamente");
+			salida.put("respuesta", "se desasigno el programa correctamente");
 		}
 		else {
 			salida.put("respuesta", "no se pudo desasignar grupo");
@@ -250,7 +250,7 @@ public class GestionInstitucionalController {
 	public JSONObject asignarSemilleroAPrograma(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		if(gestionInstitucionalService.asignarSemilleroAPrograma(Integer.parseInt(entrada.getAsString("programa")), Integer.parseInt(entrada.getAsString("semillero")))) {
-			salida.put("respuesta", "se asigno la facultad correctamente");
+			salida.put("respuesta", "se asigno el programa correctamente");
 		}
 		else {
 			salida.put("respuesta", "no se pudo asignar la facultad");
@@ -332,9 +332,20 @@ public class GestionInstitucionalController {
 		return "No se puede eliminar";
 	}
 	
-	@PostMapping(value = "/crearfacultad")
-	public boolean crearFacultad(@RequestBody Facultad facultad) {		
-		boolean salida = gestionInstitucionalService.crearFacultad(facultad);	
+	
+	@PostMapping( "/crearfacultad")
+	public JSONObject crearFacultad(@RequestBody JSONObject entrada) {		
+		JSONObject salida = new JSONObject();
+		Facultad facultad =  new Facultad(
+				Integer.parseInt(entrada.getAsString("id")), 
+				entrada.getAsString("nombre")
+				);
+
+		if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))) {
+			salida.put("respuesta", "se creo la facultad");
+		} else {
+			salida.put("respuesta", "no se creo");
+		}
 		return salida;
 	}
 	
@@ -744,7 +755,7 @@ public class GestionInstitucionalController {
 
 		if (gestionInstitucionalService.crearEvento(evento,entrada.getAsString("entidad"),entrada.getAsString("sitio_web"),entrada.getAsString("url_memoria"))) {
 
-			salida.put("respuesta", "se creo la area");
+			salida.put("respuesta", "se creo el evento");
 
 		} else {
 			salida.put("respuesta", "no se pudo crear");
