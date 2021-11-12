@@ -1,5 +1,6 @@
 package co.edu.usbbog.sgpi.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -277,7 +278,22 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 
 	@Override
-	public boolean crearSemillero(Semillero semillero) {
+	public boolean crearSemillero(Semillero semillero, int grupo, String lider, String linea) {
+		Usuario lid = usuarioRepo.getById(lider);
+		GrupoInvestigacion gru = grupoIRepo.getById(grupo);
+		LineaInvestigacion lin = lineaRepo.getById(linea);
+		if(!usuarioRepo.existsById(lid.getCedula())) {
+			return false;
+		}
+		if(!grupoIRepo.existsById(gru.getId())) {
+			return false;
+		}
+		if(!lineaRepo.existsById(lin.getNombre())) {
+			return false;
+		}
+		semillero.setLiderSemillero(lid);
+		semillero.setGrupoInvestigacion(gru);
+		semillero.setLineaInvestigacion(lin);
 		semilleroRepo.save(semillero);
 		return semilleroRepo.existsById(semillero.getId());
 	}
@@ -517,7 +533,12 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 
 	@Override
-	public boolean crearMateria(Materia materia) {
+	public boolean crearMateria(Materia materia, int programa) {
+		Programa pro = programaRepo.getById(programa);
+		if(!programaRepo.existsById(pro.getId())) {
+			return false;
+		}
+		materia.setPrograma(pro);
 		materiaRepo.save(materia);
 		return materiaRepo.existsById(materia.getCatalogo());
 	}
@@ -651,7 +672,8 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		return lineas;
 	} 
 	@Override
-	public boolean crearLinea(LineaInvestigacion linea) {
+	public boolean crearLinea(LineaInvestigacion linea, LocalDate fecha) {
+		linea.setFecha(fecha);
 		lineaRepo.save(linea);
 		return lineaRepo.existsById(linea.getNombre());
 	}

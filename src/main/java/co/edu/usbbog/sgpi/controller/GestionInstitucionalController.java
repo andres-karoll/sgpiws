@@ -237,9 +237,13 @@ public class GestionInstitucionalController {
 	}
 	
 	@PostMapping(value = "/crearsemilleros")
-	public JSONObject crearSemilleros(@RequestBody Semillero semillero) {
+	public JSONObject crearSemilleros(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		if(gestionInstitucionalService.crearSemillero(semillero)) {
+		Semillero semillero = new Semillero(
+				entrada.getAsString("nombre"),
+				entrada.getAsString("descripcion"), LocalDate.parse( entrada.getAsString("fechaFun")));
+		
+		if(gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion"))) {
 			salida.put("respuesta", "se creo el semillero correctamente");
 			return salida;
 		}
@@ -338,7 +342,7 @@ public class GestionInstitucionalController {
 	public JSONObject crearFacultad(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
 		Facultad facultad =  new Facultad(
-				Integer.parseInt(entrada.getAsString("id")), 
+
 				entrada.getAsString("nombre")
 				);
 
@@ -458,8 +462,16 @@ public class GestionInstitucionalController {
 	}
 	
 	@PostMapping(value = "/crearmateria")
-	public boolean crearMateria(@RequestBody Materia materia) {		
-		boolean salida = gestionInstitucionalService.crearMateria(materia);	
+	public JSONObject crearMateria(@RequestBody JSONObject entrada) {		
+		JSONObject salida = new JSONObject();
+		Materia materia = new Materia(
+				entrada.getAsString("catalogo"),
+				entrada.getAsString("nombre"));
+		if(gestionInstitucionalService.crearMateria(materia, Integer.parseInt(entrada.getAsString("programa")))) {
+			salida.put("respuesta", "se creo la materia");
+		}else {
+			salida.put("respuesta", "no se creo");
+		}
 		return salida;
 	}
 	
@@ -660,8 +672,18 @@ public class GestionInstitucionalController {
 		return salida;		
 	}
 	@PostMapping(value = "/crearlinea")
-	public boolean crearLinea(@RequestBody LineaInvestigacion linea) {		
-		boolean salida = gestionInstitucionalService.crearLinea(linea);	
+	public JSONObject crearLinea(@RequestBody JSONObject entrada) {		
+		JSONObject salida = new JSONObject();	
+		LineaInvestigacion linea = new LineaInvestigacion(
+				entrada.getAsString("nombre"),
+				entrada.getAsString("descripcion"));
+		
+		if(gestionInstitucionalService.crearLinea(linea,
+				LocalDate.parse( entrada.getAsString("fecha")))) {
+			salida.put("respuesta", "se creo la linea");
+		}else {
+			salida.put("respuesta", "no se creo");
+		}
 		return salida;
 	}
 	@GetMapping(value = "/eliminarlinea/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)

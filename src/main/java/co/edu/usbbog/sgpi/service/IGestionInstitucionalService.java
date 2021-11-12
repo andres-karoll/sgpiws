@@ -1,5 +1,6 @@
 package co.edu.usbbog.sgpi.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +45,7 @@ public interface IGestionInstitucionalService {
 	public List<Semillero> todosLosSemillerosPorLiderSemillero(String lider);
 	public List<Semillero> todosLosSemillerosPorLineaInvestigacion(String lineaInvestigacion);
 	public boolean eliminarSemillero(int id);
-	public boolean crearSemillero(Semillero semillero);
+	public boolean crearSemillero(Semillero semillero, int grupo, String lider, String linea);
 	public boolean asignarSemilleroAPrograma(int programa, int semillero);
 	public List<Programa> programaDelSemillero(int semillero);
 	public boolean desasignarSemilleroAPrograma(int programa, int semillero);
@@ -71,7 +72,7 @@ public interface IGestionInstitucionalService {
 	public List<Materia> todasLasMaterias();
 	public List<Materia> todasLasMateriasPorPrograma(int programa);
 	public boolean eliminarMateria(String catalogo);
-	public boolean crearMateria(Materia materia);
+	public boolean crearMateria(Materia materia, int programa);
 	//actualizar materia
 	
 	public List<Clase> todasLasClases();
@@ -86,7 +87,7 @@ public interface IGestionInstitucionalService {
 	
 	
 	public List<LineaInvestigacion> todasLasLineas();
-	public boolean crearLinea(LineaInvestigacion linea);
+	public boolean crearLinea(LineaInvestigacion linea, LocalDate fecha);
 	public boolean eliminarLinea(String nombre);
 	//lineas investigacion
 	
