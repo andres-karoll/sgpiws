@@ -31,7 +31,9 @@ public interface IGestionInstitucionalService {
 	
 	public List<GrupoInvestigacion> todosLosGruposInvestigacion();
 	public boolean eliminarGrupoInvestigacion(int id);
-	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion, String director);
+	public String crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion, String director);
+	public GrupoInvestigacion grupoiporid(int id);
+	public String modificarGrupoI(int id, String nombre, String fecha_fun, String categoria, String fecha_cat, String director);
 	public boolean asignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion);
 	public List<Programa> programaDelGrupo(int grupo_investigacion);
 	public boolean desasignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion);
@@ -45,7 +47,9 @@ public interface IGestionInstitucionalService {
 	public List<Semillero> todosLosSemillerosPorLiderSemillero(String lider);
 	public List<Semillero> todosLosSemillerosPorLineaInvestigacion(String lineaInvestigacion);
 	public boolean eliminarSemillero(int id);
-	public boolean crearSemillero(Semillero semillero, int grupo, String lider, String linea);
+	public String crearSemillero(Semillero semillero, int grupo, String lider, String linea);
+	public String modificarSemillero(int id, String nombre, String descripcion, String fechaFun, String grupoi, String lineai, String liderSemillero);
+	public Semillero semilleroporid(int id);
 	public boolean asignarSemilleroAPrograma(int programa, int semillero);
 	public List<Programa> programaDelSemillero(int semillero);
 	public boolean desasignarSemilleroAPrograma(int programa, int semillero);
@@ -56,7 +60,9 @@ public interface IGestionInstitucionalService {
 	
 	public List<Facultad> todasLasFacultades();
 	public boolean eliminarFacultad(int id);
-	public boolean crearFacultad(Facultad facultad, String coordinador, String decano);
+	public String crearFacultad(Facultad facultad, String coordinador, String decano);
+	public String modificarFacultad(int id, String nombre, String deca, String coor);
+	public Facultad facultadporid(int id);
 	//actualizarFacultad
 	
 	public List<Programa> todosLosProgramas();

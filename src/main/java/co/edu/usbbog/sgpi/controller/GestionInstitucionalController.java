@@ -75,13 +75,85 @@ public class GestionInstitucionalController {
 				entrada.getAsString("categoria"),
 				LocalDate.parse(entrada.getAsString("fechaCat")));
 		
-		if(gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion, entrada.getAsString("director"))) {
+		if(gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion, entrada.getAsString("director")) == "se creo el grupo") {
 			salida.put("respuesta", "el grupo se creo");
 		}
-		else {
-			salida.put("respuesta", "el grupo no se creo");
+		else if (gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion, entrada.getAsString("director")) == "el usuario no existe"){
+			salida.put("respuesta", "el grupo no se creo porque el usuario no existe");
 		}
-
+		
+		else if (gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion, entrada.getAsString("director")) == "usuario invalido 1"){
+			salida.put("respuesta", "el grupo no se creo porque el usuario que escogio es un estudiante inactivo");
+		}
+		else if (gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion, entrada.getAsString("director")) == "usuario invalido 2"){
+			salida.put("respuesta", "el grupo no se creo porque el usuario que escogio es un estudiante activo");
+		}
+		else if (gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion, entrada.getAsString("director")) == "usuario invalido 7"){
+			salida.put("respuesta", "el grupo no se creo porque el usuario que escogio es un Semillerista");
+		}
+		else if (gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion, entrada.getAsString("director")) == "este usuario ya es lider de grupo"){
+			salida.put("respuesta", "este usuario ya es lider de grupo");
+		}
+		
+	
+		return salida;
+	}
+	
+	@GetMapping(value = "/grupolistarporid/{id}")
+	public JSONObject grupolistarPorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();
+		if(gestionInstitucionalService.grupoiporid(id) !=null) {
+			GrupoInvestigacion gru = gestionInstitucionalService.grupoiporid(id);
+			return gru.toJson();
+		}
+		else {
+			return x;
+		}	
+	}
+	
+	@PostMapping("/modificargrupoi")
+	public JSONObject modificarGrupo(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(gestionInstitucionalService.modificarGrupoI(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre"),entrada.getAsString("fechaFun")
+				, entrada.getAsString("categoria")
+				, entrada.getAsString("fechaCat")
+				, entrada.getAsString("director"))=="grupo actualizado") {
+			salida.put("respuesta", "el grupo fue actualizado");
+		}else if(gestionInstitucionalService.modificarGrupoI(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre"),entrada.getAsString("fechaFun")
+				, entrada.getAsString("categoria")
+				, entrada.getAsString("fechaCat")
+				, entrada.getAsString("director"))=="usuario invalido 1") {
+			salida.put("respuesta", "el grupo no se creo porque el usuario que escogio es un estudiante inactivo");
+		}else if(gestionInstitucionalService.modificarGrupoI(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre"),entrada.getAsString("fechaFun")
+				, entrada.getAsString("categoria")
+				, entrada.getAsString("fechaCat")
+				, entrada.getAsString("director"))=="usuario invalido 2") {
+			salida.put("respuesta", "el grupo no se creo porque el usuario que escogio es un estudiante activo");
+		}else if(gestionInstitucionalService.modificarGrupoI(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre"),entrada.getAsString("fechaFun")
+				, entrada.getAsString("categoria")
+				, entrada.getAsString("fechaCat")
+				, entrada.getAsString("director"))=="usuario invalido 3") {
+			salida.put("respuesta", "el grupo no se creo porque el usuario que escogio es un Semillerista");
+		}else if(gestionInstitucionalService.modificarGrupoI(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre"),entrada.getAsString("fechaFun")
+				, entrada.getAsString("categoria")
+				, entrada.getAsString("fechaCat")
+				, entrada.getAsString("director"))=="este usuario ya es lider de grupo") {
+			salida.put("respuesta", "este usuario ya es lider de grupo");
+		}else if(gestionInstitucionalService.modificarGrupoI(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre"),entrada.getAsString("fechaFun")
+				, entrada.getAsString("categoria")
+				, entrada.getAsString("fechaCat")
+				, entrada.getAsString("director"))=="el usuario ingresado no existe") {
+			salida.put("respuesta", "el usuario ingresado no existe");
+		}
+		else {
+			salida.put("respuesta", "el grupo no fue actualizado");
+		}
 		return salida;
 	}
 	
@@ -243,12 +315,90 @@ public class GestionInstitucionalController {
 				entrada.getAsString("nombre"),
 				entrada.getAsString("descripcion"), LocalDate.parse( entrada.getAsString("fechaFun")));
 		
-		if(gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion"))) {
+		if(gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion"))== "se creo el semillero") {
 			salida.put("respuesta", "se creo el semillero correctamente");
-			return salida;
+			
 		}
-		salida.put("respuesta", "NO se creo el semillero correctamente");
+		else if (gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion")) == "el usuario no existe"){
+			salida.put("respuesta", "el semillero no se creo porque el usuario no existe");
+		}
+		else if (gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion")) == "el grupo no existe"){
+			salida.put("respuesta", "el semillero no se creo porque el grupo no existe");
+		}
+		else if (gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion")) == "la linea no existe"){
+			salida.put("respuesta", "el semillero no se creo porque la linea no existe");
+		}
+		else if (gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion")) == "usuario invalido 1"){
+			salida.put("respuesta", "el semillero no se creo porque el usuario es un estudiante inactivo");
+		}
+		else if (gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion")) == "usuario invalido 2"){
+			salida.put("respuesta", "el semillero no se creo porque el usuario es un estudiante activo");
+		}
+		else if (gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion")) == "este usuario ya es lider de semillero"){
+			salida.put("respuesta", "el semillero no se creo porque el usuario escogido ya es lider de semillero");
+		}
 		return salida;
+	}
+	
+	@PostMapping("/modificarsemillero")
+	public JSONObject modificarSemillero(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(gestionInstitucionalService.modificarSemillero(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("descripcion")
+				,entrada.getAsString("fechaFun")
+				,entrada.getAsString("grupoInvestigacion")
+				,entrada.getAsString("lineaInvestigacion")
+				,entrada.getAsString("liderSemillero"))=="semillero actualizado") {
+			salida.put("respuesta", "el semillero fue actualizado");
+		}else if(gestionInstitucionalService.modificarSemillero(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("descripcion")
+				,entrada.getAsString("fechaFun")
+				,entrada.getAsString("grupoInvestigacion")
+				,entrada.getAsString("lineaInvestigacion")
+				,entrada.getAsString("liderSemillero"))=="usuario invalido 1") {
+			salida.put("respuesta", "el semillero no se creo porque el usuario es un estudiante inactivo");
+		}else if(gestionInstitucionalService.modificarSemillero(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("descripcion")
+				,entrada.getAsString("fechaFun")
+				,entrada.getAsString("grupoInvestigacion")
+				,entrada.getAsString("lineaInvestigacion")
+				,entrada.getAsString("liderSemillero"))=="usuario invalido 2") {
+			salida.put("respuesta", "el semillero no se creo porque el usuario es un estudiante activo");
+		}else if(gestionInstitucionalService.modificarSemillero(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("descripcion")
+				,entrada.getAsString("fechaFun")
+				,entrada.getAsString("grupoInvestigacion")
+				,entrada.getAsString("lineaInvestigacion")
+				,entrada.getAsString("liderSemillero"))=="usuario invalido 3") {
+			salida.put("respuesta", "el semillero no se creo porque el usuario es un semillerista");
+		}else if(gestionInstitucionalService.modificarSemillero(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("descripcion")
+				,entrada.getAsString("fechaFun")
+				,entrada.getAsString("grupoInvestigacion")
+				,entrada.getAsString("lineaInvestigacion")
+				,entrada.getAsString("liderSemillero"))=="este usuario ya es lider de semillero") {
+			salida.put("respuesta", "el semillero no se creo porque el usuario ya es lider de semillero");
+		}else {
+			salida.put("respuesta", "el semillero no fue actualizado");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/semilleroid/{id}")
+	public JSONObject semillerolistarPorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();
+		if(gestionInstitucionalService.semilleroporid(id) !=null) {
+			Semillero semillero = gestionInstitucionalService.semilleroporid(id);
+			return semillero.toJson();
+		}
+		else {
+			return x;
+		}	
 	}
 	
 	@PostMapping(value = "/asignarsemilleroaprograma")
@@ -346,12 +496,99 @@ public class GestionInstitucionalController {
 				entrada.getAsString("nombre")
 				);
 
-		if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))) {
-			salida.put("respuesta", "se creo la facultad");
-		} else {
-			salida.put("respuesta", "no se creo");
+		if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))=="se creo la facultad") {
+			salida.put("respuesta", "se creo la facultad de manera exitosa");
+		} 
+		
+		else if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))=="usuario invalido 1"){
+			salida.put("respuesta", "la falcultad no fue creada el primer usuario es un estudiante inactivo");
+		} else if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))=="usuario invalido 2"){
+			salida.put("respuesta", "la falcultad no fue creada el primer usuario es un estudiante activo");
+		} else if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))=="usuario invalido 3"){
+			salida.put("respuesta", "la falcultad no fue creada el primer usuario es un semillerista");
+		} else if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))=="este usuario ya es Lider investigacion facultad"){
+			salida.put("respuesta", "la falcultad no fue creada el primer usuario ya es Lider investigacion facultad");
+		}
+		
+		else if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))=="usuario invalido 4"){
+			salida.put("respuesta", "la falcultad no fue creada el segundo usuario es un estudiante inactivo");
+		} else if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))=="usuario invalido 5"){
+			salida.put("respuesta", "la falcultad no fue creada el segundo usuario es un estudiante activo");
+		} else if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))=="usuario invalido 6"){
+			salida.put("respuesta", "la falcultad no fue creada el segundo usuario es un semillerista");
+		} else if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))=="este usuario ya es Coordinador investigacion facultad"){
+			salida.put("respuesta", "la falcultad no fue creada el segundo ya es Coordinador investigacion facultad");
+		}	
+		
+		return salida;
+	}
+	
+	
+	@PostMapping("/modificarfacultad")
+	public JSONObject modificarFacultad(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(gestionInstitucionalService.modificarFacultad(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("coordinador")
+				, entrada.getAsString("decano"))=="facultad actualizada"){
+			salida.put("respuesta", "la facultad fue actualizada");
+		}else if(gestionInstitucionalService.modificarFacultad(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("coordinador")
+				, entrada.getAsString("decano"))=="usuario invalido 1"){
+			salida.put("respuesta", "la falcultad no fue creada el primer usuario es un estudiante inactivo");
+		}else if(gestionInstitucionalService.modificarFacultad(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("coordinador")
+				, entrada.getAsString("decano"))=="usuario invalido 2"){
+			salida.put("respuesta", "la falcultad no fue creada el primer usuario es un estudiante activo");
+		}else if(gestionInstitucionalService.modificarFacultad(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("coordinador")
+				, entrada.getAsString("decano"))=="usuario invalido 3"){
+			salida.put("respuesta", "la falcultad no fue creada el primer usuario es un semillerista");
+		}else if(gestionInstitucionalService.modificarFacultad(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("coordinador")
+				, entrada.getAsString("decano"))=="la falcultad no fue creada el primer usuario ya es Lider investigacion facultad"){
+			salida.put("respuesta", "la falcultad no fue creada el primer usuario ya es Lider investigacion facultad");
+		}else if(gestionInstitucionalService.modificarFacultad(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("coordinador")
+				, entrada.getAsString("decano"))=="usuario invalido 4"){
+			salida.put("respuesta", "la falcultad no fue creada el segundo usuario es un estudiante inactivo");
+		}else if(gestionInstitucionalService.modificarFacultad(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("coordinador")
+				, entrada.getAsString("decano"))=="usuario invalido 5"){
+			salida.put("respuesta", "la falcultad no fue creada el segundo usuario es un estudiante activo");
+		}else if(gestionInstitucionalService.modificarFacultad(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("coordinador")
+				, entrada.getAsString("decano"))=="usuario invalido 6"){
+			salida.put("respuesta", "la falcultad no fue creada el segundo usuario es un semillerista");
+		}else if(gestionInstitucionalService.modificarFacultad(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("coordinador")
+				, entrada.getAsString("decano"))=="la falcultad no fue creada el segundo ya es Coordinador investigacion facultad"){
+			salida.put("respuesta", "la falcultad no fue creada el segundo ya es Coordinador investigacion facultad");
+		}
+				else {
+			salida.put("respuesta", "la facultad no fue actualizada");
 		}
 		return salida;
+	}
+	
+	@GetMapping(value = "/facultadid/{id}")
+	public JSONObject facultadlistarPorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();
+		if(gestionInstitucionalService.facultadporid(id) !=null) {
+			Facultad facultad = gestionInstitucionalService.facultadporid(id);
+			return facultad.toJson();
+		}
+		else {
+			return x;
+		}	
 	}
 	
 	//PROGRAMAS
