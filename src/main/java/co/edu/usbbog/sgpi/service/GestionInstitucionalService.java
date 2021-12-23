@@ -779,22 +779,106 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 	
 	@Override
-	public boolean crearPrograma(Programa programa, int facultad, String director) {
-		Facultad facul = facultadRepo.getById(facultad);
-		if(facul == null) {
-			return false;
-		}
+	public String crearPrograma(Programa programa, int facultad, String director) {
+		
 		Usuario direc = usuarioRepo.getById(director);
-		if(direc == null) {
-			return false;
+		
+		TipoUsuario tipousuario = iTipoUsuarioRepository.getById("Director programa");
+		
+		Facultad facul = facultadRepo.getById(facultad);
+		
+		
+		
+		if(!facultadRepo.existsById(facul.getId())) {
+			return "la facultad no existe";
 		}
+		if(!usuarioRepo.existsById(direc.getCedula())) {
+			return "el usuario no existe";
+		}
+		
+		List<TipoUsuario> tipo = direc.getTiposUsuario();
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+				return "usuario invalido 1";
+			}
+			if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+				return "usuario invalido 2";
+			}
+			if(tipoUsuario.getNombre().equals("Semillerista")) {
+				return "usuario invalido 3";
+			}
+			if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
+				return "este usuario ya es lider de semillero";
+			}
+		}
+		
+		
 		programa.setFacultadId(facul);
 		programa.setDirector(direc);
 		programaRepo.save(programa);
-		return true;
+		
+		tipousuario.getUsuarios().add(direc);
+		iTipoUsuarioRepository.save(tipousuario);
+		return "se creo el programa";
 	}
 	
 	
+	@Override
+	public String modificarPrograma(int id, String nombre, String facultad, String director) {
+		
+		Usuario direc = usuarioRepo.getById(director);
+		
+		TipoUsuario tipousuariouno = iTipoUsuarioRepository.getById("Director programa");
+		
+		Programa programa = programaRepo.getById(id);
+		Facultad facul = facultadRepo.getById(Integer.parseInt(facultad));
+		
+		if(nombre!="") {
+			programa.setNombre(nombre);
+		}
+		if(facultad!="") {
+			programa.setFacultadId(facul);
+		}
+		if(director!="") {
+			usuarioRepo.deleteTipo(programa.getDirector().getCedula(), "Director programa");
+			
+			List<TipoUsuario> tipo = direc.getTiposUsuario();
+			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+				if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+					return "usuario invalido 1";
+				}
+				if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+					return "usuario invalido 2";
+				}
+				if(tipoUsuario.getNombre().equals("Semillerista")) {
+					return "usuario invalido 3";
+				}
+				if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
+					return "este usuario ya es lider de semillero";
+				}
+			}
+			
+			programa.setDirector(direc);
+			tipousuariouno.getUsuarios().add(direc);
+			iTipoUsuarioRepository.save(tipousuariouno);
+		}
+		
+		programaRepo.save(programa);
+		return "se actualizo el programa";
+	}
+	
+	@Override
+	public Programa programaporid(int id) {
+
+
+			Programa programa = programaRepo.getById(id);
+
+return programa;
+		
+		
+	}
 	@Override
 	public List<GrupoInvestigacion> gruposDelPrograma(int programa) {
 		Programa pro = programaRepo.getById(programa);
@@ -854,7 +938,41 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		materiaRepo.save(materia);
 		return materiaRepo.existsById(materia.getCatalogo());
 	}
+	
+	@Override
+	public boolean modificarMateria(String catalogo, String nombre, String programa) {
+		Programa pro = programaRepo.getById(Integer.parseInt(programa));
+		
+		Materia materia = materiaRepo.getById(catalogo);
+		
+		
+		if(catalogo!="") {
+			materia.setCatalogo(catalogo);
+		}
+		
+		if(nombre!="") {
+			materia.setNombre(nombre);
+		}
+		
+		if(programa!="") {
+			materia.setPrograma(pro);
+		}
+		materiaRepo.save(materia);
+		return !materiaRepo.existsById(catalogo);
+	}
 
+	@Override
+	public Materia materiaporid(String catalogo) {
+	
+			Materia materia = materiaRepo.getById(catalogo);
+			System.out.println(catalogo);
+			return materia;
+
+		
+		
+	}
+	
+	
 	
 	//CLASES-------------------------------------------------------------------------------------------------
 	

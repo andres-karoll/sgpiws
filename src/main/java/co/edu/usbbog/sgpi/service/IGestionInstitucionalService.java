@@ -69,7 +69,9 @@ public interface IGestionInstitucionalService {
 	public List<Programa> todosLosProgramasPorFacultad(int facultad);
 	public List<Programa> todosLosProgramasPorDirector(String usuario);
 	public boolean eliminarPrograma(int id);
-	public boolean crearPrograma(Programa programa, int facultad, String director);
+	public String crearPrograma(Programa programa, int facultad, String director);
+	public String modificarPrograma(int id, String nombre, String facultad, String director);
+	public Programa programaporid(int id);
 	
 	public List<GrupoInvestigacion> gruposDelPrograma(int programa);
 	public List<Semillero> semillerosDelPrograma(int programa);
@@ -79,6 +81,8 @@ public interface IGestionInstitucionalService {
 	public List<Materia> todasLasMateriasPorPrograma(int programa);
 	public boolean eliminarMateria(String catalogo);
 	public boolean crearMateria(Materia materia, int programa);
+	public boolean modificarMateria(String catalogo, String nombre, String programa);
+	public Materia materiaporid(String catalogo);
 	//actualizar materia
 	
 	public List<Clase> todasLasClases();

@@ -220,9 +220,10 @@ public class Programa implements Serializable {
     		programaJson.put("Director",this.getDirector().getNombres());
     	}
     	if(this.getFacultadId()==null) {
-    		programaJson.put("Facultad","este programa no cuenta con una facultadr");
+    		programaJson.put("Facultad","este programa no cuenta con una facultad");
     	}else {
     		programaJson.put("Facultad",this.getFacultadId().getNombre());
+    		programaJson.put("Facultad_id",this.getFacultadId().getId());
     	}
     	return programaJson;
     }

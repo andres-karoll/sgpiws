@@ -334,6 +334,9 @@ public class GestionInstitucionalController {
 		else if (gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion")) == "usuario invalido 2"){
 			salida.put("respuesta", "el semillero no se creo porque el usuario es un estudiante activo");
 		}
+		else if (gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion")) == "usuario invalido 3"){
+			salida.put("respuesta", "el semillero no se creo porque el usuario es un semillerista");
+		}
 		else if (gestionInstitucionalService.crearSemillero(semillero, Integer.parseInt(entrada.getAsString("grupoInvestigacion")),entrada.getAsString("liderSemillero"), entrada.getAsString("lineaInvestigacion")) == "este usuario ya es lider de semillero"){
 			salida.put("respuesta", "el semillero no se creo porque el usuario escogido ya es lider de semillero");
 		}
@@ -636,12 +639,77 @@ public class GestionInstitucionalController {
 		JSONObject salida = new JSONObject();
 		Programa programa =  new Programa(	
 				entrada.getAsString("nombre"));
-		if (gestionInstitucionalService.crearPrograma(programa, Integer.parseInt( entrada.getAsString("facultad_id")),entrada.getAsString("director"))) {
+		if (gestionInstitucionalService.crearPrograma(programa
+				, Integer.parseInt( entrada.getAsString("facultad_id"))
+				,entrada.getAsString("director"))=="se creo el programa") {
 			salida.put("respuesta", "se creo el programa");
+		}else if (gestionInstitucionalService.crearPrograma(programa
+				, Integer.parseInt( entrada.getAsString("facultad_id"))
+				,entrada.getAsString("director"))=="la facultad no existe") {
+			salida.put("respuesta", "la facultad no existe");
+		}else if (gestionInstitucionalService.crearPrograma(programa
+				, Integer.parseInt( entrada.getAsString("facultad_id"))
+				,entrada.getAsString("director"))=="el usuario no existe") {
+			salida.put("respuesta", "el usuario no existe");
+		}else if (gestionInstitucionalService.crearPrograma(programa
+				, Integer.parseInt( entrada.getAsString("facultad_id"))
+				,entrada.getAsString("director"))=="usuario invalido 1") {
+			salida.put("respuesta", "el programa no se creo porque el usuario es un estudiante inactivo");
+		}else if (gestionInstitucionalService.crearPrograma(programa
+				, Integer.parseInt( entrada.getAsString("facultad_id"))
+				,entrada.getAsString("director"))=="usuario invalido 2") {
+			salida.put("respuesta", "el programa no se creo porque el usuario es un estudiante activo");
+		}else if (gestionInstitucionalService.crearPrograma(programa
+				, Integer.parseInt( entrada.getAsString("facultad_id"))
+				,entrada.getAsString("director"))=="usuario invalido 3") {
+			salida.put("respuesta", "el programa no se creo porque el usuario es un semillerista");
 		} else {
 			salida.put("respuesta", "no se pudo el programa");
 		}
 		return salida;
+	}
+	
+	@PostMapping( "/modificarprograma")
+	public JSONObject modificarPrograma(@RequestBody JSONObject entrada) {		
+		JSONObject salida = new JSONObject();
+		if (gestionInstitucionalService.modificarPrograma(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("facultad_id")
+				,entrada.getAsString("director"))=="se actualizo el programa") {
+			salida.put("respuesta", "se actualizo el programa");
+		}else if (gestionInstitucionalService.modificarPrograma(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("facultad_id")
+				,entrada.getAsString("director"))=="usuario invalido 1") {
+			salida.put("respuesta", "el semillero no se creo porque el usuario es un estudiante inactivo");
+		}else if (gestionInstitucionalService.modificarPrograma(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("facultad_id")
+				,entrada.getAsString("director"))=="usuario invalido 2") {
+			salida.put("respuesta", "el semillero no se creo porque el usuario es un estudiante activo");
+		}else if (gestionInstitucionalService.modificarPrograma(Integer.parseInt(entrada.getAsString("id"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("facultad_id")
+				,entrada.getAsString("director"))=="usuario invalido 3") {
+			salida.put("respuesta", "el semillero no se creo porque el usuario es un semillerista");
+		}
+		 else {
+			salida.put("respuesta", "no se pudo el programa");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/programaid/{id}")
+	public JSONObject programalistarPorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();
+		
+		if(gestionInstitucionalService.programaporid(id) !=null) {
+			Programa programa = gestionInstitucionalService.programaporid(id);
+			return programa.toJson();
+		}
+		else {
+			return x;
+		}	
 	}
 	
 	@GetMapping(value = "/listargruposdelprograma/{programa}")
@@ -711,6 +779,36 @@ public class GestionInstitucionalController {
 		}
 		return salida;
 	}
+	
+	@PostMapping("/modificarmateria")
+	public JSONObject modificarMateria(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(!gestionInstitucionalService.modificarMateria(entrada.getAsString("catalogo"), entrada.getAsString("nombre"), entrada.getAsString("programa"))) {
+			salida.put("respuesta", "la materia fue actualizada");
+		}else {
+			salida.put("respuesta", "la materia no fue actualizada");
+		}
+		return salida;
+	}
+	
+	
+	@GetMapping(value = "/materiaid/{id}")
+	public JSONObject materialistarPorId(@PathVariable String id) {
+		JSONObject x= new JSONObject();
+		
+		if(gestionInstitucionalService.materiaporid(id) !=null) {
+			
+			Materia materia = gestionInstitucionalService.materiaporid(id);
+			return materia.toJson();
+		}
+		else {
+			return x;
+		}	
+	
+
+	}
+	
+	
 	
 	//CLASES
 	

@@ -137,6 +137,7 @@ public class Materia implements Serializable {
     		materiaJson.put("programa","esta materia no cuenta con un programa");
 		}else {
 			materiaJson.put("programa",this.getPrograma().getNombre());
+			materiaJson.put("programa_id",this.getPrograma().getId());
 		}
 
     	return materiaJson;
