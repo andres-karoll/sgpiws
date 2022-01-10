@@ -68,13 +68,13 @@ public class GestionInstitucionalController {
 	public JSONObject crearGruposI(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		GrupoInvestigacion grupoInvestigacion = new GrupoInvestigacion(
-
+				
 				entrada.getAsString("nombre"),
 				LocalDate.parse(entrada.getAsString("fechaFun")) ,
 				entrada.getAsString("categoria"),
 				LocalDate.parse(entrada.getAsString("fechaCat")));
 
-		
+		System.out.println(entrada);
 		if(gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion, entrada.getAsString("director")) == "se creo el grupo") {
 
 			salida.put("respuesta", "el grupo se creo");
@@ -96,7 +96,7 @@ public class GestionInstitucionalController {
 			salida.put("respuesta", "este usuario ya es lider de grupo");
 		}
 		
-	
+		
 		return salida;
 	}
 	
