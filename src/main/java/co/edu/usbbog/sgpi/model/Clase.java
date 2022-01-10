@@ -162,7 +162,8 @@ public class Clase implements Serializable {
     	claseJson.put("numero",this.getNumero());
     	claseJson.put("nombre",this.getNombre());
     	claseJson.put("semestre",this.getSemestre());
-    	claseJson.put("materia",this.getMateria().getNombre());    	
+    	claseJson.put("materia",this.getMateria().getNombre());  
+    	claseJson.put("materia_id",this.getMateria().getCatalogo());  
     	if(this.getProfesor() == null) { 		
     		claseJson.put("profesor","");
     	}else {

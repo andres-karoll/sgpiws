@@ -89,7 +89,10 @@ public interface IGestionInstitucionalService {
 	public List<Clase> clasesPorProfesor(String profesor);
 	public List<Clase> clasesPorMateria(String materia);
 	public boolean eliminarClase(int numero);
-	public boolean crearClase(Clase clase, String materia, String profesor);
+	public String crearClase(Clase clase, String materia, String profesor);
+	public String modificarClase(int numero, String nombre, String semestre, String materia, String profesor);
+	public Clase claseporid(int id);
+	
 	public boolean asignarProyectosAClase(int proyecto, int clase);
 	public boolean desasignarProyectosAClase(int proyecto, int clase);
 	public List<Proyecto> proyectosPorClase(int clase);
@@ -98,6 +101,8 @@ public interface IGestionInstitucionalService {
 	
 	public List<LineaInvestigacion> todasLasLineas();
 	public boolean crearLinea(LineaInvestigacion linea, LocalDate fecha);
+	public boolean modificarLinea(String nombre, String descripcion, String fecha);
+	public LineaInvestigacion lineaporid(String id);
 	public boolean eliminarLinea(String nombre);
 	//lineas investigacion
 	
@@ -106,6 +111,8 @@ public interface IGestionInstitucionalService {
 	
 	public List<AreaConocimiento> todasLasAreasConocimiento();
 	public boolean crearArea(AreaConocimiento area, String gran_area);
+	public boolean modificarArea(int id, String nombre, String gran_area, String descripcion);
+	public AreaConocimiento areaporid(int id);
 	public boolean eliminarArea(int id);
 	//areas de conocimiento
 	
@@ -116,6 +123,8 @@ public interface IGestionInstitucionalService {
 	public List<JSONObject> contarEventos();
 	public List<Evento> todosLosEventos();
 	public boolean crearEvento(Evento evento, String entidad, String sitio_web, String url_memoria);
+	public boolean modificarEvento(int id, String nombre, String fecha, String entidad, String estado, String sitio_web, String url_memoria);
+	public Evento eventoporid(int id);
 	public boolean eliminarEvento(int id);
 	
 	
@@ -126,6 +135,8 @@ public interface IGestionInstitucionalService {
 	public List<ProyectosConvocatoria> proyectosPorConvocatoria(int convocatoria);
 	public List<Convocatoria> todasLasConvocatorias();
 	public boolean crearConvocatoria(Convocatoria convocatoria, String numero_productos, String entidad);
+	public Convocatoria convocatoriaporid(int id);
+	public boolean modificarConvocatoria(int id, String nombre_convocatoria, String fecha_inicio, String fecha_final, String contexto, String numero_productos, String estado, String tipo, String entidad);
 	public boolean eliminarConvocatoria(int id);
 	
 	

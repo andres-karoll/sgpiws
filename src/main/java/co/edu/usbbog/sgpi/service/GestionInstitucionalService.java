@@ -1,5 +1,6 @@
 package co.edu.usbbog.sgpi.service;
 
+import java.awt.geom.Area;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -1017,20 +1018,101 @@ return programa;
 	}
 	
 	@Override
-	public boolean crearClase(Clase clase, String materia, String profesor) {
+	public String crearClase(Clase clase, String materia, String profesor) {
+		Usuario profe = usuarioRepo.getById(profesor);
+		
+		TipoUsuario tipousuario = iTipoUsuarioRepository.getById("Docente");
+		
 		Materia mate = materiaRepo.getById(materia);
-		if(mate == null) {
-			return false; 	
+		if(!usuarioRepo.existsById(profe.getCedula())) {
+			return "el usuario no existe"; 	
 		}
-		Usuario pro = usuarioRepo.getById(profesor);
-		if(pro == null) {
-			return false;
+		if(!materiaRepo.existsById(mate.getCatalogo())) {
+			return "la materia no existe";
+		}
+		
+		List<TipoUsuario> tipo = profe.getTiposUsuario();
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+				return "usuario invalido 1";
+			}
+			if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+				return "usuario invalido 2";
+			}
+			if(tipoUsuario.getNombre().equals("Semillerista")) {
+				return "usuario invalido 3";
+			}
+			if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
+				return "este usuario ya es lider de semillero";
+			}
 		}
 		
 		clase.setMateria(mate);
-		clase.setProfesor(pro);
+		clase.setProfesor(profe);
 		claseRepo.save(clase);
-		return true;
+		
+		tipousuario.getUsuarios().add(profe);
+		iTipoUsuarioRepository.save(tipousuario);
+		return "se creo la clase";
+	}
+	
+	public String modificarClase(int numero, String nombre, String semestre, String materia, String profesor) {
+		
+
+			Usuario profe = usuarioRepo.getById(profesor);
+			
+			TipoUsuario tipousuariouno = iTipoUsuarioRepository.getById("Docente");
+			
+			Clase clase = claseRepo.getById(numero);
+			Materia mate = materiaRepo.getById(materia);
+			
+			if(nombre!="") {
+				clase.setNombre(nombre);
+			}
+			
+			if(semestre!="") {
+				clase.setSemestre(semestre);
+			}
+			
+			if(materia!="") {
+				clase.setMateria(mate);
+			}
+			
+			if(profesor!="") {
+				
+				List<TipoUsuario> tipo = profe.getTiposUsuario();
+				for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+					TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+					if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+						return "usuario invalido 1";
+					}
+					if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+						return "usuario invalido 2";
+					}
+					if(tipoUsuario.getNombre().equals("Semillerista")) {
+						return "usuario invalido 3";
+					}
+					if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
+						return "este usuario ya es lider de semillero";
+					}
+				}
+				clase.setProfesor(profe);
+				tipousuariouno.getUsuarios().add(profe);
+				iTipoUsuarioRepository.save(tipousuariouno);
+			}
+			claseRepo.save(clase);
+			return "clase actualizada";
+		
+	}
+	
+	@Override
+	public Clase claseporid(int id) {	
+		Clase clase = claseRepo.getById(id);
+
+		return clase;
+		
+		
 	}
 	
 	@Override
@@ -1107,6 +1189,25 @@ return programa;
 		lineaRepo.save(linea);
 		return lineaRepo.existsById(linea.getNombre());
 	}
+	public boolean modificarLinea(String nombre, String descripcion, String fecha) {
+			LineaInvestigacion linea = lineaRepo.getById(nombre);
+			
+			if(descripcion!=""){
+				linea.setDescripcion(descripcion);
+			}
+			
+			if(fecha!=""){
+				linea.setFecha(LocalDate.parse(fecha));
+			}
+		lineaRepo.save(linea);
+		return !lineaRepo.existsById(linea.getNombre());
+	}
+	@Override
+	public LineaInvestigacion lineaporid(String id) {
+		LineaInvestigacion linea = lineaRepo.getById(id);
+		return linea;		
+	}
+
 	@Override
 	public boolean eliminarLinea(String nombre) {
 		List<Semillero> semilleros= semilleroRepo.findByLineaInvestigacion(nombre);
@@ -1136,6 +1237,30 @@ return programa;
 		areaRepo.save(area);
 		return true;
 	}
+	@Override
+	public boolean modificarArea(int id, String nombre, String gran_area, String descripcion) {
+		AreaConocimiento area = areaRepo.getById(id);
+		if(nombre!=""){
+			area.setNombre(nombre);
+		}
+		
+		if(gran_area!=""){
+			area.setGranArea(gran_area);
+		}
+		
+		if(descripcion!=""){
+			area.setDescripcion(descripcion);
+		}
+	areaRepo.save(area);
+	return !areaRepo.existsById(area.getId());
+}
+	
+	@Override
+	public AreaConocimiento areaporid(int id) {
+		AreaConocimiento area = areaRepo.getById(id);
+		return area;
+	}
+	
 	@Override
 	public boolean eliminarArea(int id) {
 		List<JSONObject> proyectos = areaRepo.findByProyecto(id);
@@ -1170,6 +1295,40 @@ return programa;
 		eventoRepo.save(evento);
 		return eventoRepo.existsById(evento.getId());
 	}
+	
+	
+
+	@Override
+	public boolean modificarEvento(int id, String nombre, String fecha, String entidad, String estado, String sitio_web, String url_memoria) {
+		Evento evento = eventoRepo.getById(id);
+		if(nombre!=""){
+			evento.setNombre(nombre);
+		}
+		if(fecha!=""){
+			evento.setFecha(LocalDate.parse(fecha));;
+		}
+		if(entidad!=""){
+			evento.setEntidad(entidad);
+		}
+		if(estado!=""){
+			evento.setEstado(estado);
+		}
+		if(sitio_web!=""){
+			evento.setSitioWeb(sitio_web);
+		}
+		if(url_memoria!=""){
+			evento.setUrlMemoria(url_memoria);
+		}
+		eventoRepo.save(evento);
+		return !eventoRepo.existsById(evento.getId());
+}
+	
+	@Override
+	public Evento eventoporid(int id) {
+		Evento evento = eventoRepo.getById(id);
+		return evento;
+	}
+	
 	@Override
 	public boolean eliminarEvento(int id) {
 		List<JSONObject> participaciones = eventoRepo.findByParticipaciones(id);
@@ -1249,6 +1408,45 @@ return programa;
 		}
 		return true;
 	}
+
+	@Override
+	public boolean modificarConvocatoria(int id, String nombre_convocatoria, String fecha_inicio, String fecha_final, String contexto, String numero_productos, String estado, String tipo, String entidad) {
+		
+		Convocatoria convocatoria = convocatoriaRepo.getById(id);
+		if(nombre_convocatoria!=""){
+			convocatoria.setNombreConvocatoria(nombre_convocatoria);
+		}
+		if(fecha_inicio!=""){
+			convocatoria.setFechaInicio(LocalDate.parse(fecha_inicio));
+		}
+		if(fecha_final!=""){
+			convocatoria.setFechaFinal(LocalDate.parse(fecha_final));
+		}
+		if(contexto!=""){
+			convocatoria.setContexto(contexto);
+		}
+		if(numero_productos!=""){
+			convocatoria.setNumeroProductos(numero_productos);
+		}
+		if(estado!=""){
+			convocatoria.setEstado(estado);
+		}
+		if(tipo!=""){
+			convocatoria.setTipo(tipo);
+		}
+		if(entidad!=""){
+			convocatoria.setEntidad(entidad);
+		}
+		convocatoriaRepo.save(convocatoria);
+		return convocatoriaRepo.existsById(convocatoria.getId());
+}
+	
+	@Override
+	public Convocatoria convocatoriaporid(int id) {
+		Convocatoria convocatoria = convocatoriaRepo.getById(id);
+		Evento evento = eventoRepo.getById(id);
+		return convocatoria;
+	}
 	
 	@Override
 	public boolean eliminarConvocatoria(int id) {
@@ -1265,6 +1463,8 @@ return programa;
 		List<TipoUsuario> tipo= iTipoUsuarioRepository.listarRoles();
 		return tipo;
 	}
+
+	
 	
 	
 

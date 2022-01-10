@@ -855,24 +855,87 @@ public class GestionInstitucionalController {
 	
 	@PostMapping(value = "/crearclase")
 	public JSONObject crearClase(@RequestBody JSONObject entrada) {		
-		
-		//boolean salida = gestionInstitucionalService.crearPrograma(programa);	
-		//return salida;
 		JSONObject salida = new JSONObject();
 		Clase clase =  new Clase(				
 				Integer.parseInt(entrada.getAsString("numero")), 
 				entrada.getAsString("nombre"),
 				entrada.getAsString("semestre"));
 
-		if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))) {
+		if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))=="se creo la clase") {
 
 			salida.put("respuesta", "se creo la clase");
+
+		}else if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))=="el usuario no existe") {
+
+			salida.put("respuesta", "el usuario no existe");
+
+		}else if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))=="la materia no existe") {
+
+			salida.put("respuesta", "la materia no existe");
+
+		}else if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))=="usuario invalido 1") {
+
+			salida.put("respuesta", "el usuario es un estudiante inactivo");
+
+		}else if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))=="usuario invalido 2") {
+
+			salida.put("respuesta", "el usuario es un estudiante activo");
+
+		}else if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))=="usuario invalido 3") {
+
+			salida.put("respuesta", "el usuario es un semillerista");
 
 		} else {
 			salida.put("respuesta", "no se pudo crear");
 		}
 
 		return salida;
+	}
+	
+	@PostMapping("/modificarclase")
+	public JSONObject modificarClase(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if((gestionInstitucionalService.modificarClase(Integer.parseInt(entrada.getAsString("numero"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("semestre")
+				,entrada.getAsString("materia")
+				,entrada.getAsString("profesor"))=="clase actualizada")) {
+			salida.put("respuesta", "la clase fue actualizada");
+		}else if((gestionInstitucionalService.modificarClase(Integer.parseInt(entrada.getAsString("numero"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("semestre")
+				,entrada.getAsString("materia")
+				,entrada.getAsString("profesor"))=="usuario invalido 1")) {
+			salida.put("respuesta", "el usuario que escogio es un Estudiante inactivo");
+		}else if((gestionInstitucionalService.modificarClase(Integer.parseInt(entrada.getAsString("numero"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("semestre")
+				,entrada.getAsString("materia")
+				,entrada.getAsString("profesor"))=="usuario invalido 2")) {
+			salida.put("respuesta", "el usuario que escogio es un Estudiante activo");
+		}else if((gestionInstitucionalService.modificarClase(Integer.parseInt(entrada.getAsString("numero"))
+				,entrada.getAsString("nombre")
+				,entrada.getAsString("semestre")
+				,entrada.getAsString("materia")
+				,entrada.getAsString("profesor"))=="usuario invalido 3")) {
+			salida.put("respuesta", "el usuario que escogio es un Semillerista");
+		}
+else {
+			salida.put("respuesta", "la clase no fue actualizada");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/claseid/{id}")
+	public JSONObject claselistarPorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();
+		if(gestionInstitucionalService.claseporid(id) !=null) {
+			Clase clase = gestionInstitucionalService.claseporid(id);
+			return clase.toJson();
+		}
+		else {
+			return x;
+		}	
 	}
 	
 	@PostMapping(value = "/asignarproyectosaclase")
@@ -978,6 +1041,39 @@ public class GestionInstitucionalController {
 		return salida;
 	}
 	
+	@PostMapping("/modificarconvocatoria")
+	public JSONObject modificarConvocatoria(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(gestionInstitucionalService.modificarConvocatoria(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre_convocatoria")
+				, entrada.getAsString("fecha_inicio")
+				, entrada.getAsString("fecha_final")
+				, entrada.getAsString("contexto")
+				, entrada.getAsString("numero_productos")
+				, entrada.getAsString("estado")
+				, entrada.getAsString("tipo")
+				, entrada.getAsString("entidad"))) {
+			salida.put("respuesta", "se actualizo la convocatoria");
+		}else {
+			salida.put("respuesta", "no se pudo actualizar el evento");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/convocatoriaid/{id}")
+	public JSONObject convocatorialistarPorId(@PathVariable int id) {
+
+		JSONObject x= new JSONObject();	
+		if(gestionInstitucionalService.convocatoriaporid(id)!=null) {
+			Convocatoria convocatoria = gestionInstitucionalService.convocatoriaporid(id);
+			return convocatoria.toJson();
+		}
+		else {
+			return x;
+		}	
+
+	}
+	
 	@GetMapping(value = "/eliminarconvocatoria/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String eliminarConvocatoria(@PathVariable int id) {		
 		if(gestionInstitucionalService.eliminarConvocatoria(id)) {
@@ -1021,6 +1117,32 @@ public class GestionInstitucionalController {
 		}
 		return salida;
 	}
+	
+	@PostMapping("/modificarlinea")
+	public JSONObject modificarLinea(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(!gestionInstitucionalService.modificarLinea(entrada.getAsString("nombre"), entrada.getAsString("descripcion"), entrada.getAsString("fecha"))) {
+			salida.put("respuesta", "se actualizo la linea");
+		}else {
+			salida.put("respuesta", "no se pudo actualizar la linea");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/lineaid/{id}")
+	public JSONObject linealistarPorId(@PathVariable String id) {
+
+		JSONObject x= new JSONObject();	
+		if(gestionInstitucionalService.lineaporid(id+"") !=null) {
+			LineaInvestigacion linea = gestionInstitucionalService.lineaporid(id+"");
+			return linea.toJson();
+		}
+		else {
+			return x;
+		}	
+
+	}
+	
 	@GetMapping(value = "/eliminarlinea/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String eliminarMateria(@PathVariable String nombre) {		
 		if(gestionInstitucionalService.eliminarLinea(nombre)) {
@@ -1071,6 +1193,35 @@ public class GestionInstitucionalController {
 		return salida;
 	}
 	
+	@PostMapping("/modificararea")
+	public JSONObject modificarArea(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(!gestionInstitucionalService.modificarArea(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("gran_area")
+				, entrada.getAsString("descripcion"))) {
+			salida.put("respuesta", "se actualizo la area");
+		}else {
+			salida.put("respuesta", "no se pudo actualizar la area");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/areaid/{id}")
+	public JSONObject arealistarPorId(@PathVariable int id) {
+
+		JSONObject x= new JSONObject();	
+		if(gestionInstitucionalService.areaporid(id)!=null) {
+			AreaConocimiento area = gestionInstitucionalService.areaporid(id);
+			return area.toJson();
+		}
+		else {
+			return x;
+		}	
+
+	}
+	
+	
 	@GetMapping(value = "/eliminararea/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String eliminarArea(@PathVariable int id) {		
 		if(gestionInstitucionalService.eliminarArea(id)) {
@@ -1119,6 +1270,37 @@ public class GestionInstitucionalController {
 		}
 
 		return salida;
+	}
+	
+	@PostMapping("/modificarevento")
+	public JSONObject modificarEvento(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(!gestionInstitucionalService.modificarEvento(Integer.parseInt(entrada.getAsString("id"))
+				, entrada.getAsString("nombre")
+				, entrada.getAsString("fecha")
+				, entrada.getAsString("entidad")
+				, entrada.getAsString("estado")
+				, entrada.getAsString("sitio_web")
+				, entrada.getAsString("url_memoria"))) {
+			salida.put("respuesta", "se actualizo el evento");
+		}else {
+			salida.put("respuesta", "no se pudo actualizar el evento");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/eventoid/{id}")
+	public JSONObject eventolistarPorId(@PathVariable int id) {
+
+		JSONObject x= new JSONObject();	
+		if(gestionInstitucionalService.eventoporid(id)!=null) {
+			Evento evento = gestionInstitucionalService.eventoporid(id);
+			return evento.toJson();
+		}
+		else {
+			return x;
+		}	
+
 	}
 	
 	
