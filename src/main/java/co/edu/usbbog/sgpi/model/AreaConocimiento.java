@@ -10,6 +10,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -39,6 +41,7 @@ public class AreaConocimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -63,8 +66,8 @@ public class AreaConocimiento implements Serializable {
         this.id = id;
     }
 
-    public AreaConocimiento(Integer id, String nombre, String descripcion) {
-        this.id = id;
+    public AreaConocimiento( String nombre, String descripcion) {
+      
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
