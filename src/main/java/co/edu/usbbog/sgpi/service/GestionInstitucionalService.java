@@ -119,7 +119,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			Usuario dir = usuarioRepo.getById(director);
 			
 			TipoUsuario tipousuario = iTipoUsuarioRepository.getById("Lider grupo investigacion");
-
+			
 			if(!usuarioRepo.existsById(dir.getCedula())) {
 				return "el usuario no existe";
 			}
