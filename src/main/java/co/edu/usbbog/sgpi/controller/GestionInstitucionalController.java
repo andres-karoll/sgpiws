@@ -476,6 +476,7 @@ public class GestionInstitucionalController {
 			salida.add(clase.toJson());
 		}	
 		return salida;		
+		
 	}
 	
 	@GetMapping(value = "/listarclasesporprofesor/{profesor}", produces = MediaType.APPLICATION_JSON_VALUE)
