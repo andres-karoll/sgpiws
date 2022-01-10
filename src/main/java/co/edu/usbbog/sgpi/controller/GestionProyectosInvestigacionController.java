@@ -35,7 +35,7 @@ public class GestionProyectosInvestigacionController {
 	@PostMapping("/crearproyecto")
 	public JSONObject crearProyectoAulaIntegrador(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		Proyecto proyecto = new Proyecto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
+		Proyecto proyecto = new Proyecto(entrada.getAsString("titulo"),
 				entrada.getAsString("estado"), entrada.getAsString("descripcion"),
 				LocalDate.parse(entrada.getAsString("fechainicio")),
 				Short.parseShort(entrada.getAsString("visibilidad")), entrada.getAsString("ciudad"),
@@ -115,7 +115,7 @@ public class GestionProyectosInvestigacionController {
 		JSONObject salida = new JSONObject();
 		Producto producto = iGestionProyectosInvestigacionService
 				.buscarProducto(Integer.parseInt(entrada.getAsString("productoid")));
-		Comentario comentario = new Comentario(Integer.parseInt(entrada.getAsString("id")),
+		Comentario comentario = new Comentario(
 				entrada.getAsString("comentario"), entrada.getAsString("fase"), entrada.getAsString("nivel"),
 				LocalDate.parse(entrada.getAsString("fecha")));
 		if (iGestionProyectosInvestigacionService.crearComentario(comentario, entrada.getAsString("cedula"))) {

@@ -124,7 +124,7 @@ public class Proyecto implements Serializable {
         this.id = id;
     }
 
-    public Proyecto(Integer id, String titulo, String estado, String descripcion, LocalDate fechaInicio, short visibilidad, String ciudad, String metodologia, String justificacion) {
+    public Proyecto( String titulo, String estado, String descripcion, LocalDate fechaInicio, short visibilidad, String ciudad, String metodologia, String justificacion) {
         this.id = id;
         this.titulo = titulo;
         this.estado = estado;

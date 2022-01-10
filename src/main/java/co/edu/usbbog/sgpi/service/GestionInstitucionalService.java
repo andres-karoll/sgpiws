@@ -30,6 +30,7 @@ import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
+import co.edu.usbbog.sgpi.model.TipoUsuario;
 import co.edu.usbbog.sgpi.model.Usuario;
 import co.edu.usbbog.sgpi.repository.IAreaConocimientoRepository;
 import co.edu.usbbog.sgpi.repository.IClaseRepository;
@@ -42,6 +43,7 @@ import co.edu.usbbog.sgpi.repository.IMateriaRepository;
 import co.edu.usbbog.sgpi.repository.IProgramaRepository;
 import co.edu.usbbog.sgpi.repository.IProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ISemilleroRepository;
+import co.edu.usbbog.sgpi.repository.ITipoUsuarioRepository;
 import co.edu.usbbog.sgpi.repository.IUsuarioRepository;
 import javassist.expr.NewArray;
 import net.minidev.json.JSONObject;
@@ -84,6 +86,8 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	
 	@Autowired
 	private IEventoRepository eventoRepo;
+	@Autowired
+	private ITipoUsuarioRepository iTipoUsuarioRepository;
 	
 
 
@@ -1455,12 +1459,6 @@ return programa;
 		return false;
 	}
 
-
-	@Override
-	public List<TipoUsuario> listarRoles() {
-		List<TipoUsuario> tipo= iTipoUsuarioRepository.listarRoles();
-		return tipo;
-	}
 
 	
 	

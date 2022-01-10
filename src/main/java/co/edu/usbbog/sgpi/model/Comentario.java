@@ -72,7 +72,7 @@ public class Comentario implements Serializable {
         this.id = id;
     }
 
-    public Comentario(Integer id, String comentario, String fase, String nivel, LocalDate fecha) {
+    public Comentario(String comentario, String fase, String nivel, LocalDate fecha) {
         this.id = id;
         this.comentario = comentario;
         this.fase = fase;

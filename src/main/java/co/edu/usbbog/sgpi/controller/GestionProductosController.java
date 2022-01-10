@@ -116,7 +116,7 @@ public class GestionProductosController {
 	public JSONObject crearComentario(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		Comentario comentario = new Comentario(
-				Integer.parseInt(entrada.getAsString("id")),
+				
 				entrada.getAsString("comentario"),
 				entrada.getAsString("fase"),
 				entrada.getAsString("nivel"), 

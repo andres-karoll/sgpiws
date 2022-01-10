@@ -109,15 +109,45 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		return false;
 	}
 
+	/**
+	 *
+	 */
 	@Override
-	public boolean crearProyecto(Proyecto proyecto, String tipo, Participantes participante, String rol, String clase) {
+	public boolean crearProyecto(Proyecto proyecto, String tipo, String rol, String clase,String cedula,LocalDate fecha) {
 		Clase clas = iClaseRepository.getById(Integer.parseInt(clase));
 		if (!iClaseRepository.existsById(clas.getNumero())) {
 			return false;
 		}
-		if (iProyectoRepository.existsById(proyecto.getId())) {
-			return false;
+		TipoProyecto tp = iTipoProyectoRepository.getById(tipo);
+		proyecto.setTipoProyecto(tp);
+		//MacroProyecto macroProyectp= iMacroProyectoRepository.getById(macro);
+		try {
+			proyecto.setMacroProyecto(null);
+		} catch (Exception e) {
+			proyecto.setMacroProyecto(null);
 		}
+		proyecto.setId(iProyectoRepository.save(proyecto).getId());
+		iTipoProyectoRepository.save(tp);
+		clas.getProyectos().add(proyecto);
+		iClaseRepository.save(clas);
+		Usuario usu= iUsuarioRepository.getById(cedula);
+			
+		Participantes participante = new Participantes(cedula,proyecto.getId(), fecha);
+		participante.setRol(rol);
+		iParticipantesRepository.save(participante);
+		Usuario profesor= clas.getProfesor();
+		if(profesor!=null) {
+			Participantes par=new Participantes(profesor.getCedula(), proyecto.getId(), participante.getParticipantesPK().getFechaInicio());
+			par.setRol("Lider");
+			iParticipantesRepository.save(par);
+		}
+		return iProyectoRepository.existsById(proyecto.getId());
+		/*
+	
+		
+		//if (iProyectoRepository.existsById(proyecto.getId())) {
+		//	return false;
+		//}
 		TipoProyecto tp = iTipoProyectoRepository.getById(tipo);
 		if (tp == null) {
 			return false;
@@ -129,16 +159,27 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 			proyecto.setSemillero(null);
 			proyecto.setMacroProyecto(null);
 		}
-		participante.setRol(rol);
+		
 		proyecto.setTipoProyecto(tp);
 		if (clas.getProyectos() == null) {
 			clas.setProyectos(new ArrayList<Proyecto>());
 		}
-		clas.getProyectos().add(proyecto);
+		
 		iProyectoRepository.save(proyecto);
+		clas.getProyectos().add(proyecto);
 		iClaseRepository.save(clas);
+		
+		Participantes participante = new Participantes(cedula,proyecto.getId(), fecha);
+		participante.setRol(rol);
 		iParticipantesRepository.save(participante);
-		return iProyectoRepository.existsById(proyecto.getId());
+		Usuario profesor= clas.getProfesor();
+		if(profesor!=null) {
+			Participantes par=new Participantes(profesor.getCedula(), proyecto.getId(), participante.getParticipantesPK().getFechaInicio());
+			par.setRol("Lider");
+			iParticipantesRepository.save(par);
+		}*/
+		
+	
 	}
 
 	@Override
@@ -146,6 +187,7 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
 
 	@Override
 	public List<Producto> todosLosProductos(Proyecto proyecto) {
@@ -199,9 +241,27 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	}
 
 	@Override
-	public boolean crearParticipante(Participantes participante, String rol) {
+	public boolean crearParticipante(Participantes participante, String rol,String cedula,int proyecto) {
+		/*System.out.println(participante.getProyecto());
+		Proyecto pro= iProyectoRepository.getById(proyecto);
+		TipoUsuario tipos= iTipoUsuarioRepository.getById("Estudiante activo");
+		Usuario usu=iUsuarioRepository.getById(cedula);
+		List<TipoUsuario> tipo= usu.getTiposUsuario();
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			System.out.println(tipoUsuario);
+		}*/
+		Usuario usu= iUsuarioRepository.getById(cedula);
+		Proyecto pro =iProyectoRepository.getById(proyecto);
+		List<Participantes> par= pro.getParticipantes();
+		for (Iterator iterator = par.iterator(); iterator.hasNext();) {
+			Participantes participantes = (Participantes) iterator.next();
+			if(participantes.getUsuario().getCedula().equals(cedula)){
+				System.out.println("hola");
+				return false;
+			}
+		}
 		participante.setRol(rol);
-
 		iParticipantesRepository.save(participante);
 		return iParticipantesRepository.existsById(participante.getParticipantesPK());
 	}
@@ -334,14 +394,17 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	public boolean agregarAreaConocimiento(int proyecto, int area) {
 		Proyecto pro = iProyectoRepository.getById(proyecto);
 		AreaConocimiento are = iAreaConocimientoRepository.getById(area);
-		if (are.equals(null) || pro.equals(null)) {
-			return false;
-		} else {
-			are.getProyectos().add(pro);
-			iAreaConocimientoRepository.save(are);
-			return true;
-		}
-
+		List<AreaConocimiento> areass= pro.getAreasConocimiento();
+		for (Iterator iterator = areass.iterator(); iterator.hasNext();) {
+			AreaConocimiento areaConocimiento = (AreaConocimiento) iterator.next();
+			if(areaConocimiento.getId()==area) {
+				return false;
+			}
+			
+			}
+		are.getProyectos().add(pro);
+		iAreaConocimientoRepository.save(are);
+		return true;
 	}
 
 	@Override
@@ -437,6 +500,16 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	public List<JSONObject> listarEvento() {
 		List<JSONObject> x = iEventoRepository.listarEventos();
 		return x;
+	}
+
+	@Override
+	public List<AreaConocimiento> areasConocimientoProyecto(int proyecto) {
+		Proyecto pro=iProyectoRepository.getById(proyecto);
+		List<AreaConocimiento> area =pro.getAreasConocimiento();
+		if (area.equals(null)) {
+			area = new ArrayList<AreaConocimiento>();
+		}
+		return area;
 	}
 
 	

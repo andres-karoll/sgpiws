@@ -61,7 +61,7 @@ public class Facultad implements Serializable {
         this.id = id;
     }
 
-    public Facultad(Integer id, String nombre) {
+    public Facultad( String nombre) {
         this.id = id;
         this.nombre = nombre;
     }

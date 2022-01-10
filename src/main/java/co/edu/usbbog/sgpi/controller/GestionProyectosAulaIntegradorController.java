@@ -43,15 +43,14 @@ public class GestionProyectosAulaIntegradorController {
 	@PostMapping("/crearproyecto")
 	public JSONObject crearProyectoAulaIntegrador(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		Proyecto proyecto = new Proyecto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
+		Proyecto proyecto = new Proyecto(entrada.getAsString("titulo"),
 				entrada.getAsString("estado"), entrada.getAsString("descripcion"),
 				LocalDate.parse(entrada.getAsString("fechainicio")),
 				Short.parseShort(entrada.getAsString("visibilidad")), entrada.getAsString("ciudad"),
 				entrada.getAsString("metodologia"), entrada.getAsString("justificacion"));
-		Participantes participante = new Participantes(entrada.getAsString("usuario"),
-				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
-		if (iGestionProyectosAulaIntegradorService.crearProyecto(proyecto, entrada.getAsString("tipo"), participante,
-				entrada.getAsString("rol"), entrada.getAsString("clase"))) {
+		System.out.println("hola");
+		if (iGestionProyectosAulaIntegradorService.crearProyecto(proyecto, entrada.getAsString("tipo"),
+				entrada.getAsString("rol"), entrada.getAsString("clase"),entrada.getAsString("usuario"),LocalDate.parse(entrada.getAsString("fechainicio")))) {
 			salida.put("respuesta", "el proyecto fue creado");
 		} else {
 			salida.put("respuesta", "el proyecto no fue creado");
@@ -59,12 +58,12 @@ public class GestionProyectosAulaIntegradorController {
 		return salida;
 	}
 
-	@PostMapping("/agregarParticipante")
+	@PostMapping("/agregarParticipante")	 
 	public JSONObject agregarParticipante(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		Participantes participante = new Participantes(entrada.getAsString("usuario"),
 				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
-		if (iGestionProyectosAulaIntegradorService.crearParticipante(participante, entrada.getAsString("rol"))) {
+		if (iGestionProyectosAulaIntegradorService.crearParticipante(participante, entrada.getAsString("rol"),entrada.getAsString("usuario"),Integer.parseInt(entrada.getAsString("id")))) {
 			salida.put("respuesta", "el participante fue agregado");
 		} else {
 			salida.put("respuesta", "el participante no pudo ser agregado");
@@ -92,6 +91,16 @@ public class GestionProyectosAulaIntegradorController {
 		for (Iterator iterator = proyectos.iterator(); iterator.hasNext();) {
 			Proyecto proyecto = (Proyecto) iterator.next();
 			salida.add(proyecto.toJson()); 
+		}
+		return salida;
+	}
+	@GetMapping("/areasconocimientoproyecto/{proyecto}")
+	public JSONArray areasConocimientoProyecto(@PathVariable int proyecto){
+		JSONArray salida = new JSONArray();
+		List<AreaConocimiento> area = iGestionProyectosAulaIntegradorService.areasConocimientoProyecto(proyecto);
+		for (Iterator iterator = area.iterator(); iterator.hasNext();) {
+			AreaConocimiento areaConocimiento = (AreaConocimiento) iterator.next();
+			salida.add(areaConocimiento.toJson());
 		}
 		return salida;
 	}
@@ -165,7 +174,7 @@ public class GestionProyectosAulaIntegradorController {
 		JSONObject salida = new JSONObject();
 		Producto producto = iGestionProyectosAulaIntegradorService
 				.buscarProducto(Integer.parseInt(entrada.getAsString("productoid")));
-		Comentario comentario = new Comentario(Integer.parseInt(entrada.getAsString("id")),
+		Comentario comentario = new Comentario(
 				entrada.getAsString("comentario"), entrada.getAsString("fase"), entrada.getAsString("nivel"),
 				LocalDate.parse(entrada.getAsString("fecha")));
 		if (iGestionProyectosAulaIntegradorService.crearComentario(comentario, entrada.getAsString("cedula"))) {

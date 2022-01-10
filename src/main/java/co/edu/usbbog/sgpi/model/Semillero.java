@@ -77,7 +77,7 @@ public class Semillero implements Serializable {
         this.id = id;
     }
 
-    public Semillero(Integer id, String nombre, String descripcion, LocalDate fechaFun) {
+    public Semillero( String nombre, String descripcion, LocalDate fechaFun) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
