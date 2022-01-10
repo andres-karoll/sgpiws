@@ -68,7 +68,7 @@ public class GestionInstitucionalController {
 	public JSONObject crearGruposI(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		GrupoInvestigacion grupoInvestigacion = new GrupoInvestigacion(
-				Integer.parseInt(entrada.getAsString("id")),
+
 				entrada.getAsString("nombre"),
 				LocalDate.parse(entrada.getAsString("fechaFun")) ,
 				entrada.getAsString("categoria"),
