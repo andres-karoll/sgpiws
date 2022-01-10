@@ -3,6 +3,7 @@
  */
 package co.edu.usbbog.sgpi.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -42,8 +43,36 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, String> {
 	void deleteDirectorById(String grupo);
 	@Query(value = "select * from usuario,usuarios where usuario.correo_est=?1 && usuario.contrasena=?2	 && usuarios.tipo_usuario=?3 " , nativeQuery = true)
 	JSONObject Login(String correo, String contrasena,String tipo );
+	
+	@Query(value = "select * from usuario where usuario.correo_est=?1", nativeQuery = true)
+	Usuario JSONObject(String correo);
+	
+	@Query(value = "select * from usuarios where tipo_usuario= \"Estudiante inactivo\"", nativeQuery = true)
+	JSONObject getByTipoEstudianteInactivo();
+	
+	@Query(value = "select * from usuarios where tipo_usuario= \"Estudiante activo\"", nativeQuery = true)
+	JSONObject getByTipoEstudianteActivo();	
+	
+	@Query(value = "select * from usuarios where tipo_usuario= \"Egresado\"", nativeQuery = true)
+	JSONObject getByTipoEstudianteEgresado();
+	
+	@Query(value = "select * from usuarios where tipo_usuario= \"Investigador formacion\"", nativeQuery = true)
+	JSONObject getByTipoInvestigadorFormacion();
+	
+	@Query(value = "select * from usuarios where tipo_usuario= \"Personal biblioteca\"", nativeQuery = true)
+	JSONObject getByTipoPersonalBiblioteca();
+	
+	@Query(value = "select * from usuarios where tipo_usuario= \"Personal publicaciones\"", nativeQuery = true)
+	JSONObject getByTipoPersonalPublicaciones();
+	
+	@Query(value = "select * from usuarios where tipo_usuario= \"Semillerista\"", nativeQuery = true)
+	JSONObject getByTipoSemillerista();
+	
 	@Query(value = "select * from usuario where usuario.correo_est=?1", nativeQuery = true)
 	Usuario getByCorreo(String correo);
-
 	
+	@Modifying
+	@Transactional
+	@Query(value= "delete from usuarios where usuario = ?1 and tipo_usuario= ?2", nativeQuery=true)
+	void deleteTipo(String usuario, String tipo);
 }

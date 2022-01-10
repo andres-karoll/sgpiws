@@ -1,13 +1,21 @@
 package co.edu.usbbog.sgpi.service;
 
+import java.awt.geom.Area;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
 import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
@@ -101,13 +109,105 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 
 	@Override
-	public boolean crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion) {
-		/*
-		if (grupoIRepo.existsById(grupoInvestigacion.getId())) {
-			return false;
-		}*/
-		grupoIRepo.save(grupoInvestigacion);
-		return true;
+
+	public String crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion,String director) {
+	
+			Usuario dir = usuarioRepo.getById(director);
+			
+			TipoUsuario tipousuario = iTipoUsuarioRepository.getById("Lider grupo investigacion");
+
+			if(!usuarioRepo.existsById(dir.getCedula())) {
+				return "el usuario no existe";
+			}
+			List<TipoUsuario> tipo = dir.getTiposUsuario();
+			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+				if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+					return "usuario invalido 1";
+				}
+				if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+					return "usuario invalido 2";
+				}
+				if(tipoUsuario.getNombre().equals("Semillerista")) {
+					return "usuario invalido 7";
+				}
+				if(tipoUsuario.getNombre().equals("Lider grupo investigacion")) {
+					return "este usuario ya es lider de grupo";
+				}
+			}		
+			grupoInvestigacion.setDirectorGrupo(dir);
+			grupoIRepo.save(grupoInvestigacion);
+			
+			tipousuario.getUsuarios().add(dir);
+			iTipoUsuarioRepository.save(tipousuario);
+			return "se creo el grupo";	
+	}
+	
+	@Override
+	public String modificarGrupoI(int id, String nombre, String fecha_fun, String categoria, String fecha_cat, String director) {
+
+		
+		Usuario direc = usuarioRepo.getById(director);
+		
+		
+		TipoUsuario tipousuariouno = iTipoUsuarioRepository.getById("Lider grupo investigacion");
+		
+		GrupoInvestigacion grupo = grupoIRepo.getById(id);
+		
+		
+		
+		
+		if(nombre!="") {
+			grupo.setNombre(nombre);
+		}
+		if(fecha_fun!="") {
+			grupo.setFechaFun(LocalDate.parse(fecha_fun));
+		}
+		if(categoria!="") {
+			grupo.setCategoria(categoria);
+		}
+		if(fecha_cat!="") {
+			grupo.setFechaCat(LocalDate.parse(fecha_cat));
+		}
+		if(director!="") {
+			usuarioRepo.deleteTipo(grupo.getDirectorGrupo().getCedula(), "Lider grupo investigacion");
+			
+			List<TipoUsuario> tipo = direc.getTiposUsuario();
+			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+				if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+					return "usuario invalido 1";
+				}
+				if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+					return "usuario invalido 2";
+				}
+				if(tipoUsuario.getNombre().equals("Semillerista")) {
+					return "usuario invalido 3";
+				}
+				if(tipoUsuario.getNombre().equals("Lider grupo investigacion")) {
+					return "este usuario ya es lider de grupo";
+				}
+			}
+			grupo.setDirectorGrupo(direc);
+			tipousuariouno.getUsuarios().add(direc);
+			iTipoUsuarioRepository.save(tipousuariouno);
+		}
+		
+		grupoIRepo.save(grupo);
+		return "grupo actualizado";
+		
+	}
+	
+	
+	@Override
+	public GrupoInvestigacion grupoiporid(int id) {
+		if(grupoIRepo.existsById(id)) {
+			GrupoInvestigacion grupo = grupoIRepo.getById(id);
+			return grupo;
+		}
+		return null;
+		
+
 	}
 
 	@Override
@@ -264,9 +364,118 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 
 	@Override
-	public boolean crearSemillero(Semillero semillero) {
+	public String crearSemillero(Semillero semillero, int grupo, String lider, String linea) {
+		Usuario lid = usuarioRepo.getById(lider);
+		
+		TipoUsuario tipousuario = iTipoUsuarioRepository.getById("Docente lider semillero");
+		
+		GrupoInvestigacion gru = grupoIRepo.getById(grupo);
+		LineaInvestigacion lin = lineaRepo.getById(linea);
+		
+		if(!usuarioRepo.existsById(lid.getCedula())) {
+			return "el usuario no existe";
+		}
+		if(!grupoIRepo.existsById(gru.getId())) {
+			return "el grupo no existe";
+		}
+		if(!lineaRepo.existsById(lin.getNombre())) {
+			return "la linea no existe";
+		}
+		
+		List<TipoUsuario> tipo = lid.getTiposUsuario();
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+				return "usuario invalido 1";
+			}
+			if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+				return "usuario invalido 2";
+			}
+			if(tipoUsuario.getNombre().equals("Semillerista")) {
+				return "usuario invalido 3";
+			}
+			if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
+				return "este usuario ya es lider de semillero";
+			}
+		}
+		
+		semillero.setLiderSemillero(lid);
+		semillero.setGrupoInvestigacion(gru);
+		semillero.setLineaInvestigacion(lin);
 		semilleroRepo.save(semillero);
-		return semilleroRepo.existsById(semillero.getId());
+		
+		tipousuario.getUsuarios().add(lid);
+		iTipoUsuarioRepository.save(tipousuario);
+		return "se creo el semillero";
+	}
+	@Override
+	public String modificarSemillero(int id, String nombre, String descripcion, String fechaFun, String grupoi, String lineai, String liderSemillero) {
+
+		Usuario lider = usuarioRepo.getById(liderSemillero);
+		
+		TipoUsuario tipousuariouno = iTipoUsuarioRepository.getById("Docente lider semillero");
+		
+		Semillero semillero = semilleroRepo.getById(id);
+		GrupoInvestigacion gru = grupoIRepo.getById(Integer.parseInt(grupoi));
+		LineaInvestigacion lin = lineaRepo.getById(lineai);
+		
+		if(nombre!="") {
+			semillero.setNombre(nombre);
+		}
+		if(descripcion!="") {
+			semillero.setDescripcion(descripcion);
+		}
+		if(fechaFun!="") {
+			semillero.setFechaFun(LocalDate.parse(fechaFun));;
+		}
+		if(grupoi!="") {
+			semillero.setGrupoInvestigacion(gru);
+		}
+		if(lineai!="") {
+			semillero.setLineaInvestigacion(lin);
+		}
+		if(liderSemillero!="") {
+			usuarioRepo.deleteTipo(semillero.getLiderSemillero().getCedula(), "Docente lider semillero");
+			
+			List<TipoUsuario> tipo = lider.getTiposUsuario();
+			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+				if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+					return "usuario invalido 1";
+				}
+				if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+					return "usuario invalido 2";
+				}
+				if(tipoUsuario.getNombre().equals("Semillerista")) {
+					return "usuario invalido 3";
+				}
+				if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
+					return "este usuario ya es lider de semillero";
+				}
+			}
+			semillero.setLiderSemillero(lider);
+			tipousuariouno.getUsuarios().add(lider);
+			iTipoUsuarioRepository.save(tipousuariouno);
+		}
+		
+		semilleroRepo.save(semillero);
+		return "semillero actualizado";
+	}
+	
+	@Override
+	public Semillero semilleroporid(int id) {
+		if(semilleroRepo.existsById(id)) {
+			JSONObject salida = new JSONObject();
+			Semillero semillero = semilleroRepo.getById(id);
+			LineaInvestigacion li = lineaRepo.getById(semillero.getLineaInvestigacion().getNombre());
+			
+			salida=li.toJson();
+
+			return semillero;
+		}
+		return null;
+		
+		
 	}
 
 	@Override
@@ -377,11 +586,153 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 
 	@Override
-	public boolean crearFacultad(Facultad facultad) {
+
+	public String crearFacultad(Facultad facultad, String coordinador, String decano) {
+		Usuario deca = usuarioRepo.getById(decano);
+		Usuario coor = usuarioRepo.getById(coordinador);
+		
+		
+		TipoUsuario tipousuariouno = iTipoUsuarioRepository.getById("Lider investigacion facultad");
+		TipoUsuario tipousuariodos = iTipoUsuarioRepository.getById("Coordinador investigacion facultad");
+		
+		if(!usuarioRepo.existsById(deca.getCedula())) {
+			return "el decano no existe";
+		}
+		if(!usuarioRepo.existsById(coor.getCedula())) {
+			return "el coordinador no existe";
+		}
+		
+		List<TipoUsuario> tipouno = deca.getTiposUsuario();
+		for (Iterator iterator = tipouno.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+				return "usuario invalido 1";
+			}
+			if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+				return "usuario invalido 2";
+			}
+			if(tipoUsuario.getNombre().equals("Semillerista")) {
+				return "usuario invalido 3";
+			}
+			if(tipoUsuario.getNombre().equals("Lider investigacion facultad")) {
+				return "este usuario ya es Lider investigacion facultad";
+			}
+		}
+		
+		List<TipoUsuario> tipodos = coor.getTiposUsuario();
+		for (Iterator iterator = tipodos.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+				return "usuario invalido 4";
+			}
+			if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+				return "usuario invalido 5";
+			}
+			if(tipoUsuario.getNombre().equals("Semillerista")) {
+				return "usuario invalido 6";
+			}
+			if(tipoUsuario.getNombre().equals("Coordinador investigacion facultad")) {
+				return "este usuario ya es Coordinador investigacion facultad";
+			}
+		}
+		
+		
+		facultad.setCoorInv(coor);
+		facultad.setDecano(deca);
 		facultadRepo.save(facultad);
-		return facultadRepo.existsById(facultad.getId());
+		
+		
+		tipousuariouno.getUsuarios().add(deca);
+		iTipoUsuarioRepository.save(tipousuariouno);
+		
+		tipousuariodos.getUsuarios().add(coor);
+		iTipoUsuarioRepository.save(tipousuariodos);
+		
+		return "se creo la facultad";
 	}
 
+	@Override
+	public String modificarFacultad(int id, String nombre, String coordinador, String decano) {
+
+		Usuario deca = usuarioRepo.getById(decano);
+		Usuario coor = usuarioRepo.getById(coordinador);
+
+		TipoUsuario tipousuariouno = iTipoUsuarioRepository.getById("Lider investigacion facultad");
+		TipoUsuario tipousuariodos = iTipoUsuarioRepository.getById("Coordinador investigacion facultad");
+		
+		Facultad facultad = facultadRepo.getById(id);
+		System.out.println("decano" + facultad.getDecano().getCedula());
+		System.out.println("coordinador" + facultad.getCoorInv().getCedula());
+		
+		
+		
+		if(nombre!="") {
+			facultad.setNombre(nombre);
+		}
+		
+		if(decano!="") {
+			usuarioRepo.deleteTipo(facultad.getDecano().getCedula(), "Lider investigacion facultad");
+			
+			List<TipoUsuario> tipouno = deca.getTiposUsuario();
+			for (Iterator iterator = tipouno.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+				if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+					return "usuario invalido 1";
+				}
+				if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+					return "usuario invalido 2";
+				}
+				if(tipoUsuario.getNombre().equals("Semillerista")) {
+					return "usuario invalido 3";
+				}
+				if(tipoUsuario.getNombre().equals("Lider investigacion facultad")) {
+					return "la falcultad no fue creada el primer usuario ya es Lider investigacion facultad";
+				}
+			}
+			
+			facultad.setDecano(deca);
+			tipousuariouno.getUsuarios().add(deca);
+			iTipoUsuarioRepository.save(tipousuariouno);
+			
+		}
+		if(coordinador!="") {
+			usuarioRepo.deleteTipo(facultad.getCoorInv().getCedula(), "Coordinador investigacion facultad");
+			
+			List<TipoUsuario> tipodos = coor.getTiposUsuario();
+			for (Iterator iterator = tipodos.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+				if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+					return "usuario invalido 4";
+				}
+				if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+					return "usuario invalido 5";
+				}
+				if(tipoUsuario.getNombre().equals("Semillerista")) {
+					return "usuario invalido 6";
+				}
+				if(tipoUsuario.getNombre().equals("Coordinador investigacion facultad")) {
+					return "la falcultad no fue creada el segundo ya es Coordinador investigacion facultad";
+				}
+			}
+			facultad.setCoorInv(coor);
+			tipousuariodos.getUsuarios().add(coor);
+			iTipoUsuarioRepository.save(tipousuariodos);
+		}
+		
+		facultadRepo.save(facultad);
+		return "facultad actualizada";
+	}
+	
+	@Override
+	public Facultad facultadporid(int id) {
+		if(facultadRepo.existsById(id)) {
+			Facultad facultad = facultadRepo.getById(id);
+
+			return facultad;
+		}
+		return null;
+	}
+	
 	@Override
 	public List<Programa> todosLosProgramas() {
 		List<Programa> programas = programaRepo.findAll();
@@ -426,22 +777,106 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 	
 	@Override
-	public boolean crearPrograma(Programa programa, int facultad, String director) {
-		Facultad facul = facultadRepo.getById(facultad);
-		if(facul == null) {
-			return false;
-		}
+	public String crearPrograma(Programa programa, int facultad, String director) {
+		
 		Usuario direc = usuarioRepo.getById(director);
-		if(direc == null) {
-			return false;
+		
+		TipoUsuario tipousuario = iTipoUsuarioRepository.getById("Director programa");
+		
+		Facultad facul = facultadRepo.getById(facultad);
+		
+		
+		
+		if(!facultadRepo.existsById(facul.getId())) {
+			return "la facultad no existe";
 		}
+		if(!usuarioRepo.existsById(direc.getCedula())) {
+			return "el usuario no existe";
+		}
+		
+		List<TipoUsuario> tipo = direc.getTiposUsuario();
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+				return "usuario invalido 1";
+			}
+			if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+				return "usuario invalido 2";
+			}
+			if(tipoUsuario.getNombre().equals("Semillerista")) {
+				return "usuario invalido 3";
+			}
+			if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
+				return "este usuario ya es lider de semillero";
+			}
+		}
+		
+		
 		programa.setFacultadId(facul);
 		programa.setDirector(direc);
 		programaRepo.save(programa);
-		return true;
+		
+		tipousuario.getUsuarios().add(direc);
+		iTipoUsuarioRepository.save(tipousuario);
+		return "se creo el programa";
 	}
 	
 	
+	@Override
+	public String modificarPrograma(int id, String nombre, String facultad, String director) {
+		
+		Usuario direc = usuarioRepo.getById(director);
+		
+		TipoUsuario tipousuariouno = iTipoUsuarioRepository.getById("Director programa");
+		
+		Programa programa = programaRepo.getById(id);
+		Facultad facul = facultadRepo.getById(Integer.parseInt(facultad));
+		
+		if(nombre!="") {
+			programa.setNombre(nombre);
+		}
+		if(facultad!="") {
+			programa.setFacultadId(facul);
+		}
+		if(director!="") {
+			usuarioRepo.deleteTipo(programa.getDirector().getCedula(), "Director programa");
+			
+			List<TipoUsuario> tipo = direc.getTiposUsuario();
+			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+				if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+					return "usuario invalido 1";
+				}
+				if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+					return "usuario invalido 2";
+				}
+				if(tipoUsuario.getNombre().equals("Semillerista")) {
+					return "usuario invalido 3";
+				}
+				if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
+					return "este usuario ya es lider de semillero";
+				}
+			}
+			
+			programa.setDirector(direc);
+			tipousuariouno.getUsuarios().add(direc);
+			iTipoUsuarioRepository.save(tipousuariouno);
+		}
+		
+		programaRepo.save(programa);
+		return "se actualizo el programa";
+	}
+	
+	@Override
+	public Programa programaporid(int id) {
+
+
+			Programa programa = programaRepo.getById(id);
+
+return programa;
+		
+		
+	}
 	@Override
 	public List<GrupoInvestigacion> gruposDelPrograma(int programa) {
 		Programa pro = programaRepo.getById(programa);
@@ -492,11 +927,50 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 
 	@Override
-	public boolean crearMateria(Materia materia) {
+	public boolean crearMateria(Materia materia, int programa) {
+		Programa pro = programaRepo.getById(programa);
+		if(!programaRepo.existsById(pro.getId())) {
+			return false;
+		}
+		materia.setPrograma(pro);
 		materiaRepo.save(materia);
 		return materiaRepo.existsById(materia.getCatalogo());
 	}
+	
+	@Override
+	public boolean modificarMateria(String catalogo, String nombre, String programa) {
+		Programa pro = programaRepo.getById(Integer.parseInt(programa));
+		
+		Materia materia = materiaRepo.getById(catalogo);
+		
+		
+		if(catalogo!="") {
+			materia.setCatalogo(catalogo);
+		}
+		
+		if(nombre!="") {
+			materia.setNombre(nombre);
+		}
+		
+		if(programa!="") {
+			materia.setPrograma(pro);
+		}
+		materiaRepo.save(materia);
+		return !materiaRepo.existsById(catalogo);
+	}
 
+	@Override
+	public Materia materiaporid(String catalogo) {
+	
+			Materia materia = materiaRepo.getById(catalogo);
+			System.out.println(catalogo);
+			return materia;
+
+		
+		
+	}
+	
+	
 	
 	//CLASES-------------------------------------------------------------------------------------------------
 	
@@ -541,20 +1015,101 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	}
 	
 	@Override
-	public boolean crearClase(Clase clase, String materia, String profesor) {
+	public String crearClase(Clase clase, String materia, String profesor) {
+		Usuario profe = usuarioRepo.getById(profesor);
+		
+		TipoUsuario tipousuario = iTipoUsuarioRepository.getById("Docente");
+		
 		Materia mate = materiaRepo.getById(materia);
-		if(mate == null) {
-			return false; 	
+		if(!usuarioRepo.existsById(profe.getCedula())) {
+			return "el usuario no existe"; 	
 		}
-		Usuario pro = usuarioRepo.getById(profesor);
-		if(pro == null) {
-			return false;
+		if(!materiaRepo.existsById(mate.getCatalogo())) {
+			return "la materia no existe";
+		}
+		
+		List<TipoUsuario> tipo = profe.getTiposUsuario();
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+				return "usuario invalido 1";
+			}
+			if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+				return "usuario invalido 2";
+			}
+			if(tipoUsuario.getNombre().equals("Semillerista")) {
+				return "usuario invalido 3";
+			}
+			if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
+				return "este usuario ya es lider de semillero";
+			}
 		}
 		
 		clase.setMateria(mate);
-		clase.setProfesor(pro);
+		clase.setProfesor(profe);
 		claseRepo.save(clase);
-		return true;
+		
+		tipousuario.getUsuarios().add(profe);
+		iTipoUsuarioRepository.save(tipousuario);
+		return "se creo la clase";
+	}
+	
+	public String modificarClase(int numero, String nombre, String semestre, String materia, String profesor) {
+		
+
+			Usuario profe = usuarioRepo.getById(profesor);
+			
+			TipoUsuario tipousuariouno = iTipoUsuarioRepository.getById("Docente");
+			
+			Clase clase = claseRepo.getById(numero);
+			Materia mate = materiaRepo.getById(materia);
+			
+			if(nombre!="") {
+				clase.setNombre(nombre);
+			}
+			
+			if(semestre!="") {
+				clase.setSemestre(semestre);
+			}
+			
+			if(materia!="") {
+				clase.setMateria(mate);
+			}
+			
+			if(profesor!="") {
+				
+				List<TipoUsuario> tipo = profe.getTiposUsuario();
+				for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+					TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+					if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
+						return "usuario invalido 1";
+					}
+					if(tipoUsuario.getNombre().equals("Estudiante activo")) {
+						return "usuario invalido 2";
+					}
+					if(tipoUsuario.getNombre().equals("Semillerista")) {
+						return "usuario invalido 3";
+					}
+					if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
+						return "este usuario ya es lider de semillero";
+					}
+				}
+				clase.setProfesor(profe);
+				tipousuariouno.getUsuarios().add(profe);
+				iTipoUsuarioRepository.save(tipousuariouno);
+			}
+			claseRepo.save(clase);
+			return "clase actualizada";
+		
+	}
+	
+	@Override
+	public Clase claseporid(int id) {	
+		Clase clase = claseRepo.getById(id);
+
+		return clase;
+		
+		
 	}
 	
 	@Override
@@ -626,10 +1181,30 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		return lineas;
 	} 
 	@Override
-	public boolean crearLinea(LineaInvestigacion linea) {
+	public boolean crearLinea(LineaInvestigacion linea, LocalDate fecha) {
+		linea.setFecha(fecha);
 		lineaRepo.save(linea);
 		return lineaRepo.existsById(linea.getNombre());
 	}
+	public boolean modificarLinea(String nombre, String descripcion, String fecha) {
+			LineaInvestigacion linea = lineaRepo.getById(nombre);
+			
+			if(descripcion!=""){
+				linea.setDescripcion(descripcion);
+			}
+			
+			if(fecha!=""){
+				linea.setFecha(LocalDate.parse(fecha));
+			}
+		lineaRepo.save(linea);
+		return !lineaRepo.existsById(linea.getNombre());
+	}
+	@Override
+	public LineaInvestigacion lineaporid(String id) {
+		LineaInvestigacion linea = lineaRepo.getById(id);
+		return linea;		
+	}
+
 	@Override
 	public boolean eliminarLinea(String nombre) {
 		List<Semillero> semilleros= semilleroRepo.findByLineaInvestigacion(nombre);
@@ -659,6 +1234,30 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		areaRepo.save(area);
 		return true;
 	}
+	@Override
+	public boolean modificarArea(int id, String nombre, String gran_area, String descripcion) {
+		AreaConocimiento area = areaRepo.getById(id);
+		if(nombre!=""){
+			area.setNombre(nombre);
+		}
+		
+		if(gran_area!=""){
+			area.setGranArea(gran_area);
+		}
+		
+		if(descripcion!=""){
+			area.setDescripcion(descripcion);
+		}
+	areaRepo.save(area);
+	return !areaRepo.existsById(area.getId());
+}
+	
+	@Override
+	public AreaConocimiento areaporid(int id) {
+		AreaConocimiento area = areaRepo.getById(id);
+		return area;
+	}
+	
 	@Override
 	public boolean eliminarArea(int id) {
 		List<JSONObject> proyectos = areaRepo.findByProyecto(id);
@@ -693,6 +1292,40 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		eventoRepo.save(evento);
 		return eventoRepo.existsById(evento.getId());
 	}
+	
+	
+
+	@Override
+	public boolean modificarEvento(int id, String nombre, String fecha, String entidad, String estado, String sitio_web, String url_memoria) {
+		Evento evento = eventoRepo.getById(id);
+		if(nombre!=""){
+			evento.setNombre(nombre);
+		}
+		if(fecha!=""){
+			evento.setFecha(LocalDate.parse(fecha));;
+		}
+		if(entidad!=""){
+			evento.setEntidad(entidad);
+		}
+		if(estado!=""){
+			evento.setEstado(estado);
+		}
+		if(sitio_web!=""){
+			evento.setSitioWeb(sitio_web);
+		}
+		if(url_memoria!=""){
+			evento.setUrlMemoria(url_memoria);
+		}
+		eventoRepo.save(evento);
+		return !eventoRepo.existsById(evento.getId());
+}
+	
+	@Override
+	public Evento eventoporid(int id) {
+		Evento evento = eventoRepo.getById(id);
+		return evento;
+	}
+	
 	@Override
 	public boolean eliminarEvento(int id) {
 		List<JSONObject> participaciones = eventoRepo.findByParticipaciones(id);
@@ -772,6 +1405,45 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}
 		return true;
 	}
+
+	@Override
+	public boolean modificarConvocatoria(int id, String nombre_convocatoria, String fecha_inicio, String fecha_final, String contexto, String numero_productos, String estado, String tipo, String entidad) {
+		
+		Convocatoria convocatoria = convocatoriaRepo.getById(id);
+		if(nombre_convocatoria!=""){
+			convocatoria.setNombreConvocatoria(nombre_convocatoria);
+		}
+		if(fecha_inicio!=""){
+			convocatoria.setFechaInicio(LocalDate.parse(fecha_inicio));
+		}
+		if(fecha_final!=""){
+			convocatoria.setFechaFinal(LocalDate.parse(fecha_final));
+		}
+		if(contexto!=""){
+			convocatoria.setContexto(contexto);
+		}
+		if(numero_productos!=""){
+			convocatoria.setNumeroProductos(numero_productos);
+		}
+		if(estado!=""){
+			convocatoria.setEstado(estado);
+		}
+		if(tipo!=""){
+			convocatoria.setTipo(tipo);
+		}
+		if(entidad!=""){
+			convocatoria.setEntidad(entidad);
+		}
+		convocatoriaRepo.save(convocatoria);
+		return convocatoriaRepo.existsById(convocatoria.getId());
+}
+	
+	@Override
+	public Convocatoria convocatoriaporid(int id) {
+		Convocatoria convocatoria = convocatoriaRepo.getById(id);
+		Evento evento = eventoRepo.getById(id);
+		return convocatoria;
+	}
 	
 	@Override
 	public boolean eliminarConvocatoria(int id) {
@@ -782,6 +1454,14 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}
 		return false;
 	}
+
+
+	@Override
+	public List<TipoUsuario> listarRoles() {
+		List<TipoUsuario> tipo= iTipoUsuarioRepository.listarRoles();
+		return tipo;
+	}
+
 	
 	
 

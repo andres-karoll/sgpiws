@@ -222,11 +222,13 @@ public class Semillero implements Serializable {
     		semilleroJson.put("grupo_investigacion","NO TIENE GRUPO DE INVESTIGACIÓN");
     	}else {
     		semilleroJson.put("grupo_investigacion",this.getGrupoInvestigacion().getNombre());
+    		semilleroJson.put("grupo_investigacion_id",this.getGrupoInvestigacion().getId());
     	}
     	if(this.getLineaInvestigacion()==null) {
     		semilleroJson.put("linea_investigacion","NO TIENE LINEA DE INVESTIGACIÓN");
     	}else {
     		semilleroJson.put("linea_investigacion",this.getLineaInvestigacion().getNombre());
+    		
     	}
 
     	if(this.getLiderSemillero()==null) {
