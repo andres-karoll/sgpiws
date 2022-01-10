@@ -23,7 +23,7 @@ public interface IGestionProyectosAulaIntegradorService {
 	public List<Proyecto> todosLosProyectosPorClase(String clase);
 	public List<Proyecto> todosLosProyectosPorTipoProyecto(String tipo);
 	public boolean eliminarProyecto(int id);
-	public boolean crearProyecto(Proyecto proyecto,String tipo,Participantes participante,String rol,String clase);
+	public boolean crearProyecto(Proyecto proyecto,String tipo,String rol,String clase,String cedula,LocalDate fecha);
 	public boolean asignarTipoProyecto(Proyecto proyecto, TipoProyecto aulaIntegrador);
 	//actualizar Proyectos
 	
@@ -33,7 +33,7 @@ public interface IGestionProyectosAulaIntegradorService {
 	//actualizar Productos
 	boolean crearProducto(Producto producto);
 	public List<Usuario> todosLosParticipantesPorProyecto(Proyecto proyecto);
-	public boolean crearParticipante(Participantes participante,String rol);
+	public boolean crearParticipante(Participantes participante,String rol,String cedula,int proyecto);
 	//actualizar participante
 	
 	public List<Comentario> ComentariosPorProducto(int productoId);

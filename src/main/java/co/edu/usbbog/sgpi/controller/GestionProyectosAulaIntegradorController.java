@@ -48,10 +48,9 @@ public class GestionProyectosAulaIntegradorController {
 				LocalDate.parse(entrada.getAsString("fechainicio")),
 				Short.parseShort(entrada.getAsString("visibilidad")), entrada.getAsString("ciudad"),
 				entrada.getAsString("metodologia"), entrada.getAsString("justificacion"));
-		Participantes participante = new Participantes(entrada.getAsString("usuario"),
-				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
-		if (iGestionProyectosAulaIntegradorService.crearProyecto(proyecto, entrada.getAsString("tipo"), participante,
-				entrada.getAsString("rol"), entrada.getAsString("clase"))) {
+		System.out.println("hola");
+		if (iGestionProyectosAulaIntegradorService.crearProyecto(proyecto, entrada.getAsString("tipo"),
+				entrada.getAsString("rol"), entrada.getAsString("clase"),entrada.getAsString("usuario"),LocalDate.parse(entrada.getAsString("fechainicio")))) {
 			salida.put("respuesta", "el proyecto fue creado");
 		} else {
 			salida.put("respuesta", "el proyecto no fue creado");
@@ -59,12 +58,12 @@ public class GestionProyectosAulaIntegradorController {
 		return salida;
 	}
 
-	@PostMapping("/agregarParticipante")
+	@PostMapping("/agregarParticipante")	 
 	public JSONObject agregarParticipante(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		Participantes participante = new Participantes(entrada.getAsString("usuario"),
 				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
-		if (iGestionProyectosAulaIntegradorService.crearParticipante(participante, entrada.getAsString("rol"))) {
+		if (iGestionProyectosAulaIntegradorService.crearParticipante(participante, entrada.getAsString("rol"),entrada.getAsString("usuario"),Integer.parseInt(entrada.getAsString("id")))) {
 			salida.put("respuesta", "el participante fue agregado");
 		} else {
 			salida.put("respuesta", "el participante no pudo ser agregado");

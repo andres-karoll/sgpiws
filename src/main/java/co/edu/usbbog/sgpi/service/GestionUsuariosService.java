@@ -206,8 +206,8 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 
 	@Override
 	public boolean eliminarDecanoFacultad(String cedula, String facultad) {
-		System.out.println(cedula + " " + facultad);
 		if (iUsuarioRepository.existsById(cedula) && iFacultadRepository.existsById(Integer.parseInt(facultad))) {
+			
 			iFacultadRepository.deleteDecanoById(facultad);
 			return true;
 		}
@@ -294,7 +294,9 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	@Override
 	public boolean asignarLiderSemillero(Semillero semillero, String lider) {
 		Usuario usu = iUsuarioRepository.getById(lider);
+		TipoUsuario tp = iTipoUsuarioRepository.getById("Docente lider semillero");
 		semillero.setLiderSemillero(usu);
+		tp.getUsuarios().add(usu);
 		iSemilleroRepository.save(semillero);
 		return iSemilleroRepository.existsById(semillero.getId());
 	}

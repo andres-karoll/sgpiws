@@ -30,10 +30,8 @@ public class GestionFinancieraController {
 	@Autowired
 	private IGestionFinancieraService gestionFinancieraService;
 
-	
 	@GetMapping(value = "/listarpresupuestoporproyecto/{id}")
 	public JSONArray listarPresupuestoPorProyecto(@PathVariable int id) {
-		
 		JSONArray salida = new JSONArray(); 
 		List<Presupuesto> pre = gestionFinancieraService.PresupuestoPorProyecto(id);
 		for (Presupuesto presupuesto : pre) {

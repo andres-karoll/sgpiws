@@ -338,11 +338,11 @@ public class GestionInstitucionalController {
 	public JSONObject crearFacultad(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
 		Facultad facultad =  new Facultad(
-				Integer.parseInt(entrada.getAsString("id")), 
+			
 				entrada.getAsString("nombre")
 				);
 
-		if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString("coordinador"),entrada.getAsString("decano"))) {
+		if (gestionInstitucionalService.crearFacultad(facultad,entrada.getAsString(" "),entrada.getAsString("decano"))) {
 			salida.put("respuesta", "se creo la facultad");
 		} else {
 			salida.put("respuesta", "no se creo");
