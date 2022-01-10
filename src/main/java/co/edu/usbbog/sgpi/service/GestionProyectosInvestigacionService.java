@@ -128,17 +128,11 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		} catch (Exception e) {
 			proyecto.setMacroProyecto(null);
 		}
-		Usuario liderSemillero= se.getLiderSemillero();
 		proyecto.setSemillero(se);
 		participante.setRol(rol);
 		proyecto.setTipoProyecto(tp);
 		iProyectoRepository.save(proyecto);
-		iParticipantesRepository.save(participante);	
-		if(liderSemillero!=null) {
-			Participantes par=new Participantes(liderSemillero.getCedula(), proyecto.getId(), participante.getParticipantesPK().getFechaInicio());
-			par.setRol("Lider");
-			iParticipantesRepository.save(par);
-		}
+		iParticipantesRepository.save(participante);
 		return iProyectoRepository.existsById(proyecto.getId());
 	}
 
@@ -379,17 +373,13 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	@Override
 	public boolean agregarAntecedente(Proyecto proyecto, Proyecto antecedente) {
 		if (antecedente != null && proyecto != null) {
-		
 			if (proyecto.getFechaInicio().isAfter(antecedente.getFechaFin())) {
-	System.out.println(proyecto.getAntecedentes().isEmpty());
 				if (proyecto.getAntecedentes().isEmpty()) {
-					
 					proyecto.setAntecedentes(new ArrayList<Proyecto>());
 					proyecto.getAntecedentes().add(antecedente);
 					iProyectoRepository.save(proyecto);
 				} else {
 					if (!proyecto.getAntecedentes().contains(proyecto)) {
-						System.out.println("hola");
 						return false;
 					} else {
 						proyecto.getAntecedentes().add(antecedente);
@@ -445,14 +435,5 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	public List<JSONObject> proyectosParticipanteSemillero(String cedula) {
 		List<JSONObject> x = iProyectoRepository.proyectosParticipaSemillero(cedula);
 		return x;
-	}
-	@Override
-	public List<Proyecto> buscarAntecedentes(int proyecto) {
-		Proyecto pro=iProyectoRepository.getById(proyecto);
-		List<Proyecto> antecedente = pro.getAntecedentes();
-		if (antecedente.equals(null)) {
-			antecedente = new ArrayList<Proyecto>();
-		}
-		return antecedente;
 	}
 }

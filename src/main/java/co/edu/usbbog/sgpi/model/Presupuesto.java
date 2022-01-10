@@ -12,8 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -43,7 +41,6 @@ public class Presupuesto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -65,9 +62,12 @@ public class Presupuesto implements Serializable {
     public Presupuesto() {
     }
 
+    public Presupuesto(Integer id) {
+        this.id = id;
+    }
 
-    public Presupuesto(double monto, LocalDate fecha) {
-    
+    public Presupuesto(Integer id, double monto, LocalDate fecha) {
+        this.id = id;
         this.monto = monto;
         this.fecha = fecha;
     }

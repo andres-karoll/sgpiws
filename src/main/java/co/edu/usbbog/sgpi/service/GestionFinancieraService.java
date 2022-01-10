@@ -3,7 +3,6 @@ package co.edu.usbbog.sgpi.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,30 +56,13 @@ public class GestionFinancieraService implements IGestionFinancieraService{
 
 	@Override
 	public boolean crearPresupuesto(Presupuesto presupuesto) {
-		
-		List<Presupuesto> a = presupuestoRepo.findByProyecto(presupuesto.getProyecto().getId());
-		System.out.println(presupuesto.getProyecto().getId());
-		System.out.println(a);
-
-		for (Iterator iterator = a.iterator(); iterator.hasNext();) {
-			Presupuesto presupues = (Presupuesto) iterator.next();
-			if(presupuesto.getProyecto().getId() == presupues.getProyecto().getId()) {	
-				return false;
-			}
-
+		List<Presupuesto> a = PresupuestoPorProyecto(presupuesto.getProyecto().getId());
+		if(a !=null) {
+			presupuestoRepo.save(presupuesto);
+		System.out.println("hola");
 		}
-		
-			if(a.isEmpty()) {
-				presupuestoRepo.save(presupuesto);
-				return true;
-			}
-			else {
-				return false;
-			}
-		
 			
-			
-
+		return presupuestoRepo.existsById(presupuesto.getId());
 	}
 
 	

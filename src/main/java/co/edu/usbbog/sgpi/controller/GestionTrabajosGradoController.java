@@ -40,7 +40,7 @@ public class GestionTrabajosGradoController {
 	@PostMapping("/crearproyecto")
 	public JSONObject crearProyectoAulaIntegrador(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		Proyecto proyecto = new Proyecto( entrada.getAsString("titulo"),
+		Proyecto proyecto = new Proyecto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
 				entrada.getAsString("estado"), entrada.getAsString("descripcion"),
 				LocalDate.parse(entrada.getAsString("fechainicio")),
 				Short.parseShort(entrada.getAsString("visibilidad")), entrada.getAsString("ciudad"),
@@ -72,7 +72,7 @@ public class GestionTrabajosGradoController {
 				.buscarProyecto(Integer.parseInt(entrada.getAsString("proyectoid")));
 		
 		if(proyecto.getTipoProyecto().getNombre().equals("Grado")) {
-			Producto producto = new Producto( entrada.getAsString("titulo"),
+			Producto producto = new Producto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
 					entrada.getAsString("tipo"), entrada.getAsString("url"), LocalDate.parse(entrada.getAsString("fecha")));
 		
 		if (iGestionTrabajosGradoService.crearProducto(producto)) {
@@ -102,7 +102,7 @@ public class GestionTrabajosGradoController {
 		JSONObject salida = new JSONObject();
 		Producto producto = iGestionTrabajosGradoService
 				.buscarProducto(Integer.parseInt(entrada.getAsString("productoid")));
-		Comentario comentario = new Comentario(
+		Comentario comentario = new Comentario(Integer.parseInt(entrada.getAsString("id")),
 				entrada.getAsString("comentario"), entrada.getAsString("fase"), entrada.getAsString("nivel"),
 				LocalDate.parse(entrada.getAsString("fecha")));
 		if (iGestionTrabajosGradoService.crearComentario(comentario, entrada.getAsString("cedula"))) {

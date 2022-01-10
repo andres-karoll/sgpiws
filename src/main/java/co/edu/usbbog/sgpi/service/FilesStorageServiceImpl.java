@@ -3,7 +3,6 @@ package co.edu.usbbog.sgpi.service;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.jayway.jsonpath.Option;
-
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
 
@@ -24,14 +21,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
   @Override
   public void init() {
     try {
-    	
-    	if(Files.exists(root)) {
-    		System.out.println("ya existe la carpeta");
-    	}
-    	else {
-    		Files.createDirectory(root);
-    	}
-      
+      Files.createDirectory(root);
     } catch (IOException e) {
       throw new RuntimeException("Could not initialize folder for upload!");
     }
@@ -61,12 +51,12 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       throw new RuntimeException("Error: " + e.getMessage());
     }
   }
-/*
+
   @Override
   public void deleteAll() {
     FileSystemUtils.deleteRecursively(root.toFile());
   }
-*/
+
   @Override
   public Stream<Path> loadAll() {
     try {

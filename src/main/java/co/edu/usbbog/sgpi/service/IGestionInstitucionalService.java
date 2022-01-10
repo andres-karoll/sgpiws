@@ -17,9 +17,7 @@ import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
-import co.edu.usbbog.sgpi.model.TipoUsuario;
 import co.edu.usbbog.sgpi.model.Usuario;
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
  
@@ -31,9 +29,11 @@ public interface IGestionInstitucionalService {
 	
 	public List<GrupoInvestigacion> todosLosGruposInvestigacion();
 	public boolean eliminarGrupoInvestigacion(int id);
+
 	public String crearGrupoInvestigacion(GrupoInvestigacion grupoInvestigacion, String director);
 	public GrupoInvestigacion grupoiporid(int id);
 	public String modificarGrupoI(int id, String nombre, String fecha_fun, String categoria, String fecha_cat, String director);
+
 	public boolean asignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion);
 	public List<Programa> programaDelGrupo(int grupo_investigacion);
 	public boolean desasignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion);
@@ -60,9 +60,11 @@ public interface IGestionInstitucionalService {
 	
 	public List<Facultad> todasLasFacultades();
 	public boolean eliminarFacultad(int id);
+
 	public String crearFacultad(Facultad facultad, String coordinador, String decano);
 	public String modificarFacultad(int id, String nombre, String deca, String coor);
 	public Facultad facultadporid(int id);
+
 	//actualizarFacultad
 	
 	public List<Programa> todosLosProgramas();
@@ -147,9 +149,6 @@ public interface IGestionInstitucionalService {
 
 	//proyectos por semillero
 	public List<Proyecto> proyectosPorSemillero(int semillero);
-
-
-	public List<TipoUsuario> listarRoles();
 
 	
 }

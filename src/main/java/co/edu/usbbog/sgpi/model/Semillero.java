@@ -12,8 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -44,7 +42,6 @@ public class Semillero implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
@@ -76,8 +73,12 @@ public class Semillero implements Serializable {
     public Semillero() {
     }
 
-    public Semillero(String nombre, String descripcion, LocalDate fechaFun) {
-      
+    public Semillero(Integer id) {
+        this.id = id;
+    }
+
+    public Semillero(Integer id, String nombre, String descripcion, LocalDate fechaFun) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaFun = fechaFun;

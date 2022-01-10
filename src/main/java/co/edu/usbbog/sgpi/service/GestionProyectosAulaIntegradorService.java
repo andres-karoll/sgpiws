@@ -115,8 +115,6 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		if (!iClaseRepository.existsById(clas.getNumero())) {
 			return false;
 		}
-		
-		
 		if (iProyectoRepository.existsById(proyecto.getId())) {
 			return false;
 		}
@@ -140,12 +138,6 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		iProyectoRepository.save(proyecto);
 		iClaseRepository.save(clas);
 		iParticipantesRepository.save(participante);
-		Usuario profesor= clas.getProfesor();
-		if(profesor!=null) {
-			Participantes par=new Participantes(profesor.getCedula(), proyecto.getId(), participante.getParticipantesPK().getFechaInicio());
-			par.setRol("Lider");
-			iParticipantesRepository.save(par);
-		}
 		return iProyectoRepository.existsById(proyecto.getId());
 	}
 
@@ -154,7 +146,6 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
 
 	@Override
 	public List<Producto> todosLosProductos(Proyecto proyecto) {
@@ -343,17 +334,14 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	public boolean agregarAreaConocimiento(int proyecto, int area) {
 		Proyecto pro = iProyectoRepository.getById(proyecto);
 		AreaConocimiento are = iAreaConocimientoRepository.getById(area);
-		List<AreaConocimiento> areass= pro.getAreasConocimiento();
-		for (Iterator iterator = areass.iterator(); iterator.hasNext();) {
-			AreaConocimiento areaConocimiento = (AreaConocimiento) iterator.next();
-			if(areaConocimiento.getId()==area) {
-				return false;
-			}
-			
-			}
-		are.getProyectos().add(pro);
-		iAreaConocimientoRepository.save(are);
-		return true;
+		if (are.equals(null) || pro.equals(null)) {
+			return false;
+		} else {
+			are.getProyectos().add(pro);
+			iAreaConocimientoRepository.save(are);
+			return true;
+		}
+
 	}
 
 	@Override
@@ -449,16 +437,6 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	public List<JSONObject> listarEvento() {
 		List<JSONObject> x = iEventoRepository.listarEventos();
 		return x;
-	}
-
-	@Override
-	public List<AreaConocimiento> areasConocimientoProyecto(int proyecto) {
-		Proyecto pro=iProyectoRepository.getById(proyecto);
-		List<AreaConocimiento> area =pro.getAreasConocimiento();
-		if (area.equals(null)) {
-			area = new ArrayList<AreaConocimiento>();
-		}
-		return area;
 	}
 
 	

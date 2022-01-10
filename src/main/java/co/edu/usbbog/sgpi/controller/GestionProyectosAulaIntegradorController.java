@@ -43,7 +43,7 @@ public class GestionProyectosAulaIntegradorController {
 	@PostMapping("/crearproyecto")
 	public JSONObject crearProyectoAulaIntegrador(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		Proyecto proyecto = new Proyecto(entrada.getAsString("titulo"),
+		Proyecto proyecto = new Proyecto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
 				entrada.getAsString("estado"), entrada.getAsString("descripcion"),
 				LocalDate.parse(entrada.getAsString("fechainicio")),
 				Short.parseShort(entrada.getAsString("visibilidad")), entrada.getAsString("ciudad"),
@@ -92,16 +92,6 @@ public class GestionProyectosAulaIntegradorController {
 		for (Iterator iterator = proyectos.iterator(); iterator.hasNext();) {
 			Proyecto proyecto = (Proyecto) iterator.next();
 			salida.add(proyecto.toJson()); 
-		}
-		return salida;
-	}
-	@GetMapping("/areasconocimientoproyecto/{proyecto}")
-	public JSONArray areasConocimientoProyecto(@PathVariable int proyecto){
-		JSONArray salida = new JSONArray();
-		List<AreaConocimiento> area = iGestionProyectosAulaIntegradorService.areasConocimientoProyecto(proyecto);
-		for (Iterator iterator = area.iterator(); iterator.hasNext();) {
-			AreaConocimiento areaConocimiento = (AreaConocimiento) iterator.next();
-			salida.add(areaConocimiento.toJson());
 		}
 		return salida;
 	}
@@ -175,7 +165,7 @@ public class GestionProyectosAulaIntegradorController {
 		JSONObject salida = new JSONObject();
 		Producto producto = iGestionProyectosAulaIntegradorService
 				.buscarProducto(Integer.parseInt(entrada.getAsString("productoid")));
-		Comentario comentario = new Comentario(
+		Comentario comentario = new Comentario(Integer.parseInt(entrada.getAsString("id")),
 				entrada.getAsString("comentario"), entrada.getAsString("fase"), entrada.getAsString("nivel"),
 				LocalDate.parse(entrada.getAsString("fecha")));
 		if (iGestionProyectosAulaIntegradorService.crearComentario(comentario, entrada.getAsString("cedula"))) {
