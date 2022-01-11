@@ -810,8 +810,8 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			if(tipoUsuario.getNombre().equals("Semillerista")) {
 				return "usuario invalido 3";
 			}
-			if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
-				return "este usuario ya es lider de semillero";
+			if(tipoUsuario.getNombre().equals("Director programa")) {
+				return "este usuario ya es Director de programa";
 			}
 		}
 		
@@ -1031,31 +1031,58 @@ return programa;
 		if(!materiaRepo.existsById(mate.getCatalogo())) {
 			return "la materia no existe";
 		}
+		if(claseRepo.existsById(clase.getNumero())) {
+			return "la clase ya existe";
+		}
+
 		
 		List<TipoUsuario> tipo = profe.getTiposUsuario();
+		String rol="";
 		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			
 			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
 			if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
-				return "usuario invalido 1";
+				rol="Estudiante inactivo";
 			}
 			if(tipoUsuario.getNombre().equals("Estudiante activo")) {
-				return "usuario invalido 2";
+				rol="Estudiante activo";
 			}
 			if(tipoUsuario.getNombre().equals("Semillerista")) {
-				return "usuario invalido 3";
+				rol="Semillerista";
 			}
-			if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
-				return "este usuario ya es lider de semillero";
+			if(tipoUsuario.getNombre().equals("Docente")) {
+
+				rol="Docente";
+				
 			}
 		}
 		
-		clase.setMateria(mate);
-		clase.setProfesor(profe);
-		claseRepo.save(clase);
-		
-		tipousuario.getUsuarios().add(profe);
-		iTipoUsuarioRepository.save(tipousuario);
-		return "se creo la clase";
+		System.out.println(rol);
+		if(rol.equals("Estudiante inactivo")) {
+			return "esta persona es usuario inactivo";
+		}
+		else if(rol.equals("Estudiante activo")) {
+			return "esta persona es usuario activo";
+		}
+		else if(rol.equals("Semillerista")) {
+			return "esta persona es usuario semillerista";
+		}
+		else if(rol.equals("Docente")) {
+			clase.setMateria(mate);
+			clase.setProfesor(profe);
+			claseRepo.save(clase);
+			return "se creo la clase";
+		}
+		else{
+			
+			clase.setMateria(mate);
+			clase.setProfesor(profe);
+			claseRepo.save(clase);
+			tipousuario.getUsuarios().add(profe);
+			iTipoUsuarioRepository.save(tipousuario);
+			return "se creo la clase";
+		}
+
 	}
 	
 	public String modificarClase(int numero, String nombre, String semestre, String materia, String profesor) {
@@ -1294,7 +1321,7 @@ return programa;
 		evento.setSitioWeb(sitio_web);
 		evento.setUrlMemoria(url_memoria);
 		eventoRepo.save(evento);
-		return eventoRepo.existsById(evento.getId());
+		return !eventoRepo.existsById(evento.getId());
 	}
 	
 	
