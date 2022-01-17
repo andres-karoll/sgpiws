@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbbog.sgpi.model.Comentario;
+import co.edu.usbbog.sgpi.model.Compra;
 import co.edu.usbbog.sgpi.model.Facultad;
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.service.IGestionProductosService;
@@ -72,7 +73,7 @@ public class GestionProductosController {
 
 		
 		Producto producto = new Producto(
-				Integer.parseInt(entrada.getAsString("id")),
+				
 				entrada.getAsString("titulo_producto"),
 				entrada.getAsString("tipo_producto"),
 				entrada.getAsString("url_repo"),
@@ -90,7 +91,33 @@ public class GestionProductosController {
 		return salida;
 	}
 	
+	@PostMapping("/modificarproducto")
+	public JSONObject modificarProducto(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(!gestionProductos.modificarProducto(Integer.parseInt(
+				entrada.getAsString("id")),
+				entrada.getAsString("titulo_producto"),
+				entrada.getAsString("tipo_producto"),
+				entrada.getAsString("url_repo"),
+				entrada.getAsString("fecha"))) {
+			salida.put("respuesta", "se actualizo el producto");
+		}else {
+			salida.put("respuesta", "no se pudo actualizar el producto");
+		}
+		return salida;
+	}
 	
+	@GetMapping(value = "/productoid/{id}")
+	public JSONObject productolistarPorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();	
+		if(gestionProductos.productoporid(id) !=null) {
+			Producto producto = gestionProductos.productoporid(id);
+			return producto.toJson();
+		}
+		else {
+			return x;
+		}	
+	}
 	@GetMapping(value = "/listarcomentariosporproducto/{producto_id}")
 	public JSONArray listarComentariosPorProducto(@PathVariable int producto_id) {
 		
@@ -130,6 +157,35 @@ public class GestionProductosController {
 		}
 		return salida;
 	}
+	
+	@PostMapping("/modificarcomentario")
+	public JSONObject modificarComentario(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(!gestionProductos.modificarComentario(Integer.parseInt(
+				entrada.getAsString("id")),
+				entrada.getAsString("comentario"),
+				entrada.getAsString("fase"),
+				entrada.getAsString("nivel"),
+				entrada.getAsString("fecha"))) {
+			salida.put("respuesta", "se actualizo el comentario");
+		}else {
+			salida.put("respuesta", "no se pudo actualizar el comentario");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/comentarioid/{id}")
+	public JSONObject comentariolistarPorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();	
+		if(gestionProductos.comentarioporid(id) !=null) {
+			Comentario comenta = gestionProductos.comentarioporid(id);
+			return comenta.toJson();
+		}
+		else {
+			return x;
+		}	
+	}
+	
 	
 	@PostMapping(value = "/asignarnota")
 	public JSONObject asignarNota(@RequestBody JSONObject entrada) {

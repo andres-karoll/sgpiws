@@ -643,7 +643,7 @@ public class GestionInstitucionalController {
 	public JSONObject crearPrograma(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
 		Programa programa =  new Programa(	
-				Integer.parseInt(entrada.getAsString("id")), 
+
 				entrada.getAsString("nombre"));
 		if (gestionInstitucionalService.crearPrograma(programa
 				, Integer.parseInt( entrada.getAsString("facultad_id"))
@@ -669,9 +669,16 @@ public class GestionInstitucionalController {
 				, Integer.parseInt( entrada.getAsString("facultad_id"))
 				,entrada.getAsString("director"))=="usuario invalido 3") {
 			salida.put("respuesta", "el programa no se creo porque el usuario es un semillerista");
-		} else {
+		}else if (gestionInstitucionalService.crearPrograma(programa
+				, Integer.parseInt( entrada.getAsString("facultad_id"))
+				,entrada.getAsString("director"))=="este usuario ya es Director de programa") {
+			salida.put("respuesta", "el programa no se creo porque el usuario ya es Director de programa");
+		}
+		
+		else {
 			salida.put("respuesta", "no se pudo el programa");
 		}
+		
 		return salida;
 	}
 	
@@ -867,7 +874,17 @@ public class GestionInstitucionalController {
 				entrada.getAsString("nombre"),
 				entrada.getAsString("semestre"));
 
-		if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))=="se creo la clase") {
+		
+		salida.put("respuesta", gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor")));
+		
+		/*
+		if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))=="la clase ya existe") {
+
+			salida.put("respuesta", "la clase ya existe");
+
+		}
+		/*
+		else if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))=="se creo la clase") {
 
 			salida.put("respuesta", "se creo la clase");
 
@@ -891,9 +908,13 @@ public class GestionInstitucionalController {
 
 			salida.put("respuesta", "el usuario es un semillerista");
 
+		}else if (gestionInstitucionalService.crearClase(clase,entrada.getAsString("materia"),entrada.getAsString("profesor"))=="este usuario ya es Docente") {
+
+			salida.put("respuesta", "tenga en cuenta que este usuario ya era Docente de otra clase");
+
 		} else {
 			salida.put("respuesta", "no se pudo crear");
-		}
+		}*/
 
 		return salida;
 	}
@@ -1034,7 +1055,7 @@ else {
 	@PostMapping(value = "/crearconvocatoria")
 	public JSONObject crearConvocatoria(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
-		Convocatoria convocatoria = new Convocatoria(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("nombre_convocatoria"),LocalDate.parse( entrada.getAsString("fecha_inicio")), LocalDate.parse( entrada.getAsString("fecha_final")), entrada.getAsString("contexto"), entrada.getAsString("estado"), entrada.getAsString("tipo"));
+		Convocatoria convocatoria = new Convocatoria( entrada.getAsString("nombre_convocatoria"),LocalDate.parse( entrada.getAsString("fecha_inicio")), LocalDate.parse( entrada.getAsString("fecha_final")), entrada.getAsString("contexto"), entrada.getAsString("estado"), entrada.getAsString("tipo"));
 
 		if (gestionInstitucionalService.crearConvocatoria(convocatoria, entrada.getAsString("numero_productos"), entrada.getAsString("entidad"))) {
 
@@ -1114,7 +1135,7 @@ else {
 		LineaInvestigacion linea = new LineaInvestigacion(
 				entrada.getAsString("nombre"),
 				entrada.getAsString("descripcion"));
-		
+		System.out.println(linea.getDescripcion());
 		if(gestionInstitucionalService.crearLinea(linea,
 				LocalDate.parse( entrada.getAsString("fecha")))) {
 			salida.put("respuesta", "se creo la linea");
@@ -1184,7 +1205,7 @@ else {
 	@PostMapping(value = "/creararea")
 	public JSONObject crearArea(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
-		AreaConocimiento area =  new AreaConocimiento(Integer.parseInt(entrada.getAsString("id")),
+		AreaConocimiento area =  new AreaConocimiento(
 				entrada.getAsString("nombre"),
 				entrada.getAsString("descripcion"));
 
@@ -1265,11 +1286,11 @@ else {
 	@PostMapping(value = "/crearevento")
 	public JSONObject crearEvento(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
-		Evento evento =  new Evento(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("nombre"), LocalDate.parse( entrada.getAsString("fecha")), entrada.getAsString("estado"));
+		Evento evento =  new Evento( entrada.getAsString("nombre"), LocalDate.parse( entrada.getAsString("fecha")), entrada.getAsString("estado"));
 
 		if (gestionInstitucionalService.crearEvento(evento,entrada.getAsString("entidad"),entrada.getAsString("sitio_web"),entrada.getAsString("url_memoria"))) {
 
-			salida.put("respuesta", "se creo la area");
+			salida.put("respuesta", "se creo el evento");
 
 		} else {
 			salida.put("respuesta", "no se pudo crear");

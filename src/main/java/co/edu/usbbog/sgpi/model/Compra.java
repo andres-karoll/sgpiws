@@ -226,6 +226,7 @@ public class Compra implements Serializable {
     	compraJson.put("estado",this.getEstado());
     	compraJson.put("link",this.getLink());
     	compraJson.put("descripcion",this.getDescripcion());
+    	compraJson.put("presupuesto",this.getPresupuesto().getId());
     	return compraJson;
     	
     }

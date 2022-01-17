@@ -73,8 +73,8 @@ public class Producto implements Serializable {
         this.id = id;
     }
 
-    public Producto(Integer id, String tituloProducto, String tipoProducto, String urlRepo,LocalDate fecha) {
-        this.id = id;
+    public Producto(String tituloProducto, String tipoProducto, String urlRepo,LocalDate fecha) {
+        
         this.tituloProducto = tituloProducto;
         this.tipoProducto = tipoProducto;
         this.urlRepo = urlRepo;
@@ -181,6 +181,7 @@ public class Producto implements Serializable {
     	productoJson.put("tipo_producto",this.getTipoProducto());
     	productoJson.put("url_repo",this.getUrlRepo());
     	productoJson.put("fecha",this.getFecha());
+    	productoJson.put("proyecto",this.getProyecto().getId());
     	return productoJson;
     }
 }

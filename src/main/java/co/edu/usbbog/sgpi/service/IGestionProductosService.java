@@ -28,6 +28,8 @@ public interface IGestionProductosService {
 	public List<Producto> todosLosProductosPorProyecto(int proyecto);
 	public boolean eliminarProductos(int id);
 	public boolean crearProducto(Producto producto, int proyecto);
+	public boolean modificarProducto(int id, String titulo_producto, String tipo_producto, String url_repo, String fecha);
+	public Producto productoporid(int id);
 	//actualizar producto
 	
 	/*
@@ -60,6 +62,8 @@ public interface IGestionProductosService {
 	public List<Comentario> ComentariosPorProducto(int producto_id);
 	public boolean eliminarComentario(int id);
 	public boolean crearComentario(Comentario comentario, int producto_id);
+	public boolean modificarComentario(int id, String comentario, String fase, String nivel, String fecha);
+	public Comentario comentarioporid(int id);
 	//actualizar comentario
 	
 	//LA NOTA????
