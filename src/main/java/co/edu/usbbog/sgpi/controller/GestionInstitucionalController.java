@@ -1055,7 +1055,9 @@ else {
 	@PostMapping(value = "/crearconvocatoria")
 	public JSONObject crearConvocatoria(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
-		Convocatoria convocatoria = new Convocatoria( entrada.getAsString("nombre_convocatoria"),LocalDate.parse( entrada.getAsString("fecha_inicio")), LocalDate.parse( entrada.getAsString("fecha_final")), entrada.getAsString("contexto"), entrada.getAsString("estado"), entrada.getAsString("tipo"));
+
+		Convocatoria convocatoria = new Convocatoria(entrada.getAsString("nombre_convocatoria"),LocalDate.parse( entrada.getAsString("fecha_inicio")), LocalDate.parse( entrada.getAsString("fecha_final")), entrada.getAsString("contexto"), entrada.getAsString("estado"), entrada.getAsString("tipo"));
+
 
 		if (gestionInstitucionalService.crearConvocatoria(convocatoria, entrada.getAsString("numero_productos"), entrada.getAsString("entidad"))) {
 
@@ -1137,6 +1139,20 @@ else {
 				entrada.getAsString("descripcion"));
 		System.out.println(linea.getDescripcion());
 		if(gestionInstitucionalService.crearLinea(linea,
+				LocalDate.parse( entrada.getAsString("fecha")))) {
+			salida.put("respuesta", "se creo la linea");
+		}else {
+			salida.put("respuesta", "no se creo");
+		}
+		return salida;
+	}
+	@PostMapping(value = "/crearlinea2")
+	public JSONObject crearLinea2(@RequestBody JSONObject entrada) {		
+		JSONObject salida = new JSONObject();	
+		
+		
+		if(gestionInstitucionalService.crearLinea2(entrada.getAsString("nombre"),
+				entrada.getAsString("descripcion"),
 				LocalDate.parse( entrada.getAsString("fecha")))) {
 			salida.put("respuesta", "se creo la linea");
 		}else {
@@ -1338,7 +1354,6 @@ else {
 		}
 		return "no se pudo eliminar";
 	}
-
 
 }
 	

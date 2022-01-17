@@ -153,7 +153,7 @@ public class GestionFinancieraController {
 		JSONObject salida = new JSONObject();
 			
 			Compra compra = new Compra(
-					
+
 					LocalDate.parse(entrada.getAsString("fecha_solicitud")), 
 					entrada.getAsString("nombre"),
 					entrada.getAsString("tipo"),

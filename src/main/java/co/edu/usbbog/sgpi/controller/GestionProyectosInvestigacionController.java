@@ -50,6 +50,18 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
+	@GetMapping("/verficarSemillero/{cedula}")
+	public JSONObject verficarSemillero(@PathVariable String cedula) {
+		JSONObject salida = new JSONObject();
+		if (iGestionProyectosInvestigacionService.verificarSemillero(cedula)) {
+			System.out.println("qasdasdas");
+			salida.put("respuesta", "este usuario ya esta asignado a un semillero");
+		} else {
+			salida.put("respuesta", "el usuario no esta inscrito aun semillero");
+		}
+		return salida;
+	}
+	
 	@PostMapping("/agregarParticipante")
 	public JSONObject agregarParticipante(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();

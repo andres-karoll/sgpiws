@@ -1486,6 +1486,16 @@ return programa;
 		return false;
 	}
 
+	@Override
+	public boolean crearLinea2(String nombre, String descripcion, LocalDate fecha) {
+		LineaInvestigacion linea= new LineaInvestigacion() ;
+		linea.setNombre(nombre);
+		linea.setDescripcion(descripcion);
+
+		lineaRepo.save(linea);
+		return lineaRepo.existsById(nombre);
+	}
+
 
 	
 	
