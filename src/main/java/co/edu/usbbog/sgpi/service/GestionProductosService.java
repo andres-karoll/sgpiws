@@ -1,5 +1,6 @@
 package co.edu.usbbog.sgpi.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Evento;
 import co.edu.usbbog.sgpi.model.MacroProyecto;
+import co.edu.usbbog.sgpi.model.Presupuesto;
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.repository.IComentarioRepository;
@@ -68,6 +70,28 @@ public class GestionProductosService implements IGestionProductosService{
 	}
 
 	@Override
+	public boolean modificarProducto(int id, String titulo_producto, String tipo_producto, String url_repo, String fecha) {
+		Producto producto = productoRepo.getById(id);
+		if(titulo_producto!="") {
+			producto.setTituloProducto(titulo_producto);
+		}if(tipo_producto!="") {
+			producto.setTipoProducto(tipo_producto);
+		}if(url_repo!="") {
+			producto.setUrlRepo(url_repo);
+		}if(fecha!="") {
+			producto.setFecha(LocalDate.parse(fecha));
+		}
+		productoRepo.save(producto);
+		return !productoRepo.existsById(producto.getId());
+	}
+	
+	@Override
+	public Producto productoporid(int id) {
+		Producto producto = productoRepo.getById(id);
+		return producto;
+	}
+	
+	@Override
 	public List<Comentario> ComentariosPorProducto(int producto_id) {
 		Producto pro = productoRepo.getById(producto_id);
 		List<Comentario> comentarios = pro.getComentarios();
@@ -98,7 +122,30 @@ public class GestionProductosService implements IGestionProductosService{
 		comentarioRepo.save(comentario);
 		return true;
 	}
-
+ 
+	@Override
+	public boolean modificarComentario(int id, String comentario, String fase, String nivel, String fecha) {
+		Comentario comenta = comentarioRepo.getById(id);
+		if(comentario!="") {
+			comenta.setComentario(comentario);
+		}if(fase!="") {
+			comenta.setFase(fase);
+		}if(nivel!="") {
+			comenta.setNivel(nivel);
+		}if(fecha!="") {
+			comenta.setFecha(LocalDate.parse(fecha));
+		}
+		comentarioRepo.save(comenta);
+		return !comentarioRepo.existsById(comenta.getId());
+	}
+	
+	@Override
+	public Comentario comentarioporid(int id) {
+		Comentario comenta = comentarioRepo.getById(id);
+		return comenta;
+	}
+	
+	
 	@Override
 	public boolean asignarCalificacion(double calificacion, int id) {
 		boolean comentario = comentarioRepo.existsById(id);
