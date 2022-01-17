@@ -72,7 +72,7 @@ public class GestionTrabajosGradoController {
 				.buscarProyecto(Integer.parseInt(entrada.getAsString("proyectoid")));
 		
 		if(proyecto.getTipoProyecto().getNombre().equals("Grado")) {
-			Producto producto = new Producto(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("titulo"),
+			Producto producto = new Producto( entrada.getAsString("titulo"),
 					entrada.getAsString("tipo"), entrada.getAsString("url"), LocalDate.parse(entrada.getAsString("fecha")));
 		
 		if (iGestionTrabajosGradoService.crearProducto(producto)) {

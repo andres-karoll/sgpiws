@@ -63,6 +63,66 @@ public class GestionFinancieraController {
 		return salida;
 	}
 	
+	
+	@PostMapping("/modificarpresupuesto")
+	public JSONObject modificarPresupuesto(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(!gestionFinancieraService.modificarPresupuesto( Integer.parseInt(
+				entrada.getAsString("id")) 
+				, entrada.getAsString("monto")
+				, entrada.getAsString("fecha")
+				, entrada.getAsString("descripcion"))) {
+			salida.put("respuesta", "se actualizo el presupuesto");
+		}else {
+			salida.put("respuesta", "no se pudo actualizar el presupuesto");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/presupuestoid/{id}")
+	public JSONObject presupuestolistarPorId(@PathVariable int id) {
+
+		JSONObject x= new JSONObject();	
+		if(gestionFinancieraService.presupuestoporid(id) !=null) {
+			Presupuesto presupuesto = gestionFinancieraService.presupuestoporid(id);
+			return presupuesto.toJson();
+		}
+		else {
+			return x;
+		}	
+
+	}
+	
+	@PostMapping("/modificarcompra")
+	public JSONObject modificarCompra(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if(!gestionFinancieraService.modificarCompra(Integer.parseInt(
+				entrada.getAsString("id")), 
+				entrada.getAsString("nombre"), 
+				entrada.getAsString("tipo"), 
+				entrada.getAsString("link"),
+				entrada.getAsString("descripcion"))) {
+			salida.put("respuesta", "se actualizo la compra");
+		}else {
+			salida.put("respuesta", "no se pudo actualizar la compra");
+		}
+		return salida;
+	}
+	
+	@GetMapping(value = "/compraid/{id}")
+	public JSONObject compralistarPorId(@PathVariable int id) {
+
+		JSONObject x= new JSONObject();	
+		if(gestionFinancieraService.compraporid(id) !=null) {
+			Compra compra = gestionFinancieraService.compraporid(id);
+			return compra.toJson();
+		}
+		else {
+			return x;
+		}	
+
+	}
+	
 	@GetMapping(value = "/listarcomprasdelpresupuesto/{id}")
 	public JSONArray listarComprasDelPresupuesto(@PathVariable int id) {
 		
@@ -93,7 +153,7 @@ public class GestionFinancieraController {
 		JSONObject salida = new JSONObject();
 			
 			Compra compra = new Compra(
-				
+
 					LocalDate.parse(entrada.getAsString("fecha_solicitud")), 
 					entrada.getAsString("nombre"),
 					entrada.getAsString("tipo"),
