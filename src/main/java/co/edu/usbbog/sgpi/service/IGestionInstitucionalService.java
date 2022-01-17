@@ -150,5 +150,8 @@ public interface IGestionInstitucionalService {
 	//proyectos por semillero
 	public List<Proyecto> proyectosPorSemillero(int semillero);
 
+
+	public boolean crearLinea2(String nombre, String descripcion, LocalDate fecha);
+
 	
 }

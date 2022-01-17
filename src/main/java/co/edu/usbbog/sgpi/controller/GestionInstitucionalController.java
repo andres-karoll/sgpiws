@@ -643,7 +643,7 @@ public class GestionInstitucionalController {
 	public JSONObject crearPrograma(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
 		Programa programa =  new Programa(	
-				Integer.parseInt(entrada.getAsString("id")), 
+				
 				entrada.getAsString("nombre"));
 		if (gestionInstitucionalService.crearPrograma(programa
 				, Integer.parseInt( entrada.getAsString("facultad_id"))
@@ -1034,7 +1034,7 @@ else {
 	@PostMapping(value = "/crearconvocatoria")
 	public JSONObject crearConvocatoria(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
-		Convocatoria convocatoria = new Convocatoria(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("nombre_convocatoria"),LocalDate.parse( entrada.getAsString("fecha_inicio")), LocalDate.parse( entrada.getAsString("fecha_final")), entrada.getAsString("contexto"), entrada.getAsString("estado"), entrada.getAsString("tipo"));
+		Convocatoria convocatoria = new Convocatoria(entrada.getAsString("nombre_convocatoria"),LocalDate.parse( entrada.getAsString("fecha_inicio")), LocalDate.parse( entrada.getAsString("fecha_final")), entrada.getAsString("contexto"), entrada.getAsString("estado"), entrada.getAsString("tipo"));
 
 		if (gestionInstitucionalService.crearConvocatoria(convocatoria, entrada.getAsString("numero_productos"), entrada.getAsString("entidad"))) {
 
@@ -1123,6 +1123,20 @@ else {
 		}
 		return salida;
 	}
+	@PostMapping(value = "/crearlinea2")
+	public JSONObject crearLinea2(@RequestBody JSONObject entrada) {		
+		JSONObject salida = new JSONObject();	
+		
+		
+		if(gestionInstitucionalService.crearLinea2(entrada.getAsString("nombre"),
+				entrada.getAsString("descripcion"),
+				LocalDate.parse( entrada.getAsString("fecha")))) {
+			salida.put("respuesta", "se creo la linea");
+		}else {
+			salida.put("respuesta", "no se creo");
+		}
+		return salida;
+	}
 	
 	@PostMapping("/modificarlinea")
 	public JSONObject modificarLinea(@RequestBody JSONObject entrada) {
@@ -1184,7 +1198,7 @@ else {
 	@PostMapping(value = "/creararea")
 	public JSONObject crearArea(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
-		AreaConocimiento area =  new AreaConocimiento(Integer.parseInt(entrada.getAsString("id")),
+		AreaConocimiento area =  new AreaConocimiento(
 				entrada.getAsString("nombre"),
 				entrada.getAsString("descripcion"));
 
@@ -1265,7 +1279,7 @@ else {
 	@PostMapping(value = "/crearevento")
 	public JSONObject crearEvento(@RequestBody JSONObject entrada) {		
 		JSONObject salida = new JSONObject();
-		Evento evento =  new Evento(Integer.parseInt(entrada.getAsString("id")), entrada.getAsString("nombre"), LocalDate.parse( entrada.getAsString("fecha")), entrada.getAsString("estado"));
+		Evento evento =  new Evento( entrada.getAsString("nombre"), LocalDate.parse( entrada.getAsString("fecha")), entrada.getAsString("estado"));
 
 		if (gestionInstitucionalService.crearEvento(evento,entrada.getAsString("entidad"),entrada.getAsString("sitio_web"),entrada.getAsString("url_memoria"))) {
 
@@ -1317,7 +1331,6 @@ else {
 		}
 		return "no se pudo eliminar";
 	}
-
 
 }
 	
