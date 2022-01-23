@@ -16,7 +16,7 @@ public interface IGestionTrabajosGradoService {
 	
 	public List<Proyecto> todosLosProyectos(String tipo);
 	public boolean eliminarProyecto(int id);
-	public boolean crearProyecto(Proyecto proyecto,String tipo,Participantes participante,String rol);
+	public boolean crearProyecto(Proyecto proyecto,String tipo,String rol,String clase,String cedula,LocalDate fecha);
 	//actualizar Proyectos
 	
 	public List<Producto> todosLosProductos();

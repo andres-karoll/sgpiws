@@ -7,6 +7,7 @@ import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Evento;
+import co.edu.usbbog.sgpi.model.MacroProyecto;
 import co.edu.usbbog.sgpi.model.Materia;
 import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
@@ -23,7 +24,7 @@ public interface IGestionProyectosAulaIntegradorService {
 	public List<Proyecto> todosLosProyectosPorClase(String clase);
 	public List<Proyecto> todosLosProyectosPorTipoProyecto(String tipo);
 	public boolean eliminarProyecto(int id);
-	public boolean crearProyecto(Proyecto proyecto,String tipo,String rol,String clase,String cedula,LocalDate fecha);
+	public boolean crearProyecto(Proyecto proyecto,String tipo,String rol,String clase,String cedula,LocalDate fecha,int macro);
 	public boolean asignarTipoProyecto(Proyecto proyecto, TipoProyecto aulaIntegrador);
 	//actualizar Proyectos
 	
@@ -50,6 +51,7 @@ public interface IGestionProyectosAulaIntegradorService {
 		public Proyecto buscarProyecto(int proyectoId);
 		public Producto buscarProducto(int productoId);
 		public boolean participarEvento(Participaciones participaciones, LocalDate parse, String asString);
+		public boolean participarEventoExtrerna(Evento evento,int proyecto, LocalDate fecha, String reconocimiento,String entidad, String sitio_web, String url_memoria);
 		public List<Participaciones> buscarParticipaciones(int parseInt);
 		public boolean agregarAntecedente(Proyecto proyeto, Proyecto antecedente);
 		public boolean agregarAreaConocimiento(int proyecto, int area);
@@ -62,5 +64,6 @@ public interface IGestionProyectosAulaIntegradorService {
 		public List<AreaConocimiento> listarAreaConocimiento();
 		public List<JSONObject> listarEvento();
 		public List<AreaConocimiento> areasConocimientoProyecto(int proyecto);
+		public List<MacroProyecto> macroProyectosAbiertos();
 
 }

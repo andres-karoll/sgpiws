@@ -21,6 +21,7 @@ import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Evento;
+import co.edu.usbbog.sgpi.model.MacroProyecto;
 import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.ParticipantesPK;
@@ -43,14 +44,20 @@ public class GestionProyectosAulaIntegradorController {
 	@PostMapping("/crearproyecto")
 	public JSONObject crearProyectoAulaIntegrador(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
+		
 		Proyecto proyecto = new Proyecto(entrada.getAsString("titulo"),
 				entrada.getAsString("estado"), entrada.getAsString("descripcion"),
 				LocalDate.parse(entrada.getAsString("fechainicio")),
 				Short.parseShort(entrada.getAsString("visibilidad")), entrada.getAsString("ciudad"),
 				entrada.getAsString("metodologia"), entrada.getAsString("justificacion"));
-		System.out.println("hola");
+		int macros;
+		if(entrada.getAsString("macro")=="") {
+			macros=0;
+		}else {
+			macros=Integer.parseInt(entrada.getAsString("macro"));
+		}
 		if (iGestionProyectosAulaIntegradorService.crearProyecto(proyecto, entrada.getAsString("tipo"),
-				entrada.getAsString("rol"), entrada.getAsString("clase"),entrada.getAsString("usuario"),LocalDate.parse(entrada.getAsString("fechainicio")))) {
+				entrada.getAsString("rol"), entrada.getAsString("clase"),entrada.getAsString("usuario"),LocalDate.parse(entrada.getAsString("fechainicio")),macros)) {
 			salida.put("respuesta", "el proyecto fue creado");
 		} else {
 			salida.put("respuesta", "el proyecto no fue creado");
@@ -70,6 +77,7 @@ public class GestionProyectosAulaIntegradorController {
 		}
 		return salida;
 	}
+	
 	@PostMapping("/eliminarparticipante")
 	public JSONObject eliminarParticipante(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -91,6 +99,16 @@ public class GestionProyectosAulaIntegradorController {
 		for (Iterator iterator = proyectos.iterator(); iterator.hasNext();) {
 			Proyecto proyecto = (Proyecto) iterator.next();
 			salida.add(proyecto.toJson()); 
+		}
+		return salida;
+	}
+	@GetMapping("/macroProyectos")
+	public JSONArray macroProyectos() {
+		JSONArray salida = new JSONArray();
+		List<MacroProyecto> Macroproyectos = iGestionProyectosAulaIntegradorService.macroProyectosAbiertos();
+		for (Iterator iterator = Macroproyectos.iterator(); iterator.hasNext();) {
+			MacroProyecto macroProyecto = (MacroProyecto) iterator.next();
+			salida.add(macroProyecto.toJson());
 		}
 		return salida;
 	}
@@ -221,6 +239,19 @@ public class GestionProyectosAulaIntegradorController {
 		}
 
 		return salida;
+	}@PostMapping("/participareventoExterno")
+	public JSONObject participarEventoExterno(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		Evento evento =  new Evento( entrada.getAsString("nombre"), LocalDate.parse( entrada.getAsString("fecha")), entrada.getAsString("estado"));
+		
+		if (iGestionProyectosAulaIntegradorService.participarEventoExtrerna(evento,Integer.parseInt(entrada.getAsString("proyecto")),
+				LocalDate.parse(entrada.getAsString("fecha1")), entrada.getAsString("reconocimiento"),entrada.getAsString("entidad"),entrada.getAsString("sitioWeb"),entrada.getAsString("url_memoria"))) {
+			salida.put("respuesta", "se unio al evento exitosamente");
+		} else {
+			salida.put("respuesta", "no se unio al evento ");
+		}
+
+		return salida;
 	}
 
 	@GetMapping("/participacionesproyecto/{proyecto}")
@@ -320,7 +351,7 @@ public class GestionProyectosAulaIntegradorController {
 		JSONObject salida=new JSONObject();
 		
 		if(iGestionProyectosAulaIntegradorService.actualizarProyecto(Integer.parseInt( entrada.getAsString("id")),entrada.getAsString("titulo"),entrada.getAsString("descripcion"),entrada.getAsString("metodologia"),entrada.getAsString("justificacion"))) {
-			salida.put("respuesta", "Actualizacion exitosa");
+			salida.put("respuesta", "el proyecto fue actualizado");
 			
 		}else {
 			salida.put("respuesta", "Actualizacion no valida");

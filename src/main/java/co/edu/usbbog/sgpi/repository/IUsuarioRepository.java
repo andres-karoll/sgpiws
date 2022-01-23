@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import co.edu.usbbog.sgpi.model.Usuario;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 /**
@@ -75,4 +76,6 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, String> {
 	@Transactional
 	@Query(value= "delete from usuarios where usuario = ?1 and tipo_usuario= ?2", nativeQuery=true)
 	void deleteTipo(String usuario, String tipo);
+	@Query(value = "SELECT nombres FROM sgpi_db.usuario where cedula =?1", nativeQuery = true)
+    JSONArray getNombre(String cedula);
 }
