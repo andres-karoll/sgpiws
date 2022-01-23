@@ -220,7 +220,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	@Override
 	public boolean eliminarComentario(int id) {
 		Comentario comentario = iComentarioRepository.getById(id);
-		System.out.println(comentario.getId());
+
 		if (comentario.equals(null)) {
 			return false;
 		} else {
@@ -360,7 +360,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	@Override
 	public boolean eliminarProducto(int id) {
 		Producto producto = iProductoRepository.getById(id);
-		System.out.println(producto.getId());
+	
 		if (producto.equals(null)) {
 			return false;
 		} else {
@@ -470,9 +470,8 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	@Override
 	public boolean verificarSemillero(String cedula) {
 		Usuario usu = iUsuarioRepository.getById(cedula);
-		System.out.println("holasdasd");
 		if (usu.getSemilleroId().getId() == null) {
-			System.out.println("hola");
+	
 			return false;
 		} else {
 			return true;
