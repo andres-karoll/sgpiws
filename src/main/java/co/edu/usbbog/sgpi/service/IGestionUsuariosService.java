@@ -9,6 +9,7 @@ import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoUsuario;
 import co.edu.usbbog.sgpi.model.Usuario;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 public interface IGestionUsuariosService {
@@ -84,21 +85,7 @@ public interface IGestionUsuariosService {
 	public boolean modificarUsuario(String cedula,String telefono,String clave, String correoP);
 	public List<TipoUsuario> todosLosRoles();
 	public List<Usuario> todosPorRol(String tipo);
+
 	public JSONObject nombreusuario(String cedula);
-	
-	
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
-
-
-
-	
 }

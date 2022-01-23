@@ -19,6 +19,7 @@ import co.edu.usbbog.sgpi.repository.IProgramaRepository;
 import co.edu.usbbog.sgpi.repository.ISemilleroRepository;
 import co.edu.usbbog.sgpi.repository.ITipoUsuarioRepository;
 import co.edu.usbbog.sgpi.repository.IUsuarioRepository;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 @Service
@@ -376,13 +377,12 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		}
 		return usu;
 	}
-	
+
 	@Override
-	public JSONObject nombreusuario(String cedula) {
+    public JSONArray nombreusuario(String cedula) {
+        JSONArray nombre = iUsuarioRepository.getNombre(cedula);
 
-		JSONObject nombre = iUsuarioRepository.getNombre(cedula);
 
-		return nombre;
-	}
-
+        return nombre;
+    }
 }

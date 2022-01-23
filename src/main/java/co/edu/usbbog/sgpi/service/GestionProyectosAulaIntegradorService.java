@@ -113,17 +113,18 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	 *
 	 */
 	@Override
-	public boolean crearProyecto(Proyecto proyecto, String tipo, String rol, String clase,String cedula,LocalDate fecha) {
+	public boolean crearProyecto(Proyecto proyecto, String tipo, String rol, String clase,String cedula,LocalDate fecha,int macro) {
 		Clase clas = iClaseRepository.getById(Integer.parseInt(clase));
 		if (!iClaseRepository.existsById(clas.getNumero())) {
 			return false;
 		}
+		MacroProyecto macroP=iMacroProyectoRepository.getById(macro);
 		TipoProyecto tp = iTipoProyectoRepository.getById(tipo);
 		proyecto.setTipoProyecto(tp);
 		//MacroProyecto macroProyectp= iMacroProyectoRepository.getById(macro);
-		try {
-			proyecto.setMacroProyecto(null);
-		} catch (Exception e) {
+		if(macro<0) {
+			proyecto.setMacroProyecto(macroP);
+		}else {
 			proyecto.setMacroProyecto(null);
 		}
 		proyecto.setId(iProyectoRepository.save(proyecto).getId());
@@ -201,7 +202,6 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	@Override
 	public boolean eliminarProducto(int id) {
 		Producto producto = iProductoRepository.getById(id);
-		System.out.println(producto.getId());
 		if (producto.equals(null)) {
 			return false;
 		} else {
@@ -270,7 +270,6 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	@Override
 	public boolean eliminarComentario(int id) {
 		Comentario comentario = iComentarioRepository.getById(id);
-		System.out.println(comentario.getId());
 		if (comentario.equals(null)) {
 			return false;
 		} else {
@@ -352,6 +351,21 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		} else {
 			return false;
 		}
+	}@Override
+	public boolean participarEventoExtrerna(Evento evento,int proyecto, LocalDate fecha, String reconocimiento,String entidad, String sitio_web, String url_memoria) {
+		evento.setEntidad(entidad);
+		evento.setSitioWeb(sitio_web);
+		evento.setUrlMemoria(url_memoria);
+		Evento eve= iEventoRepository.save(evento);
+		Participaciones participaciones= new Participaciones(eve.getId(), proyecto);
+		participaciones.setFechaPart(fecha);
+		try {
+			participaciones.setReconocimientos(reconocimiento);
+		} catch (Exception e) {
+			participaciones.setReconocimientos(null);
+		}
+		iParticipacionesRepository.save(participaciones);
+		return true;
 	}
 
 	@Override
@@ -510,6 +524,12 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 			area = new ArrayList<AreaConocimiento>();
 		}
 		return area;
+	}
+
+	@Override
+	public List<MacroProyecto> macroProyectosAbiertos() {
+		List<MacroProyecto> macros= iMacroProyectoRepository.ListMacros();
+		return macros;
 	}
 
 	

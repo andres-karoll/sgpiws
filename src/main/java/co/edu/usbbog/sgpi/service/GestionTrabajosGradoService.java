@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
+import co.edu.usbbog.sgpi.model.MacroProyecto;
 import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Programa;
@@ -18,6 +19,7 @@ import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.TipoUsuario;
 import co.edu.usbbog.sgpi.model.Usuario;
+import co.edu.usbbog.sgpi.repository.IClaseRepository;
 import co.edu.usbbog.sgpi.repository.IComentarioRepository;
 import co.edu.usbbog.sgpi.repository.IParticipantesRepository;
 import co.edu.usbbog.sgpi.repository.IProductoRepository;
@@ -42,6 +44,8 @@ public class GestionTrabajosGradoService implements IGestionTrabajosGradoService
 	private IUsuarioRepository iUsuarioRepository;
 	@Autowired
 	private ITipoUsuarioRepository iTipoUsuarioRepository;
+	@Autowired
+	private IClaseRepository iClaseRepository;;
 	private static Logger logger = LoggerFactory.getLogger(BibliotecaService.class);
 	@Override
 	public List<Proyecto> todosLosProyectos(String tipo) {
@@ -64,31 +68,28 @@ public class GestionTrabajosGradoService implements IGestionTrabajosGradoService
 	}
 
 	@Override
-	public boolean crearProyecto(Proyecto proyecto,String tipo,Participantes participante,String rol) {
-		if (iProyectoRepository.existsById(proyecto.getId())) {
+	public boolean crearProyecto(Proyecto proyecto,String tipo,String rol,String clase,String cedula,LocalDate fecha) {
+		Clase clas = iClaseRepository.getById(Integer.parseInt(clase));
+		if (!iClaseRepository.existsById(clas.getNumero())) {
 			return false;
 		}
 		TipoProyecto tp = iTipoProyectoRepository.getById(tipo);
-		
-		if (tp == null ) {
-			return false;
-		}
-		try {
-			proyecto.setSemillero(null);
-			proyecto.setMacroProyecto(null);
-		} catch (Exception e) {
-			proyecto.setSemillero(null);
-			proyecto.setMacroProyecto(null);
-		}
-		if(tp.getNombre().equals("Grado")) {
-		participante.setRol(rol);
 		proyecto.setTipoProyecto(tp);
-		iProyectoRepository.save(proyecto);
+		proyecto.setId(iProyectoRepository.save(proyecto).getId());
+		iTipoProyectoRepository.save(tp);
+		clas.getProyectos().add(proyecto);
+		iClaseRepository.save(clas);
+		Usuario usu= iUsuarioRepository.getById(cedula);
+		Participantes participante = new Participantes(cedula,proyecto.getId(), fecha);
+		participante.setRol(rol);
 		iParticipantesRepository.save(participante);
-		return iProyectoRepository.existsById(proyecto.getId());
-		}else {
-			return false;
+		Usuario profesor= clas.getProfesor();
+		if(profesor!=null) {
+			Participantes par=new Participantes(profesor.getCedula(), proyecto.getId(), participante.getParticipantesPK().getFechaInicio());
+			par.setRol("Lider");
+			iParticipantesRepository.save(par);
 		}
+		return iProyectoRepository.existsById(proyecto.getId());
 	}
 
 
