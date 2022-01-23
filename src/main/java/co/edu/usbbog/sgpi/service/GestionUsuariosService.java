@@ -376,5 +376,13 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		}
 		return usu;
 	}
+	
+	@Override
+	public JSONObject nombreusuario(String cedula) {
+
+		JSONObject nombre = iUsuarioRepository.getNombre(cedula);
+
+		return nombre;
+	}
 
 }

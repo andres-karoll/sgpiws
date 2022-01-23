@@ -84,6 +84,7 @@ public interface IGestionUsuariosService {
 	public boolean modificarUsuario(String cedula,String telefono,String clave, String correoP);
 	public List<TipoUsuario> todosLosRoles();
 	public List<Usuario> todosPorRol(String tipo);
+	public JSONObject nombreusuario(String cedula);
 	
 	
 	

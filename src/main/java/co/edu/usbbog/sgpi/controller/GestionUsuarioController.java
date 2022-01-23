@@ -354,5 +354,10 @@ public class GestionUsuarioController {
 		
 		return salida;
 	}
+	
+	@GetMapping("/nombre/{cedula}")
+	public JSONObject nombreUsuario(@PathVariable String cedula) {
+		return iGestionUsuariosService.nombreusuario(cedula);
+	}
 	}
 
