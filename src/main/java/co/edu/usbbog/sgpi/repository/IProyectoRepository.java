@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,4 +49,8 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	
 	@Query(value="select area_conocimiento.nombre, proyecto.id, proyecto.titulo, proyecto.estado, proyecto.descripcion, proyecto.fecha_inicio, proyecto.fecha_fin, proyecto.metodologia, proyecto.visibilidad from areas_conocimiento inner join area_conocimiento on areas_conocimiento.area_conocimiento = area_conocimiento.id inner join proyecto on areas_conocimiento.proyecto = proyecto.id where proyecto.visibilidad = 1",nativeQuery = true)
 	List<JSONObject> proyectosVisibles();
+	@Modifying
+	@Transactional
+	@Query(value="DELETE FROM sgpi_db.areas_conocimiento WHERE (proyecto = ?2) and (area_conocimiento = ?1)",nativeQuery = true)
+	void eliminarArea(int area,int pro);
 }

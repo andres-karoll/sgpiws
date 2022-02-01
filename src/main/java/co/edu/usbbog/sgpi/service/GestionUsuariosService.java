@@ -377,12 +377,4 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		}
 		return usu;
 	}
-
-	@Override
-    public JSONArray nombreusuario(String cedula) {
-        JSONArray nombre = iUsuarioRepository.getNombre(cedula);
-
-
-        return nombre;
-    }
 }

@@ -74,8 +74,7 @@ public class MacroProyecto implements Serializable {
         this.id = id;
     }
 
-    public MacroProyecto(Integer id, String nombre, String descripcion, LocalDate fechaInicio, String estado) {
-        this.id = id;
+    public MacroProyecto( String nombre, String descripcion, LocalDate fechaInicio, String estado) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;

@@ -64,6 +64,29 @@ public class GestionProyectosAulaIntegradorController {
 		}
 		return salida;
 	}
+	@PostMapping("/crearMacro")
+	public JSONObject crearMacro(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		
+		MacroProyecto macro= new MacroProyecto(entrada.getAsString("nombre"), entrada.getAsString("descripcion"), LocalDate.parse(entrada.getAsString("fechainicio")),entrada.getAsString("estado"));
+		
+		if (iGestionProyectosAulaIntegradorService.crearMacro(macro)){
+			salida.put("respuesta", "el macro proyecto se creo correctamente");
+		} else {
+			salida.put("respuesta", "el macro proyecto proyecto no se pudo crear correctamente");
+		}
+		return salida;
+	}
+	@PostMapping("/cerrarMacro")
+	public JSONObject cerrarrMacro(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if (iGestionProyectosAulaIntegradorService.cerrarMacro(Integer.parseInt(entrada.getAsString("macro")))){
+			salida.put("respuesta", "el macro se finalizar correctamente");
+		} else {
+			salida.put("respuesta", "el macro no se puedo finalizar");
+		}
+		return salida;
+	}
 
 	@PostMapping("/agregarParticipante")	 
 	public JSONObject agregarParticipante(@RequestBody JSONObject entrada) {
@@ -155,6 +178,17 @@ public class GestionProyectosAulaIntegradorController {
 			salida.put("respuesta", "proyeto fue eliminado correctamente");
 		} else {
 			salida.put("respuesta", "el proyecto no fue eliminado");
+		}
+		return salida;
+	}
+	@PostMapping("/eliminarArea")
+	public JSONObject elinimarArea(@RequestBody JSONObject entrada) {
+		JSONObject salida= new JSONObject();
+		System.out.println(entrada);
+		if (iGestionProyectosAulaIntegradorService.eliminarArea(Integer.parseInt(entrada.getAsString("areasConocimiento")),Integer.parseInt(entrada.getAsString("proyecto")))) {
+			salida.put("respuesta", "Se eliminado la area");
+		} else {
+			salida.put("respuesta", "la area no fue eliminada");
 		}
 		return salida;
 	}

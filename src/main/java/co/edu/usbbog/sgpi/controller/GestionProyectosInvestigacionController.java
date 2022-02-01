@@ -40,10 +40,8 @@ public class GestionProyectosInvestigacionController {
 				LocalDate.parse(entrada.getAsString("fechainicio")),
 				Short.parseShort(entrada.getAsString("visibilidad")), entrada.getAsString("ciudad"),
 				entrada.getAsString("metodologia"), entrada.getAsString("justificacion"));
-		Participantes participante = new Participantes(entrada.getAsString("usuario"),
-				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
-		if (iGestionProyectosInvestigacionService.crearProyecto(proyecto, entrada.getAsString("tipo"), participante,
-				entrada.getAsString("rol"),entrada.getAsString("semillero"))) {
+		if (iGestionProyectosInvestigacionService.crearProyecto(proyecto, entrada.getAsString("tipo"),
+				entrada.getAsString("rol"), entrada.getAsString("clase"),entrada.getAsString("usuario"),LocalDate.parse(entrada.getAsString("fechainicio")),entrada.getAsString("semillero"),Integer.parseInt(entrada.getAsString("macro")))) {
 			salida.put("respuesta", "el proyecto fue creado");
 		} else {
 			salida.put("respuesta", "el proyecto no fue creado");
@@ -75,10 +73,11 @@ public class GestionProyectosInvestigacionController {
 		return salida;
 	}
 	@GetMapping(value = "/proyectossemillero/{cedula}")
-	public  List<JSONObject>  poryectosDeSemilleroParparticipante(@PathVariable String cedula	) {
+	public  List<JSONObject>  listaProyectos(@PathVariable String cedula	) {
 		 List<JSONObject> x = iGestionProyectosInvestigacionService.proyectosParticipanteSemillero(cedula);
 		 return x;
 		}
+
 	@GetMapping("/todosLosproyectosusuariosemillero/{cedula}")
 	public  List<JSONObject> todosLosProyectosUsuarioSemillero(@PathVariable String cedula) {
 		List<JSONObject> proyectos = iGestionProyectosInvestigacionService.todosLosProyectosUsuarioSemillero(cedula);
@@ -206,7 +205,7 @@ public class GestionProyectosInvestigacionController {
 				if (iGestionProyectosInvestigacionService.agregarAntecedente(proyecto, antecedente)) {
 					salida.put("respuesta", "se agrego exitosamente el antecedente");
 				} else {
-					salida.put("respuesta", "no se agrego el antecedente ");
+					salida.put("respuesta", "no se agrego el antecedente");
 				}
 			}
 		}
@@ -234,6 +233,17 @@ public class GestionProyectosInvestigacionController {
 		for (Iterator<AreaConocimiento> iterator = areaConocimientos.iterator(); iterator.hasNext();) {
 			AreaConocimiento areas = (AreaConocimiento) iterator.next();
 			salida.add(areas.toJson());
+		}
+		return salida;
+	}
+	@GetMapping("/listarAntecedentes/{proyecto}")
+	public JSONArray listarAntecedenteProyecto(@PathVariable String proyecto) {
+		JSONArray salida = new JSONArray();
+		List<Proyecto> pro = iGestionProyectosInvestigacionService
+				.buscarAntecedentes(Integer.parseInt(proyecto));
+		for (Iterator iterator = pro.iterator(); iterator.hasNext();) {
+			Proyecto proyecto2 = (Proyecto) iterator.next();
+			salida.add(proyecto2.toJson());
 		}
 		return salida;
 	}

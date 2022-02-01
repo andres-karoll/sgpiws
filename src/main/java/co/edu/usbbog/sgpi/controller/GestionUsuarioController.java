@@ -121,7 +121,6 @@ public class GestionUsuarioController {
 		} else {
 			return false;
 		}
-
 	}
 
 	@PostMapping("/asignarsemillero")
@@ -354,11 +353,9 @@ public class GestionUsuarioController {
 		
 		return salida;
 	}
+	
 
-	@GetMapping("/nombre/{cedula}")
-    public JSONArray nombreUsuario(@PathVariable String cedula) {
-        return iGestionUsuariosService.nombreusuario(cedula);
-    }
+
    
 	}
 
