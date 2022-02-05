@@ -40,10 +40,8 @@ public class GestionProyectosInvestigacionController {
 				LocalDate.parse(entrada.getAsString("fechainicio")),
 				Short.parseShort(entrada.getAsString("visibilidad")), entrada.getAsString("ciudad"),
 				entrada.getAsString("metodologia"), entrada.getAsString("justificacion"));
-		Participantes participante = new Participantes(entrada.getAsString("usuario"),
-				Integer.parseInt(entrada.getAsString("id")), LocalDate.parse(entrada.getAsString("fechainicio")));
-		if (iGestionProyectosInvestigacionService.crearProyecto(proyecto, entrada.getAsString("tipo"), participante,
-				entrada.getAsString("rol"),entrada.getAsString("semillero"))) {
+		if (iGestionProyectosInvestigacionService.crearProyecto(proyecto, entrada.getAsString("tipo"),
+				entrada.getAsString("rol"), entrada.getAsString("clase"),entrada.getAsString("usuario"),LocalDate.parse(entrada.getAsString("fechainicio")),entrada.getAsString("semillero"),Integer.parseInt(entrada.getAsString("macro")))) {
 			salida.put("respuesta", "el proyecto fue creado");
 		} else {
 			salida.put("respuesta", "el proyecto no fue creado");
@@ -75,10 +73,11 @@ public class GestionProyectosInvestigacionController {
 		return salida;
 	}
 	@GetMapping(value = "/proyectossemillero/{cedula}")
-	public  List<JSONObject>  poryectosDeSemilleroParparticipante(@PathVariable String cedula	) {
+	public  List<JSONObject>  listaProyectos(@PathVariable String cedula	) {
 		 List<JSONObject> x = iGestionProyectosInvestigacionService.proyectosParticipanteSemillero(cedula);
 		 return x;
 		}
+
 	@GetMapping("/todosLosproyectosusuariosemillero/{cedula}")
 	public  List<JSONObject> todosLosProyectosUsuarioSemillero(@PathVariable String cedula) {
 		List<JSONObject> proyectos = iGestionProyectosInvestigacionService.todosLosProyectosUsuarioSemillero(cedula);
@@ -206,7 +205,7 @@ public class GestionProyectosInvestigacionController {
 				if (iGestionProyectosInvestigacionService.agregarAntecedente(proyecto, antecedente)) {
 					salida.put("respuesta", "se agrego exitosamente el antecedente");
 				} else {
-					salida.put("respuesta", "no se agrego el antecedente ");
+					salida.put("respuesta", "no se agrego el antecedente");
 				}
 			}
 		}
@@ -237,6 +236,17 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
+	@GetMapping("/listarAntecedentes/{proyecto}")
+	public JSONArray listarAntecedenteProyecto(@PathVariable String proyecto) {
+		JSONArray salida = new JSONArray();
+		List<Proyecto> pro = iGestionProyectosInvestigacionService
+				.buscarAntecedentes(Integer.parseInt(proyecto));
+		for (Iterator iterator = pro.iterator(); iterator.hasNext();) {
+			Proyecto proyecto2 = (Proyecto) iterator.next();
+			salida.add(proyecto2.toJson());
+		}
+		return salida;
+	}
 	@PostMapping("/participarconvocatoria/")
 	public JSONObject participarconvocatoria(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -248,6 +258,36 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
+	@GetMapping("/tusProyectosConvocatoria/{cedula}")
+	public List<JSONObject> tusProyectoConvocatoria(@PathVariable String cedula) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.tusProyectosConvocatoria(cedula);	
+		return pro;
+	}
+	@GetMapping("/tusProyectosSemillero/{cedula}")
+	public List<JSONObject> tusProyectoSemillero(@PathVariable String cedula) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.tusProyectoSemillero(cedula);	
+		return pro;
+	}
+	@PostMapping("/aval/")
+	public JSONObject darAval(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		ProyectosConvocatoria proyectoConvocatoria= new ProyectosConvocatoria(Integer.parseInt(entrada.getAsString("proyecto")),Integer.parseInt(entrada.getAsString("convocatoria")));
+		if (iGestionProyectosInvestigacionService.darAval(proyectoConvocatoria,entrada.getAsString("estado"))) {
+			salida.put("respuesta", "Se realizo la validacion exitosamente");
+		} else {
+			salida.put("respuesta", "no se pudo realizar ");
+		}
+		return salida;
+	}
+	@GetMapping("/paticipacionesConvocatoria/{proyecto}")
+	public List<JSONObject> proyectoConvocatoria(@PathVariable String proyecto) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.paticipacionesConvocatoria(proyecto);	
+		return pro;
+	}
+	@GetMapping("/proyectosGrado")
+	public List<JSONObject> proyectoGrado() {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosGrado();	
+		return pro;
+	}
 }
 

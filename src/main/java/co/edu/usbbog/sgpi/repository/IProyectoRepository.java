@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,4 +49,17 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	
 	@Query(value="select area_conocimiento.nombre, proyecto.id, proyecto.titulo, proyecto.estado, proyecto.descripcion, proyecto.fecha_inicio, proyecto.fecha_fin, proyecto.metodologia, proyecto.visibilidad from areas_conocimiento inner join area_conocimiento on areas_conocimiento.area_conocimiento = area_conocimiento.id inner join proyecto on areas_conocimiento.proyecto = proyecto.id where proyecto.visibilidad = 1",nativeQuery = true)
 	List<JSONObject> proyectosVisibles();
+	@Modifying
+	@Transactional
+	@Query(value="DELETE FROM sgpi_db.areas_conocimiento WHERE (proyecto = ?2) and (area_conocimiento = ?1)",nativeQuery = true)
+	void eliminarArea(int area,int pro);
+	@Query(value="select proyecto.id,proyecto.descripcion,proyecto.titulo,proyecto.estado, proyectos_convocatoria.convocatoria from proyecto,proyectos_convocatoria,participantes where proyecto.id=proyectos_convocatoria.proyectos and  participantes.proyecto=proyecto.id and participantes.usuario=?1",nativeQuery = true)
+	List<JSONObject> tusProyectoConvocatoria(String cedula);
+	@Query(value="select proyecto.id,proyecto.descripcion,proyecto.titulo,proyecto.estado from proyecto,participantes where proyecto.tipo_proyecto=\"Semillero\" and  participantes.proyecto=proyecto.id and participantes.usuario=?1",nativeQuery = true)
+	List<JSONObject> tusProyectoSemillero(String cedula);
+	@Query(value="Select convocatoria.nombre_convocatoria,convocatoria.id from convocatoria, proyectos_convocatoria where proyectos_convocatoria.proyectos=?1 and proyectos_convocatoria.convocatoria=convocatoria.id",nativeQuery = true)
+	List<JSONObject> paticipacionesConvocatoria(int proyecto);
+	@Query(value="select * from proyecto where tipo_proyecto=\"Grado\"",nativeQuery = true)
+	List<JSONObject> proyectosGrado();
+	
 }

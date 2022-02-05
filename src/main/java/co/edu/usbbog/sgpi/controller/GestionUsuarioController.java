@@ -121,7 +121,6 @@ public class GestionUsuarioController {
 		} else {
 			return false;
 		}
-
 	}
 
 	@PostMapping("/asignarsemillero")
@@ -354,8 +353,7 @@ public class GestionUsuarioController {
 		
 		return salida;
 	}
-
-
+	
    
 	}
 

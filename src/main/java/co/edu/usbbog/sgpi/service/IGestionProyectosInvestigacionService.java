@@ -29,7 +29,6 @@ public interface IGestionProyectosInvestigacionService {
 	public List<Proyecto> todosLosProyectosPorFacultad(Facultad facultad);
 	public List<Proyecto> todosLosProyectosPorPrograma(Programa programa);
 	public boolean eliminarProyecto(int id);
-	public boolean crearProyecto(Proyecto proyecto,String tipo,Participantes participante, String rol,String semillero);
 	public boolean asignarTipoProyecto(Proyecto proyecto, TipoProyecto investigacion);
 	
 	//actualizar Proyectos
@@ -76,5 +75,13 @@ public interface IGestionProyectosInvestigacionService {
 		public List<JSONObject> todosLosProyectosUsuarioSemillero(String cedula);
 		public List<JSONObject> proyectosParticipanteSemillero(String cedula);
 		public boolean verificarSemillero(String cedula);
+		public List<Proyecto> buscarAntecedentes(int parseInt);
+		public boolean crearProyecto(Proyecto proyecto, String asString, String asString2, String asString3,
+				String asString4, LocalDate parse, String asString5,int macro);
+		public List<JSONObject> tusProyectosConvocatoria(String cedula);
+		public List<JSONObject> tusProyectoSemillero(String cedula);
+		public boolean darAval(ProyectosConvocatoria proyectoConvocatoria, String asString);
+		public List<JSONObject> paticipacionesConvocatoria(String proyecto);
+		public List<JSONObject> proyectosGrado();
 
 }

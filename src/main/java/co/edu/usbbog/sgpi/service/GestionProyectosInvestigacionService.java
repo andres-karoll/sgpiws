@@ -31,6 +31,7 @@ import co.edu.usbbog.sgpi.repository.IAreaConocimientoRepository;
 import co.edu.usbbog.sgpi.repository.IComentarioRepository;
 import co.edu.usbbog.sgpi.repository.ICompraRepository;
 import co.edu.usbbog.sgpi.repository.IConvocatoriaRepository;
+import co.edu.usbbog.sgpi.repository.IMacroProyectoRepository;
 import co.edu.usbbog.sgpi.repository.IParticipacionesRepository;
 import co.edu.usbbog.sgpi.repository.IParticipantesRepository;
 import co.edu.usbbog.sgpi.repository.IPresupuestoRepository;
@@ -73,6 +74,8 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	private IConvocatoriaRepository iConvocatoriaRepository;
 	@Autowired
 	private IProyectoConvocatoriaRepository iProyectoConvocatoriaRepository;
+	@Autowired
+	private IMacroProyectoRepository iMacroProyectoRepository;
 
 	@Override
 	public List<Proyecto> todosLosProyectosSemillero() {
@@ -116,32 +119,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public boolean crearProyecto(Proyecto proyecto, String tipo, Participantes participante, String rol,
-			String semillero) {
-		Semillero se = iSemilleroRepository.getById(Integer.parseInt(semillero));
-		if (iProyectoRepository.existsById(proyecto.getId())) {
-
-			return false;
-		}
-		TipoProyecto tp = iTipoProyectoRepository.getById(tipo);
-		if (tp == null) {
-
-			return false;
-		}
-		try {
-			proyecto.setMacroProyecto(null);
-		} catch (Exception e) {
-			proyecto.setMacroProyecto(null);
-		}
-		proyecto.setSemillero(se);
-		participante.setRol(rol);
-		proyecto.setTipoProyecto(tp);
-		iProyectoRepository.save(proyecto);
-		iParticipantesRepository.save(participante);
-		return iProyectoRepository.existsById(proyecto.getId());
 	}
 
 	@Override
@@ -478,6 +455,77 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		}
 	}
 
+	@Override
+	public List<Proyecto> buscarAntecedentes(int proyecto) {
+		Proyecto pro = iProyectoRepository.getById(proyecto);
+		List<Proyecto> proyectos = pro.getAntecedentes();
+		if (proyectos.equals(null)) {
+			proyectos = new ArrayList<Proyecto>();
+		}
+		return proyectos;
+	}
 
+	@Override
+	public boolean crearProyecto(Proyecto proyecto, String tipo, String rol, String clase, String cedula,
+			LocalDate fecha, String semillero,int macro) {
+		Semillero se = iSemilleroRepository.getById(Integer.parseInt(semillero));
+		if (!iSemilleroRepository.existsById(se.getId())) {
+			return false;
+		}
+		MacroProyecto macroP = iMacroProyectoRepository.getById(macro);
+		if (macro < 0) {
+			proyecto.setMacroProyecto(macroP);
+		} else {
+			proyecto.setMacroProyecto(null);
+		}
+		TipoProyecto tp = iTipoProyectoRepository.getById(tipo);
+		proyecto.setTipoProyecto(tp);
+		proyecto.setId(iProyectoRepository.save(proyecto).getId());
+		iTipoProyectoRepository.save(tp);
+		//se.getProyectos().add(proyecto);
+		proyecto.setSemillero(se);
+		Usuario usu = iUsuarioRepository.getById(cedula);
+		proyecto.setId(iProyectoRepository.save(proyecto).getId());
+		Participantes participante = new Participantes(cedula, proyecto.getId(), fecha);
+		participante.setRol(rol);
+		iParticipantesRepository.save(participante);
+		Usuario profesor = se.getLiderSemillero();
+		if (profesor != null) {
+			Participantes par = new Participantes(profesor.getCedula(), proyecto.getId(),
+					participante.getParticipantesPK().getFechaInicio());
+			par.setRol("Lider");
+			iParticipantesRepository.save(par);
+		}
+		return iProyectoRepository.existsById(proyecto.getId());
+	}
 
+	@Override
+	public List<JSONObject> tusProyectosConvocatoria(String cedula) {
+		List<JSONObject> x = iProyectoRepository.tusProyectoConvocatoria(cedula);
+		return x;
+	}
+	@Override
+	public List<JSONObject> tusProyectoSemillero(String cedula) {
+		List<JSONObject> x = iProyectoRepository.tusProyectoSemillero(cedula);
+		return x;
+		}
+
+	@Override
+	public boolean darAval(ProyectosConvocatoria proyectoConvocatoria, String estado) {
+		proyectoConvocatoria.setIdProyecto(estado);
+		iProyectoConvocatoriaRepository.save(proyectoConvocatoria);
+		return true;
+	}
+
+	@Override
+	public List<JSONObject> paticipacionesConvocatoria(String proyecto) {
+		List<JSONObject> x = iProyectoRepository.paticipacionesConvocatoria(Integer.parseInt(proyecto));
+		return x;
+	}
+
+	@Override
+	public List<JSONObject> proyectosGrado() {
+		List<JSONObject> x = iProyectoRepository.proyectosGrado();
+		return x;
+		}
 }

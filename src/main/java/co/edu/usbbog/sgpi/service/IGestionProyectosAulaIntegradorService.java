@@ -65,5 +65,8 @@ public interface IGestionProyectosAulaIntegradorService {
 		public List<JSONObject> listarEvento();
 		public List<AreaConocimiento> areasConocimientoProyecto(int proyecto);
 		public List<MacroProyecto> macroProyectosAbiertos();
+		public boolean eliminarArea(int area,int proyecto);
+		public boolean crearMacro(MacroProyecto macro);
+		public boolean cerrarMacro(int parseInt);
 
 }
