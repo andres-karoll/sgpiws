@@ -87,4 +87,6 @@ public interface IGestionUsuariosService {
 	public List<Usuario> todosPorRol(String tipo);
 
 
+	//public JSONObject nombreusuario(String cedula);
+
 }

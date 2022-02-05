@@ -740,8 +740,18 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public List<Programa> todosLosProgramas() {
 		List<Programa> programas = programaRepo.findAll();
+		
 		return programas;
 	}
+	@Override
+	public List<Usuario> UsuariosPrograma(int id) {
+		
+		Programa pro =programaRepo.getById(id);
+		List<Usuario> usuarios= pro.getUsuarios();
+		System.out.println(usuarios);
+		return usuarios;
+	}
+	
 
 	@Override
 	public List<Programa> todosLosProgramasPorFacultad(int facultad) {
@@ -921,7 +931,7 @@ return programa;
 	@Override
 	public boolean eliminarMateria(String catalogo) {
 		List<JSONObject> clase = materiaRepo.findByClase(catalogo);
-		
+		System.out.println(clase);
 		boolean materia = materiaRepo.existsById(catalogo);
 		if(clase.isEmpty() && materia == true) {
 			materiaRepo.deleteById(catalogo);

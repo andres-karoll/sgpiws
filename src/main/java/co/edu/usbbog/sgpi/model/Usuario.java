@@ -380,6 +380,12 @@ public class Usuario implements Serializable {
     	usuarioJson.put("telefono",this.getTelefono());
     	usuarioJson.put("visbilidad",this.getVisibilidad());
     	usuarioJson.put("correo_personal",this.getCorreoPersonal());
+
+    		if(this.getTiposUsuario().isEmpty()) {
+        		usuarioJson.put("rol","");
+        	}else {
+        		usuarioJson.put("rol",this.getTiposUsuario().toString());
+        	}
     	if(this.getSemilleroId()==null) {
     		usuarioJson.put("semillero_id","");
     	}else {

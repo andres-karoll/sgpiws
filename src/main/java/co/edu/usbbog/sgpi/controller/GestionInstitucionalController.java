@@ -621,6 +621,18 @@ public class GestionInstitucionalController {
 		return salida;		
 	}
 	
+	@GetMapping(value = "/listarusuariosporprograma/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONArray listarUsuariosPorPrograma(@PathVariable int id) {
+		JSONArray salida = new JSONArray(); 
+		List<Usuario> usua = gestionInstitucionalService.UsuariosPrograma(id);
+		for (Iterator iterator = usua.iterator(); iterator.hasNext();) {
+			Usuario usuario = (Usuario) iterator.next();
+			salida.add(usuario.toJson()) ;
+		}
+
+		return salida;		
+	}
+	
 	@GetMapping(value = "/listarprogramaspordirector/{director}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONArray listarProgramasPorDirector(@PathVariable int director) {
 		JSONArray salida = new JSONArray(); 
