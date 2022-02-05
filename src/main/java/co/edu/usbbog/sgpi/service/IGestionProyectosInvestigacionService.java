@@ -78,5 +78,10 @@ public interface IGestionProyectosInvestigacionService {
 		public List<Proyecto> buscarAntecedentes(int parseInt);
 		public boolean crearProyecto(Proyecto proyecto, String asString, String asString2, String asString3,
 				String asString4, LocalDate parse, String asString5,int macro);
+		public List<JSONObject> tusProyectosConvocatoria(String cedula);
+		public List<JSONObject> tusProyectoSemillero(String cedula);
+		public boolean darAval(ProyectosConvocatoria proyectoConvocatoria, String asString);
+		public List<JSONObject> paticipacionesConvocatoria(String proyecto);
+		public List<JSONObject> proyectosGrado();
 
 }

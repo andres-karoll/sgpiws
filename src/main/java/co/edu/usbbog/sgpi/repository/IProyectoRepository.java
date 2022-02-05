@@ -53,4 +53,13 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	@Transactional
 	@Query(value="DELETE FROM sgpi_db.areas_conocimiento WHERE (proyecto = ?2) and (area_conocimiento = ?1)",nativeQuery = true)
 	void eliminarArea(int area,int pro);
+	@Query(value="select proyecto.id,proyecto.descripcion,proyecto.titulo,proyecto.estado, proyectos_convocatoria.convocatoria from proyecto,proyectos_convocatoria,participantes where proyecto.id=proyectos_convocatoria.proyectos and  participantes.proyecto=proyecto.id and participantes.usuario=?1",nativeQuery = true)
+	List<JSONObject> tusProyectoConvocatoria(String cedula);
+	@Query(value="select proyecto.id,proyecto.descripcion,proyecto.titulo,proyecto.estado from proyecto,participantes where proyecto.tipo_proyecto=\"Semillero\" and  participantes.proyecto=proyecto.id and participantes.usuario=?1",nativeQuery = true)
+	List<JSONObject> tusProyectoSemillero(String cedula);
+	@Query(value="Select convocatoria.nombre_convocatoria,convocatoria.id from convocatoria, proyectos_convocatoria where proyectos_convocatoria.proyectos=?1 and proyectos_convocatoria.convocatoria=convocatoria.id",nativeQuery = true)
+	List<JSONObject> paticipacionesConvocatoria(int proyecto);
+	@Query(value="select * from proyecto where tipo_proyecto=\"Grado\"",nativeQuery = true)
+	List<JSONObject> proyectosGrado();
+	
 }

@@ -499,6 +499,33 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		return iProyectoRepository.existsById(proyecto.getId());
 	}
 
+	@Override
+	public List<JSONObject> tusProyectosConvocatoria(String cedula) {
+		List<JSONObject> x = iProyectoRepository.tusProyectoConvocatoria(cedula);
+		return x;
+	}
+	@Override
+	public List<JSONObject> tusProyectoSemillero(String cedula) {
+		List<JSONObject> x = iProyectoRepository.tusProyectoSemillero(cedula);
+		return x;
+		}
 
+	@Override
+	public boolean darAval(ProyectosConvocatoria proyectoConvocatoria, String estado) {
+		proyectoConvocatoria.setIdProyecto(estado);
+		iProyectoConvocatoriaRepository.save(proyectoConvocatoria);
+		return true;
+	}
 
+	@Override
+	public List<JSONObject> paticipacionesConvocatoria(String proyecto) {
+		List<JSONObject> x = iProyectoRepository.paticipacionesConvocatoria(Integer.parseInt(proyecto));
+		return x;
+	}
+
+	@Override
+	public List<JSONObject> proyectosGrado() {
+		List<JSONObject> x = iProyectoRepository.proyectosGrado();
+		return x;
+		}
 }
