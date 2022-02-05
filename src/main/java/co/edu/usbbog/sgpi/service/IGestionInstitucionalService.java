@@ -74,6 +74,7 @@ public interface IGestionInstitucionalService {
 	public String crearPrograma(Programa programa, int facultad, String director);
 	public String modificarPrograma(int id, String nombre, String facultad, String director);
 	public Programa programaporid(int id);
+	public List<Usuario> UsuariosPrograma(int id);
 	
 	public List<GrupoInvestigacion> gruposDelPrograma(int programa);
 	public List<Semillero> semillerosDelPrograma(int programa);
