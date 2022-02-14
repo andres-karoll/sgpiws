@@ -114,7 +114,6 @@ public class GestionProyectosAulaIntegradorController {
 		}
 		return salida;
 	}
-
 	@GetMapping("/todosLosproyectos")
 	public JSONArray todosLosProyectos() {
 		JSONArray salida = new JSONArray();
@@ -402,6 +401,24 @@ public class GestionProyectosAulaIntegradorController {
 			salida.add(participantes.toJson());
 		}
 		  return salida;
+		}
+	@PostMapping(value = "/tusProyectosConvocatoria")
+	public   List<JSONObject> tusProyectosConvocatoria(@RequestBody JSONObject entrada	) {
+		 List<JSONObject> x = iGestionProyectosAulaIntegradorService.tusProyectosConvocatoria(Integer.parseInt(entrada.getAsString("convocatoria")),Integer.parseInt(entrada.getAsString("id")));
+		 return x;
+		}	
+	@PostMapping(value = "/ModificarMacro")
+	public  JSONObject modificarMacro(@RequestBody JSONObject entrada	) {
+		JSONObject salida=new JSONObject();
+		
+		if(iGestionProyectosAulaIntegradorService.modificarMacro(Integer.parseInt(entrada.getAsString("id")),entrada.getAsString("nombre") ,entrada.getAsString("descripcion"))) {
+			salida.put("respuesta", "el macro proyecto fue modificado");
+			
+		}else {
+			salida.put("respuesta", "el macro proyecto proyecto no se pudo modificar");
+			
+		}
+		return salida;
 		}
 
 }

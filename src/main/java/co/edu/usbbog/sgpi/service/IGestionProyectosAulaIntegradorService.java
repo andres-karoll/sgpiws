@@ -68,5 +68,6 @@ public interface IGestionProyectosAulaIntegradorService {
 		public boolean eliminarArea(int area,int proyecto);
 		public boolean crearMacro(MacroProyecto macro);
 		public boolean cerrarMacro(int parseInt);
-
+		public boolean modificarMacro(int macro,String nombre,String descripcion);
+		public List<JSONObject> tusProyectosConvocatoria(int convocatoria ,int id);
 }

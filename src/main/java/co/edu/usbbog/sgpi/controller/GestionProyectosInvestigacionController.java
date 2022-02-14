@@ -52,7 +52,6 @@ public class GestionProyectosInvestigacionController {
 	public JSONObject verficarSemillero(@PathVariable String cedula) {
 		JSONObject salida = new JSONObject();
 		if (iGestionProyectosInvestigacionService.verificarSemillero(cedula)) {
-			System.out.println("qasdasdas");
 			salida.put("respuesta", "este usuario ya esta asignado a un semillero");
 		} else {
 			salida.put("respuesta", "el usuario no esta inscrito aun semillero");
@@ -287,6 +286,32 @@ public class GestionProyectosInvestigacionController {
 	@GetMapping("/proyectosGrado")
 	public List<JSONObject> proyectoGrado() {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosGrado();	
+		return pro;
+	}
+	@GetMapping("/proyectosPropuestaClase/{curso}")
+	public List<JSONObject> proyectoPropuestaClase(@PathVariable int curso) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosPropuestaClase(curso);	
+		return pro;
+	}
+	@GetMapping("/proyectosDesarrolloClase/{curso}")
+	public List<JSONObject> proyectoDesarrolloClase(@PathVariable int curso) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosDesarrolloClase(curso);	
+		return pro;
+	}
+	@PostMapping("/evaluar/")
+	public JSONObject Evaluar(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		
+		if (iGestionProyectosInvestigacionService.evaluar(Integer.parseInt(entrada.getAsString("proyecto")),entrada.getAsString("estado"))) {
+			salida.put("respuesta", "Se realizo la validacion exitosamente");
+		} else {
+			salida.put("respuesta", "no se pudo realizar ");
+		}
+		return salida;
+	}
+	@GetMapping("/proyectosFinalizadosClase/{curso}")
+	public List<JSONObject> proyectosFinalizadosClase(@PathVariable int curso) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosFinalizadosClase(curso);	
 		return pro;
 	}
 }

@@ -83,5 +83,9 @@ public interface IGestionProyectosInvestigacionService {
 		public boolean darAval(ProyectosConvocatoria proyectoConvocatoria, String asString);
 		public List<JSONObject> paticipacionesConvocatoria(String proyecto);
 		public List<JSONObject> proyectosGrado();
+		public List<JSONObject>proyectosPropuestaClase(int curso);
+		public List<JSONObject> proyectosDesarrolloClase(int curso);
+		public List<JSONObject> proyectosFinalizadosClase(int curso);
+		public boolean evaluar(int proyecto, String asString);
 
 }
