@@ -89,4 +89,6 @@ public interface IGestionUsuariosService {
 
 	//public JSONObject nombreusuario(String cedula);
 
+	
+	String asignarRolUsuario(String usuario, String tipoUsuario);
 }

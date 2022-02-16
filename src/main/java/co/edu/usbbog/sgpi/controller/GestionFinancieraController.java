@@ -163,10 +163,14 @@ public class GestionFinancieraController {
 			
 			
 			
-			
-					gestionFinancieraService.crearCompra(
+			if(gestionFinancieraService.crearCompra(
 					compra,
-					Integer.parseInt(entrada.getAsString("presupuesto")));
+					Integer.parseInt(entrada.getAsString("presupuesto")))) {
+				salida.put("respuesta", "compra creada");
+			}else{
+				salida.put("respuesta", "no se pudo");
+			}
+					
 
 		return salida;
 		
@@ -184,8 +188,25 @@ public class GestionFinancieraController {
 				LocalDate.parse(entrada.getAsString("fecha_compra")),
 				 Double.parseDouble(entrada.getAsString("valor")),
 						 Integer.parseInt(entrada.getAsString("estado"))
-			)) {
+			)=="compra creada") {
 			salida.put("respuesta", "se creo");
+		}
+		else if(gestionFinancieraService.realziarCompra(
+				Integer.parseInt(entrada.getAsString("id")),
+				entrada.getAsString("codigo_compra"),
+				LocalDate.parse(entrada.getAsString("fecha_compra")),
+				 Double.parseDouble(entrada.getAsString("valor")),
+						 Integer.parseInt(entrada.getAsString("estado"))
+			)=="la fecha debe ser mayor a la fecha de solicitud") {
+			salida.put("respuesta", "la fecha debe ser mayor a la fecha de solicitud");
+		}else if(gestionFinancieraService.realziarCompra(
+				Integer.parseInt(entrada.getAsString("id")),
+				entrada.getAsString("codigo_compra"),
+				LocalDate.parse(entrada.getAsString("fecha_compra")),
+				 Double.parseDouble(entrada.getAsString("valor")),
+						 Integer.parseInt(entrada.getAsString("estado"))
+			)=="no se puede realizar la compra, el presupuesto se a excedido") {
+			salida.put("respuesta", "no se puede realizar la compra, el presupuesto se a excedido");
 		}else {
 			salida.put("respuesta", "NO se creo");
 		}
