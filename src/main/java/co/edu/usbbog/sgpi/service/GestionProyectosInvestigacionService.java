@@ -2,6 +2,7 @@ package co.edu.usbbog.sgpi.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
@@ -337,7 +338,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	@Override
 	public boolean eliminarProducto(int id) {
 		Producto producto = iProductoRepository.getById(id);
-	
+
 		if (producto.equals(null)) {
 			return false;
 		} else {
@@ -433,24 +434,33 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 
 	@Override
 	public List<JSONObject> todosLosProyectosUsuarioSemillero(String cedula) {
-		List<JSONObject> proyectos = iProyectoRepository.proyectosParticipaSemillero(cedula);
+		Usuario usu=iUsuarioRepository.getById(cedula); 
+		List<JSONObject> proyectos = iProyectoRepository.proyectosParticipaSemillero(usu.getSemilleroId().getId());
 
 		return proyectos;
 	}
 
 	@Override
 	public List<JSONObject> proyectosParticipanteSemillero(String cedula) {
-		List<JSONObject> x = iProyectoRepository.proyectosParticipaSemillero(cedula);
-		return x;
+		Usuario usu=iUsuarioRepository.getById(cedula); 
+		List<JSONObject> proyectos = iProyectoRepository.proyectosParticipaSemillero(usu.getSemilleroId().getId());
+
+		return proyectos;
 	}
 
 	@Override
 	public boolean verificarSemillero(String cedula) {
 		Usuario usu = iUsuarioRepository.getById(cedula);
-		if (usu.getSemilleroId().getId() == null) {
-	
+		int semillero=0;
+		try {
+		 semillero=usu.getSemilleroId().getId();
+		} catch (Exception e) {
+			
+		}
+		
+		if (semillero==0) {
 			return false;
-		} else {
+		}else {
 			return true;
 		}
 	}
@@ -467,7 +477,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 
 	@Override
 	public boolean crearProyecto(Proyecto proyecto, String tipo, String rol, String clase, String cedula,
-			LocalDate fecha, String semillero,int macro) {
+			LocalDate fecha, String semillero, int macro) {
 		Semillero se = iSemilleroRepository.getById(Integer.parseInt(semillero));
 		if (!iSemilleroRepository.existsById(se.getId())) {
 			return false;
@@ -482,7 +492,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		proyecto.setTipoProyecto(tp);
 		proyecto.setId(iProyectoRepository.save(proyecto).getId());
 		iTipoProyectoRepository.save(tp);
-		//se.getProyectos().add(proyecto);
+		// se.getProyectos().add(proyecto);
 		proyecto.setSemillero(se);
 		Usuario usu = iUsuarioRepository.getById(cedula);
 		proyecto.setId(iProyectoRepository.save(proyecto).getId());
@@ -504,17 +514,63 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		List<JSONObject> x = iProyectoRepository.tusProyectoConvocatoria(cedula);
 		return x;
 	}
+
 	@Override
 	public List<JSONObject> tusProyectoSemillero(String cedula) {
 		List<JSONObject> x = iProyectoRepository.tusProyectoSemillero(cedula);
 		return x;
-		}
+	}
 
 	@Override
 	public boolean darAval(ProyectosConvocatoria proyectoConvocatoria, String estado) {
 		proyectoConvocatoria.setIdProyecto(estado);
-		iProyectoConvocatoriaRepository.save(proyectoConvocatoria);
-		return true;
+		proyectoConvocatoria = iProyectoConvocatoriaRepository.save(proyectoConvocatoria);
+
+		if (estado.equals("Aceptado")) {
+			Proyecto pro = iProyectoRepository
+					.getById(proyectoConvocatoria.getProyectosConvocatoriaPK().getProyectos());
+			List<Participantes> parti = pro.getParticipantes();
+			TipoUsuario tipo1 = iTipoUsuarioRepository.getById("Investigador formacion");
+			TipoUsuario tipo2 = iTipoUsuarioRepository.getById("Docente investigador");
+			for (Iterator iterator = parti.iterator(); iterator.hasNext();) {
+				Participantes participantes = (Participantes) iterator.next();
+				Usuario usu = iUsuarioRepository.getById(participantes.getUsuario().getCedula());
+				List<TipoUsuario> tipoUsuario = usu.getTiposUsuario();
+				
+				if (participantes.getRol().equals("Participante")) {
+					int i=0;
+					for (Iterator iterator2 = tipoUsuario.iterator(); iterator2.hasNext();) {
+						TipoUsuario tipoUsuario2 = (TipoUsuario) iterator2.next();
+						if (tipoUsuario2.getNombre().contains("Investigador formacio")) {
+							i=i+1;
+						}
+					}
+					if(i>0) {
+						System.out.println("ya tiene el rol");
+					} else {
+						tipo1.getUsuarios().add(usu);
+						iTipoUsuarioRepository.save(tipo1);
+					}
+				} else if (participantes.getRol().equals("Lider")) {
+					int i=0;
+					for (Iterator iterator2 = tipoUsuario.iterator(); iterator2.hasNext();) {
+						TipoUsuario tipoUsuario2 = (TipoUsuario) iterator2.next();
+						if (tipoUsuario2.getNombre().contains("Docente investigador")) {
+							i=i+1;
+						} 
+					}
+					if(i>0) {
+						System.out.println("ya tiene el rol");
+					}
+					else {
+						tipo2.getUsuarios().add(usu);
+						iTipoUsuarioRepository.save(tipo2);
+					}
+				}
+			}
+		}
+		
+		return iProyectoConvocatoriaRepository.existsById(proyectoConvocatoria.getProyectosConvocatoriaPK());
 	}
 
 	@Override
@@ -527,5 +583,32 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	public List<JSONObject> proyectosGrado() {
 		List<JSONObject> x = iProyectoRepository.proyectosGrado();
 		return x;
-		}
+	}
+
+	@Override
+	public List<JSONObject> proyectosPropuestaClase(int curso) {
+		List<JSONObject> x = iProyectoRepository.proyectosPropuestaClase(curso);
+		return x;
+	}
+
+	@Override
+	public List<JSONObject> proyectosDesarrolloClase(int curso) {
+		List<JSONObject> x = iProyectoRepository.proyectosDesarrolloClase(curso);
+		return x;
+	}
+
+	@Override
+	public List<JSONObject> proyectosFinalizadosClase(int curso) {
+		List<JSONObject> x = iProyectoRepository.proyectosFinalizadosClase(curso);
+
+		return x;
+	}
+
+	@Override
+	public boolean evaluar(int proyecto, String estado) {
+		Proyecto pro = iProyectoRepository.getById(proyecto);
+		pro.setEstado(estado);
+		iProyectoRepository.save(pro);
+		return true; // TODO Auto-generated method stub
+	}
 }

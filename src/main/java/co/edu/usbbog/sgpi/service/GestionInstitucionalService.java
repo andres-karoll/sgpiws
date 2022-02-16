@@ -529,7 +529,23 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	public boolean asignarSemilleroAUsuario(String cedula,int semillero) {
 		Usuario usu=usuarioRepo.getById(cedula);
 		Semillero semi=semilleroRepo.getById(semillero);
+		TipoUsuario tipo2 = iTipoUsuarioRepository.getById("Semillerista");
+		int i=0;
+		List<TipoUsuario> tipo=usu.getTiposUsuario();
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().contains("Semillerista")) {
+				i=i+1;
+			}
+		}
 		usu.setSemilleroId(semi);
+		if(i>0) {
+			System.out.println("este usuario ya tiene el rol");
+		}else{
+			tipo2.getUsuarios().add(usu);
+			iTipoUsuarioRepository.save(tipo2);
+		}
+		
 		usuarioRepo.save(usu);
 		return usuarioRepo.existsById(usu.getCedula());
 	}
@@ -670,11 +686,11 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		
 		
 		
-		if(nombre!="") {
+		if(nombre!=" ") {
 			facultad.setNombre(nombre);
 		}
 		
-		if(decano!="") {
+		if(decano!=" ") {
 			usuarioRepo.deleteTipo(facultad.getDecano().getCedula(), "Lider investigacion facultad");
 			
 			List<TipoUsuario> tipouno = deca.getTiposUsuario();
@@ -699,7 +715,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			iTipoUsuarioRepository.save(tipousuariouno);
 			
 		}
-		if(coordinador!="") {
+		if(coordinador!=" ") {
 			usuarioRepo.deleteTipo(facultad.getCoorInv().getCedula(), "Coordinador investigacion facultad");
 			
 			List<TipoUsuario> tipodos = coor.getTiposUsuario();
@@ -1044,12 +1060,9 @@ return programa;
 		if(claseRepo.existsById(clase.getNumero())) {
 			return "la clase ya existe";
 		}
-
-		
 		List<TipoUsuario> tipo = profe.getTiposUsuario();
 		String rol="";
 		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
-			
 			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
 			if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
 				rol="Estudiante inactivo";
@@ -1060,13 +1073,10 @@ return programa;
 			if(tipoUsuario.getNombre().equals("Semillerista")) {
 				rol="Semillerista";
 			}
-			if(tipoUsuario.getNombre().equals("Docente")) {
-
+			/*if(tipoUsuario.getNombre().equals("Docente")) {
 				rol="Docente";
-				
-			}
+			}*/
 		}
-		
 		System.out.println(rol);
 		if(rol.equals("Estudiante inactivo")) {
 			return "esta persona es usuario inactivo";
@@ -1077,17 +1087,18 @@ return programa;
 		else if(rol.equals("Semillerista")) {
 			return "esta persona es usuario semillerista";
 		}
-		else if(rol.equals("Docente")) {
+		/*else if(rol.equals("Docente")) {
 			clase.setMateria(mate);
 			clase.setProfesor(profe);
 			claseRepo.save(clase);
 			return "se creo la clase";
-		}
+		}*/
 		else{
 			
 			clase.setMateria(mate);
 			clase.setProfesor(profe);
 			claseRepo.save(clase);
+			//poner rol
 			tipousuario.getUsuarios().add(profe);
 			iTipoUsuarioRepository.save(tipousuario);
 			return "se creo la clase";

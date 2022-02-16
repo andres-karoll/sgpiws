@@ -1,6 +1,7 @@
 package co.edu.usbbog.sgpi.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,10 +115,26 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	public boolean asignarSemillero(String cedula,int semillero) {
 		Usuario usu=iUsuarioRepository.getById(cedula);
 		Semillero semi=iSemilleroRepository.getById(semillero);
+		TipoUsuario tipo2 = iTipoUsuarioRepository.getById("Semillerista");
+		int i=0;
+		List<TipoUsuario> tipo=usu.getTiposUsuario();
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().contains("Semillerista")) {
+				i=i+1;
+			}
+		}
 		usu.setSemilleroId(semi);
+		if(i>0) {
+			System.out.println("este usuario ya tiene el rol");
+		}else{
+			tipo2.getUsuarios().add(usu);
+			iTipoUsuarioRepository.save(tipo2);
+		}
+		
 		iUsuarioRepository.save(usu);
 		return iUsuarioRepository.existsById(usu.getCedula());
-	}
+		}
 
 	public boolean eliminarUsuarioSemillero(String cedula) {
 
