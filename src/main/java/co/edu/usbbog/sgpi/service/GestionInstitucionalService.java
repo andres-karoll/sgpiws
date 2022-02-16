@@ -124,6 +124,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 				return "el usuario no existe";
 			}
 			List<TipoUsuario> tipo = dir.getTiposUsuario();
+			int i =0;
 			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
 				TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
 				if(tipoUsuario.getNombre().equals("Estudiante inactivo")) {
@@ -135,15 +136,31 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 				if(tipoUsuario.getNombre().equals("Semillerista")) {
 					return "usuario invalido 7";
 				}
-				if(tipoUsuario.getNombre().equals("Lider grupo investigacion")) {
-					return "este usuario ya es lider de grupo";
+			}
+			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
+				if(tipoUsuario2.getNombre().equals("Lider grupo investigacion")) {
+					i=i+1;
+					
 				}
-			}		
+			}
+				
+				if(i>0) {
+					System.out.println("ya tiene ese rol");
+				}
+				else {
+					System.out.println("NO tenia el rol");
+					tipousuario.getUsuarios().add(dir);
+					iTipoUsuarioRepository.save(tipousuario);
+				}
+				
+				
+		
+
 			grupoInvestigacion.setDirectorGrupo(dir);
 			grupoIRepo.save(grupoInvestigacion);
 			
-			tipousuario.getUsuarios().add(dir);
-			iTipoUsuarioRepository.save(tipousuario);
+			
 			return "se creo el grupo";	
 	}
 	
@@ -188,18 +205,29 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 				if(tipoUsuario.getNombre().equals("Semillerista")) {
 					return "usuario invalido 3";
 				}
-				if(tipoUsuario.getNombre().equals("Lider grupo investigacion")) {
-					return "este usuario ya es lider de grupo";
+			
+			}
+			int i =0;
+			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
+				if(tipoUsuario2.getNombre().equals("Lider grupo investigacion")) {
+					i=i+1;
+					
 				}
 			}
+				
+				if(i>0) {
+					System.out.println("ya tiene ese rol");
+				}
+				else {
+					System.out.println("NO tenia el rol");
+					tipousuariouno.getUsuarios().add(direc);
+					iTipoUsuarioRepository.save(tipousuariouno);
+				}
 			grupo.setDirectorGrupo(direc);
-			tipousuariouno.getUsuarios().add(direc);
-			iTipoUsuarioRepository.save(tipousuariouno);
-		}
-		
+		}	
 		grupoIRepo.save(grupo);
 		return "grupo actualizado";
-		
 	}
 	
 	
@@ -398,18 +426,30 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			if(tipoUsuario.getNombre().equals("Semillerista")) {
 				return "usuario invalido 3";
 			}
-			if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
-				return "este usuario ya es lider de semillero";
+
+		}
+		int i =0;
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
+			if(tipoUsuario2.getNombre().equals("Docente lider semillero")) {
+				i=i+1;
+				
 			}
 		}
+			
+			if(i>0) {
+				System.out.println("ya tiene ese rol");
+			}
+			else {
+				System.out.println("NO tenia el rol");
+				tipousuario.getUsuarios().add(lid);
+				iTipoUsuarioRepository.save(tipousuario);
+			}
 		
 		semillero.setLiderSemillero(lid);
 		semillero.setGrupoInvestigacion(gru);
 		semillero.setLineaInvestigacion(lin);
 		semilleroRepo.save(semillero);
-		
-		tipousuario.getUsuarios().add(lid);
-		iTipoUsuarioRepository.save(tipousuario);
 		return "se creo el semillero";
 	}
 	@Override
@@ -453,13 +493,27 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 				if(tipoUsuario.getNombre().equals("Semillerista")) {
 					return "usuario invalido 3";
 				}
-				if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
-					return "este usuario ya es lider de semillero";
+
+			}
+			int i =0;
+			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
+				if(tipoUsuario2.getNombre().equals("Docente lider semillero")) {
+					i=i+1;
+					
 				}
 			}
+				
+				if(i>0) {
+					System.out.println("ya tiene ese rol");
+				}
+				else {
+					System.out.println("NO tenia el rol");
+					tipousuariouno.getUsuarios().add(lider);
+					iTipoUsuarioRepository.save(tipousuariouno);
+				}
+			
 			semillero.setLiderSemillero(lider);
-			tipousuariouno.getUsuarios().add(lider);
-			iTipoUsuarioRepository.save(tipousuariouno);
 		}
 		
 		semilleroRepo.save(semillero);
@@ -618,10 +672,24 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			if(tipoUsuario.getNombre().equals("Semillerista")) {
 				return "usuario invalido 3";
 			}
-			if(tipoUsuario.getNombre().equals("Lider investigacion facultad")) {
-				return "este usuario ya es Lider investigacion facultad";
-			}
 		}
+		int i =0;
+		for (Iterator iterator = tipouno.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().equals("Lider investigacion facultad")) {
+				i=i+1;
+				
+			}
+		}		
+			if(i>0) {
+				System.out.println("ya tiene ese rol director");
+			}
+			else {
+				System.out.println("NO tenia el rol");
+				tipousuariouno.getUsuarios().add(deca);
+				iTipoUsuarioRepository.save(tipousuariouno);
+			}
+		
 		
 		List<TipoUsuario> tipodos = coor.getTiposUsuario();
 		for (Iterator iterator = tipodos.iterator(); iterator.hasNext();) {
@@ -635,10 +703,25 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			if(tipoUsuario.getNombre().equals("Semillerista")) {
 				return "usuario invalido 6";
 			}
-			if(tipoUsuario.getNombre().equals("Coordinador investigacion facultad")) {
-				return "este usuario ya es Coordinador investigacion facultad";
-			}
 		}
+		int j =0;
+		for (Iterator iterator = tipodos.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().equals("Coordinador investigacion facultad")) {
+				j=j+1;
+				
+			}
+		}		
+			if(j>0) {
+				System.out.println("ya tiene ese rol coordinador");
+			}
+			else {
+				System.out.println("NO tenia el rol");
+				tipousuariodos.getUsuarios().add(coor);
+				iTipoUsuarioRepository.save(tipousuariodos);
+			}
+		
+			
 		
 		
 		facultad.setCoorInv(coor);
@@ -646,11 +729,6 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		facultadRepo.save(facultad);
 		
 		
-		tipousuariouno.getUsuarios().add(deca);
-		iTipoUsuarioRepository.save(tipousuariouno);
-		
-		tipousuariodos.getUsuarios().add(coor);
-		iTipoUsuarioRepository.save(tipousuariodos);
 		
 		return "se creo la facultad";
 	}
@@ -689,15 +767,25 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 				if(tipoUsuario.getNombre().equals("Semillerista")) {
 					return "usuario invalido 3";
 				}
-				if(tipoUsuario.getNombre().equals("Lider investigacion facultad")) {
-					return "la falcultad no fue creada el primer usuario ya es Lider investigacion facultad";
+			}
+			int i =0;
+			for (Iterator iterator = tipouno.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
+				if(tipoUsuario2.getNombre().equals("Lider investigacion facultad")) {
+					i=i+1;
+					
 				}
 			}
-			
-			facultad.setDecano(deca);
-			tipousuariouno.getUsuarios().add(deca);
-			iTipoUsuarioRepository.save(tipousuariouno);
-			
+				
+				if(i>0) {
+					System.out.println("ya tiene ese rol");
+				}
+				else {
+					System.out.println("NO tenia el rol");
+					tipousuariouno.getUsuarios().add(deca);
+					iTipoUsuarioRepository.save(tipousuariouno);
+				}
+			facultad.setDecano(deca);		
 		}
 		if(coordinador!="") {
 			usuarioRepo.deleteTipo(facultad.getCoorInv().getCedula(), "Coordinador investigacion facultad");
@@ -714,13 +802,26 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 				if(tipoUsuario.getNombre().equals("Semillerista")) {
 					return "usuario invalido 6";
 				}
-				if(tipoUsuario.getNombre().equals("Coordinador investigacion facultad")) {
-					return "la falcultad no fue creada el segundo ya es Coordinador investigacion facultad";
+			}
+			
+			int i =0;
+			for (Iterator iterator = tipodos.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
+				if(tipoUsuario2.getNombre().equals("Coordinador investigacion facultad")) {
+					i=i+1;
+					
 				}
 			}
+				
+				if(i>0) {
+					System.out.println("ya tiene ese rol");
+				}
+				else {
+					System.out.println("NO tenia el rol");
+					tipousuariodos.getUsuarios().add(coor);
+					iTipoUsuarioRepository.save(tipousuariouno);
+				}
 			facultad.setCoorInv(coor);
-			tipousuariodos.getUsuarios().add(coor);
-			iTipoUsuarioRepository.save(tipousuariodos);
 		}
 		
 		facultadRepo.save(facultad);
@@ -820,18 +921,30 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			if(tipoUsuario.getNombre().equals("Semillerista")) {
 				return "usuario invalido 3";
 			}
-			if(tipoUsuario.getNombre().equals("Director programa")) {
-				return "este usuario ya es Director de programa";
+		}
+		int i =0;
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
+			if(tipoUsuario2.getNombre().equals("Director programa")) {
+				i=i+1;
+				
 			}
 		}
+			
+			if(i>0) {
+				System.out.println("ya tiene ese rol");
+			}
+			else {
+				System.out.println("NO tenia el rol");
+				tipousuario.getUsuarios().add(direc);
+				iTipoUsuarioRepository.save(tipousuario);
+			}
+			
 		
 		
 		programa.setFacultadId(facul);
 		programa.setDirector(direc);
 		programaRepo.save(programa);
-		
-		tipousuario.getUsuarios().add(direc);
-		iTipoUsuarioRepository.save(tipousuario);
 		return "se creo el programa";
 	}
 	
@@ -867,14 +980,26 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 				if(tipoUsuario.getNombre().equals("Semillerista")) {
 					return "usuario invalido 3";
 				}
-				if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
-					return "este usuario ya es lider de semillero";
+			}
+			int i =0;
+			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+				TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
+				if(tipoUsuario2.getNombre().equals("Director programa")) {
+					i=i+1;
+					
 				}
 			}
+				
+				if(i>0) {
+					System.out.println("ya tiene ese rol");
+				}
+				else {
+					System.out.println("NO tenia el rol");
+					tipousuariouno.getUsuarios().add(direc);
+					iTipoUsuarioRepository.save(tipousuariouno);
+				}
 			
 			programa.setDirector(direc);
-			tipousuariouno.getUsuarios().add(direc);
-			iTipoUsuarioRepository.save(tipousuariouno);
 		}
 		
 		programaRepo.save(programa);
@@ -1131,13 +1256,27 @@ return programa;
 					if(tipoUsuario.getNombre().equals("Semillerista")) {
 						return "usuario invalido 3";
 					}
-					if(tipoUsuario.getNombre().equals("Docente lider semillero")) {
-						return "este usuario ya es lider de semillero";
+
+				}
+				
+				int i =0;
+				for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+					TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
+					if(tipoUsuario2.getNombre().equals("Docente")) {
+						i=i+1;
+						
 					}
 				}
+					
+					if(i>0) {
+						System.out.println("ya tiene ese rol");
+					}
+					else {
+						System.out.println("NO tenia el rol");
+						tipousuariouno.getUsuarios().add(profe);
+						iTipoUsuarioRepository.save(tipousuariouno);
+					}
 				clase.setProfesor(profe);
-				tipousuariouno.getUsuarios().add(profe);
-				iTipoUsuarioRepository.save(tipousuariouno);
 			}
 			claseRepo.save(clase);
 			return "clase actualizada";

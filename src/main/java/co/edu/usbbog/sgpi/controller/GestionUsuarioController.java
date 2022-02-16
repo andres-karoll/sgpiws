@@ -196,6 +196,24 @@ public class GestionUsuarioController {
 		}
 		return salida;
 	}
+	
+	
+	@PostMapping("/asignarrolusuario")
+	public JSONObject asignarRolUsuario(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if (iGestionUsuariosService.asignarRolUsuario(entrada.getAsString("cedula"), entrada.getAsString("rol"))=="se agrego el rol") {
+			salida.put("respuesta", "se agrego el rol");
+		}else if (iGestionUsuariosService.asignarRolUsuario(entrada.getAsString("cedula"), entrada.getAsString("rol"))=="el usuario no existe") {
+			salida.put("respuesta", "el usuario no existe");
+		}else if (iGestionUsuariosService.asignarRolUsuario(entrada.getAsString("cedula"), entrada.getAsString("rol"))=="el rol no existe") {
+			salida.put("respuesta", "el rol no existe");
+		}else if (iGestionUsuariosService.asignarRolUsuario(entrada.getAsString("cedula"), entrada.getAsString("rol"))=="ya tiene ese rol") {
+			salida.put("respuesta", "ya tiene ese rol");
+		} else {
+			salida.put("respuesta", "el rol no se pudo asignar");
+		}
+		return salida;
+	}
 
 	@PostMapping("/asignardecano")
 	public JSONObject asignarDecano(@RequestBody JSONObject entrada) {

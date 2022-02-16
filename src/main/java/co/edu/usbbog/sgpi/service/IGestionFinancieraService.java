@@ -23,7 +23,7 @@ public interface IGestionFinancieraService {
 	public boolean modificarCompra(int id,String nombre, String tipo, String link, String descripcion);
 	public Compra compraporid(int id);
 	//actualizar compra
-	public boolean realziarCompra(int compra,String codigo,LocalDate fechaCompra,Double valor, int estado);
+	public String realziarCompra(int compra,String codigo,LocalDate fechaCompra,Double valor, int estado);
 	public JSONObject comprasTotales(int presupuesto);
 	public JSONObject presupuestoTotal(int presupuesto);
 	public List<JSONObject> comprasPorEstado(int estado, int presupuesto);

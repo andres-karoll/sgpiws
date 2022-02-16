@@ -1,6 +1,7 @@
 package co.edu.usbbog.sgpi.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -319,7 +320,41 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		List<Usuario> usuarios = iTipoUsuarioRepository.getById(tipoUsuario.getNombre()).getUsuarios();
 		return usuarios.contains(usuario);
 	}
-
+	@Override
+	public String asignarRolUsuario(String usuario, String tipoUsuario) {
+		Usuario usua = iUsuarioRepository.getById(usuario);
+		
+		TipoUsuario tipousuario = iTipoUsuarioRepository.getById(tipoUsuario);
+		
+		if(!iUsuarioRepository.existsById(usua.getCedula())) {
+			return "el usuario no existe";
+		}
+		if(!iTipoUsuarioRepository.existsById(tipousuario.getNombre())) {
+			return "el rol no existe";
+		}
+		int i =0;
+		List<TipoUsuario> tipo = usua.getTiposUsuario();
+	
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
+			if(tipoUsuario2.getNombre().equals(tipousuario.getNombre())) {
+				i=i+1;
+				
+			}
+		}
+			
+			if(i>0) {
+				System.out.println("ya tiene ese rol");
+				return "ya tiene ese rol";
+			}
+			else {
+				System.out.println("NO tenia el rol");
+				tipousuario.getUsuarios().add(usua);
+				iTipoUsuarioRepository.save(tipousuario);
+			}
+			return "se agrego el rol";	
+		
+	}
 	@Override
 	public boolean validarCuenta(String cedula, String visibilidad) {
 
