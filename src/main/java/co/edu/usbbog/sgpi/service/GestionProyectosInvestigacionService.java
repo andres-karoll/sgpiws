@@ -432,6 +432,27 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		}
 	}
 
+	
+	
+	
+	@Override
+	public boolean participarConvocatoriados(ProyectosConvocatoria proyectosConvocatoria, int proyecto, int convocatoria) {
+		
+		Proyecto proyec =iProyectoRepository.getById(proyecto);
+		List<Producto> productos = proyec.getProductos();
+		
+		Convocatoria convoca = iConvocatoriaRepository.getById(convocatoria);
+		String numero = convoca.getNumeroProductos();
+		
+		if(productos.size()>Integer.parseInt(numero)) {
+			return false;
+		}else {
+	proyectosConvocatoria.setIdProyecto(proyecto+"");
+			iProyectoConvocatoriaRepository.save(proyectosConvocatoria);
+			return true;
+			}
+		
+	}
 	@Override
 	public List<JSONObject> todosLosProyectosUsuarioSemillero(String cedula) {
 		Usuario usu=iUsuarioRepository.getById(cedula); 

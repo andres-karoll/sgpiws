@@ -72,6 +72,7 @@ public interface IGestionProyectosInvestigacionService {
 		public boolean agregarAreaConocimiento(int parseInt, int parseInt2);
 		public List<AreaConocimiento> buscarAreasProyecto(int parseInt);
 		public boolean participarConvocatoria(ProyectosConvocatoria proyectosConvocatoria,String estado);
+		public boolean participarConvocatoriados(ProyectosConvocatoria proyectosConvocatoria, int proyecto, int convocatoria);
 		public List<JSONObject> todosLosProyectosUsuarioSemillero(String cedula);
 		public List<JSONObject> proyectosParticipanteSemillero(String cedula);
 		public boolean verificarSemillero(String cedula);
