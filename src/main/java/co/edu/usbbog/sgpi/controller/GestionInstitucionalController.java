@@ -1366,7 +1366,17 @@ else {
 		}
 		return "no se pudo eliminar";
 	}
-
+	@GetMapping(value="/ProyectosPostuladosConvocatorias/{estado}")
+	public List<JSONObject> ProyectosPostuladosConvocatorias(@PathVariable String estado) {
+		List<JSONObject> salida = gestionInstitucionalService.ProyectosPostuladosConvocatorias(estado);
+		return salida;		
+	}
+	@GetMapping(value="/datosProyectoConvocatoria/{id}")
+	public List<JSONObject> datosProyectoConvocatoria(@PathVariable int id) {
+		List<JSONObject> salida = gestionInstitucionalService.datosProyectoConvocatoria(id);
+		return salida;		
+	}
+	
 }
 	
 

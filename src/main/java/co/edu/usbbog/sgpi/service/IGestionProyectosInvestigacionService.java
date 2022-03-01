@@ -87,5 +87,6 @@ public interface IGestionProyectosInvestigacionService {
 		public List<JSONObject> proyectosDesarrolloClase(int curso);
 		public List<JSONObject> proyectosFinalizadosClase(int curso);
 		public boolean evaluar(int proyecto, String asString);
+		public boolean evaluarConvocatoria(int proyecto, int convocatoria, String estado);
 
 }

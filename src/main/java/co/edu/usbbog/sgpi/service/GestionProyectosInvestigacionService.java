@@ -1,6 +1,9 @@
 package co.edu.usbbog.sgpi.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -525,10 +528,11 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	public boolean darAval(ProyectosConvocatoria proyectoConvocatoria, String estado) {
 		proyectoConvocatoria.setIdProyecto(estado);
 		proyectoConvocatoria = iProyectoConvocatoriaRepository.save(proyectoConvocatoria);
-
-		if (estado.equals("Aceptado")) {
-			Proyecto pro = iProyectoRepository
-					.getById(proyectoConvocatoria.getProyectosConvocatoriaPK().getProyectos());
+		Proyecto pro = iProyectoRepository
+				.getById(proyectoConvocatoria.getProyectosConvocatoriaPK().getProyectos());
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		if (estado.equals("Validacion 1")) {
+			
 			List<Participantes> parti = pro.getParticipantes();
 			TipoUsuario tipo1 = iTipoUsuarioRepository.getById("Investigador formacion");
 			TipoUsuario tipo2 = iTipoUsuarioRepository.getById("Docente investigador");
@@ -568,8 +572,14 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 					}
 				}
 			}
+		}else if(estado.equals("Desarrollo")) {
+			pro.setEstado(estado);
+			iProyectoRepository.save(pro);
+		}else if (estado.equals("Finalizado")) {
+			pro.setEstado(estado);
+			pro.setFechaFin(LocalDate.parse(dtf.format(LocalDateTime.now())));
+			iProyectoRepository.save(pro);
 		}
-		
 		return iProyectoConvocatoriaRepository.existsById(proyectoConvocatoria.getProyectosConvocatoriaPK());
 	}
 
@@ -610,5 +620,11 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		pro.setEstado(estado);
 		iProyectoRepository.save(pro);
 		return true; // TODO Auto-generated method stub
+	}
+
+	@Override
+	public boolean evaluarConvocatoria(int proyecto, int convocatoria, String estado) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

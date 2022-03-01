@@ -154,5 +154,11 @@ public interface IGestionInstitucionalService {
 
 	public boolean crearLinea2(String nombre, String descripcion, LocalDate fecha);
 
+
+	public List<JSONObject> ProyectosPostuladosConvocatorias(String estado);
+
+
+	public List<JSONObject> datosProyectoConvocatoria(int id);
+
 	
 }

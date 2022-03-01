@@ -57,8 +57,7 @@ public interface IGestionProyectosAulaIntegradorService {
 		public boolean agregarAreaConocimiento(int proyecto, int area);
 		public List<AreaConocimiento> buscarAreasProyecto(int proyecto);
 		public List<JSONObject> proyectosParticipanteClase(String cedula);
-		public boolean actualizarProyecto(int id, String titulo, String descripcion, String metodologia,
-				String justificacion);
+		public boolean actualizarProyecto(int id, String titulo, String descripcion, String metodologia,String justificacion);
 		public List<Participantes> listarParticipantesPorPoryecto(int id);		
 		public boolean actualizarParticipante(int id, String cedula, LocalDate fechafin);
 		public List<AreaConocimiento> listarAreaConocimiento();
