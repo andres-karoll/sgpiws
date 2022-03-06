@@ -80,9 +80,9 @@ public class GestionUsuarioController {
 				entrada.getAsString("contrasena"), entrada.getAsString("nombres"), entrada.getAsString("apellidos"),
 				entrada.getAsString("visibilidad"));
 		usuario.setTelefono(entrada.getAsString("telefono"));
-		
+		//System.out.println(entrada);
 		if ( entrada.getAsString("correoEst").contains("@academia.usbbog.edu.co")){
-		    if(entrada.getAsString("tipo").equals("Estudiante")) {
+		    if(entrada.getAsString("tipo").equals("Estudiante activo")) {
 		    	tipoUsuario=entrada.getAsString("tipo");
 		    }else {
 		        salida.put("respuesta", "el tipo de usuario es incorrecto ");

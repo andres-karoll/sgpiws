@@ -296,8 +296,8 @@ public class GestionProyectosInvestigacionController {
 	}
 	@GetMapping("/paticipacionesConvocatoria/{proyecto}")
 	public List<JSONObject> proyectoConvocatoria(@PathVariable String proyecto) {
-		List<JSONObject> pro = iGestionProyectosInvestigacionService.paticipacionesConvocatoria(proyecto);	
-		return pro;
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.paticipacionesConvocatoria(proyecto);
+		return pro;	
 	}
 	@GetMapping("/proyectosGrado")
 	public List<JSONObject> proyectoGrado() {
@@ -325,10 +325,56 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
+	@PostMapping("/evaluarConvocatoria/")
+	public JSONObject evaluarConvocatoria(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		
+		if (iGestionProyectosInvestigacionService.evaluarConvocatoria(Integer.parseInt(entrada.getAsString("proyecto")),Integer.parseInt(entrada.getAsString("convocatoria")),entrada.getAsString("estado"))) {
+			salida.put("respuesta", "Se realizo la validacion exitosamente");
+		} else {
+			salida.put("respuesta", "no se pudo realizar ");
+		}
+		return salida;
+	}
 	@GetMapping("/proyectosFinalizadosClase/{curso}")
 	public List<JSONObject> proyectosFinalizadosClase(@PathVariable int curso) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosFinalizadosClase(curso);	
 		return pro;
+	}
+	@GetMapping("/TrabajoGradoInicio/{cedula}")
+	public List<JSONObject> TrabajoGradoInicio(@PathVariable String cedula) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.trabajoGradoInicio(cedula);	
+		return pro;
+	}
+	@GetMapping("/TrabajoGradoDesarrollo/{cedula}")
+	public List<JSONObject> TrabajoGradoDesarrollo(@PathVariable String cedula) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.trabajoGradoDesarrollo(cedula);	
+		return pro;
+	}
+	@GetMapping("/TrabajoGradoJurado/{cedula}")
+	public List<JSONObject> TrabajoGradoJurado(@PathVariable String cedula) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.trabajoGradoJurado(cedula);	
+		return pro;
+	}
+	@GetMapping("/TrabajoGradoFinalizados/{cedula}")
+	public List<JSONObject> TrabajoGradoFinalizados(@PathVariable String cedula) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.trabajoGradoFinalizados(cedula);	
+		return pro;
+	}
+	@GetMapping("/TrabajoGradoRechazados/{cedula}")
+	public List<JSONObject> TrabajoGradoRechazados(@PathVariable String cedula) {
+		List<JSONObject> pro = iGestionProyectosInvestigacionService.trabajoGradoRechazados(cedula);	
+		return pro;
+	}
+	@PostMapping("/cambiarEstadoTrabajoGrado/")
+	public JSONObject CambioEstadoTrabajoGrado(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if (iGestionProyectosInvestigacionService.cambioEstadoTrabajoGrado(Integer.parseInt(entrada.getAsString("proyecto")),entrada.getAsString("estado"),entrada.getAsString("reconocimientos"))) {
+			salida.put("respuesta", "Se realizo la validacion exitosamente");
+		} else {
+			salida.put("respuesta", "no se pudo realizar ");
+		}
+		return salida;
 	}
 }
 
