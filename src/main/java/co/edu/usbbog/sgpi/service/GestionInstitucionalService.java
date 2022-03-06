@@ -1527,18 +1527,6 @@ return programa;
 			}
 		return false;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	// METODOS DE SI EXISTE
 	@Override
 	public boolean existeUsuario(String cedula) {
@@ -1656,10 +1644,18 @@ return programa;
 		return lineaRepo.existsById(nombre);
 	}
 
+	@Override
+	public List<JSONObject> ProyectosPostuladosConvocatorias(String estado) {
+		List<JSONObject> PPC =proyectoRepo.ProyectosPostuladosConvocatorias( estado);
+		return PPC;
+	}
 
+	@Override
+	public List<JSONObject> datosProyectoConvocatoria(int id) {
+		List<JSONObject> PPC =proyectoRepo.datosProyectoConvocatoria(id);
+		return PPC;
+	}
 	
-	
-
 	
 
 }
