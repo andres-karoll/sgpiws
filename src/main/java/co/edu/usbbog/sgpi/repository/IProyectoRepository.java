@@ -57,11 +57,11 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	List<JSONObject> paticipacionesConvocatoria(int proyecto);
 	@Query(value="select * from proyecto where tipo_proyecto=\"Grado\"",nativeQuery = true)
 	List<JSONObject> proyectosGrado();
-	@Query(value="select * from proyecto, proyectos_clase where proyecto.tipo_proyecto=\"Aula\" and proyecto.id=proyectos_clase.proyecto and proyecto.estado=\"Propuesta\" and proyectos_clase.clase=?1",nativeQuery = true)
+	@Query(value="select * from proyecto, proyectos_clase where proyecto.id=proyectos_clase.proyecto and proyecto.estado=\"Propuesta\" and proyectos_clase.clase=?1",nativeQuery = true)
 	List<JSONObject> proyectosPropuestaClase(int clase);
-	@Query(value="select * from proyecto, proyectos_clase where proyecto.tipo_proyecto=\"Aula\" and proyecto.id=proyectos_clase.proyecto and proyecto.estado=\"Desarrollo\" and proyectos_clase.clase=?1",nativeQuery = true)
+	@Query(value="select * from proyecto, proyectos_clase where proyecto.id=proyectos_clase.proyecto and proyecto.estado=\"Desarrollo\" and proyectos_clase.clase=?1",nativeQuery = true)
 	List<JSONObject> proyectosDesarrolloClase(int curso);
-	@Query(value="select * from proyecto, proyectos_clase where proyecto.tipo_proyecto=\"Aula\" and proyecto.id=proyectos_clase.proyecto and proyecto.estado=\"Finalizado\" and proyectos_clase.clase=?1",nativeQuery = true)
+	@Query(value="select * from proyecto, proyectos_clase where proyecto.id=proyectos_clase.proyecto and proyecto.estado=\"Finalizado\" and proyectos_clase.clase=?1",nativeQuery = true)
 	List<JSONObject> proyectosFinalizadosClase(int curso);
 	@Query(value="select distinct proyecto.id, proyecto.titulo, proyecto.descripcion,proyectos_convocatoria.id_proyecto , convocatoria.nombre_convocatoria from proyectos_convocatoria,proyecto, participantes,convocatoria where proyectos_convocatoria.proyectos=proyecto.id \r\n"
 			+ "and proyectos_convocatoria.convocatoria=?1 and participantes.proyecto=proyecto.id and participantes.usuario=?2 and convocatoria.id=proyectos_convocatoria.convocatoria",nativeQuery = true)
@@ -75,7 +75,7 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	List<JSONObject> trabajoGradoInicio(String cedula);
 	@Query(value= "select proyecto.id,titulo,proyecto.tipo_proyecto,proyecto.estado,descripcion from proyecto, participantes,usuario where proyecto.estado='Desarrollo' and proyecto.id=participantes.proyecto and usuario.cedula=participantes.usuario and usuario.cedula=?1 and proyecto.tipo_proyecto='Grado'",nativeQuery = true)
 	List<JSONObject> trabajoGradoDesarrollo(String cedula);
-	@Query(value= "select proyecto.id,titulo,proyecto.tipo_proyecto,proyecto.estado,descripcion from proyecto, participantes,usuario where proyecto.estado='Inicio' and proyecto.id=participantes.proyecto and usuario.cedula=participantes.usuario and usuario.cedula=?1 and proyecto.tipo_proyecto='Grado'",nativeQuery = true)
+	@Query(value= "select proyecto.id,titulo,proyecto.tipo_proyecto,proyecto.estado,descripcion from proyecto, participantes,usuario where proyecto.estado='Correcciones' and proyecto.id=participantes.proyecto and usuario.cedula=participantes.usuario and usuario.cedula=?1 and proyecto.tipo_proyecto='Grado'",nativeQuery = true)
 	List<JSONObject> trabajoGradoJurado(String cedula);
 	@Query(value= "select proyecto.id,titulo,proyecto.tipo_proyecto,proyecto.estado,descripcion from proyecto, participantes,usuario where proyecto.estado='Finalizado' and proyecto.id=participantes.proyecto and usuario.cedula=participantes.usuario and usuario.cedula=?1 and proyecto.tipo_proyecto='Grado'",nativeQuery = true)
 	List<JSONObject> trabajoGradoFinalizados(String cedula);
