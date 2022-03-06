@@ -627,4 +627,56 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public List<JSONObject> trabajoGradoInicio(String cedula) {
+		List<JSONObject> x = iProyectoRepository.trabajoGradoInicio(cedula);
+
+		return x;
+	}
+
+	@Override
+	public List<JSONObject> trabajoGradoDesarrollo(String cedula) {
+		List<JSONObject> x = iProyectoRepository.trabajoGradoDesarrollo(cedula);
+
+		return x;
+	}
+
+	@Override
+	public List<JSONObject> trabajoGradoJurado(String cedula) {
+		List<JSONObject> x = iProyectoRepository.trabajoGradoJurado(cedula);
+
+		return x;
+	}
+
+	@Override
+	public List<JSONObject> trabajoGradoFinalizados(String cedula) {
+		List<JSONObject> x = iProyectoRepository.trabajoGradoFinalizados(cedula);
+
+		return x;
+	}
+
+	@Override
+	public List<JSONObject> trabajoGradoRechazados(String cedula) {
+		List<JSONObject> x = iProyectoRepository.trabajoGradoRechazados(cedula);
+
+		return x;
+	}
+
+	@Override
+	public boolean cambioEstadoTrabajoGrado(int proyecto, String estado,String reconocimiento) {
+		Proyecto pro=iProyectoRepository.getById(proyecto);
+		boolean est=false;
+		if(estado.equals("Finalizado")) {
+		pro.setEstado(estado);
+		pro.setRetroalimentacionFinal(reconocimiento);
+		iProyectoRepository.save(pro);
+		est=true;
+		}else {
+			pro.setEstado(estado);
+			iProyectoRepository.save(pro);
+			est=true;
+		}
+		return est;
+	}
 }

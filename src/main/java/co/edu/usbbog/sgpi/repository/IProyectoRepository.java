@@ -71,4 +71,14 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	List<JSONObject> ProyectosPostuladosConvocatorias(String estado);
 	@Query(value= "select proyecto.id,proyecto.titulo,proyecto.descripcion,convocatoria.nombre_convocatoria, proyectos_convocatoria.id_proyecto ,convocatoria.id as id_convocatoria from proyecto, proyectos_convocatoria,convocatoria where proyecto.id=proyectos_convocatoria.proyectos and proyectos_convocatoria.convocatoria=convocatoria.id and proyecto.id=?1 ",nativeQuery = true)
 	List<JSONObject> datosProyectoConvocatoria(int id);
+	@Query(value= "select proyecto.id,titulo,proyecto.tipo_proyecto,proyecto.estado,descripcion from proyecto, participantes,usuario where proyecto.estado='Inicio' and proyecto.id=participantes.proyecto and usuario.cedula=participantes.usuario and usuario.cedula=?1 and proyecto.tipo_proyecto='Grado'",nativeQuery = true)
+	List<JSONObject> trabajoGradoInicio(String cedula);
+	@Query(value= "select proyecto.id,titulo,proyecto.tipo_proyecto,proyecto.estado,descripcion from proyecto, participantes,usuario where proyecto.estado='Desarrollo' and proyecto.id=participantes.proyecto and usuario.cedula=participantes.usuario and usuario.cedula=?1 and proyecto.tipo_proyecto='Grado'",nativeQuery = true)
+	List<JSONObject> trabajoGradoDesarrollo(String cedula);
+	@Query(value= "select proyecto.id,titulo,proyecto.tipo_proyecto,proyecto.estado,descripcion from proyecto, participantes,usuario where proyecto.estado='Inicio' and proyecto.id=participantes.proyecto and usuario.cedula=participantes.usuario and usuario.cedula=?1 and proyecto.tipo_proyecto='Grado'",nativeQuery = true)
+	List<JSONObject> trabajoGradoJurado(String cedula);
+	@Query(value= "select proyecto.id,titulo,proyecto.tipo_proyecto,proyecto.estado,descripcion from proyecto, participantes,usuario where proyecto.estado='Finalizado' and proyecto.id=participantes.proyecto and usuario.cedula=participantes.usuario and usuario.cedula=?1 and proyecto.tipo_proyecto='Grado'",nativeQuery = true)
+	List<JSONObject> trabajoGradoFinalizados(String cedula);
+	@Query(value= "select proyecto.id,titulo,proyecto.tipo_proyecto,proyecto.estado,descripcion from proyecto, participantes,usuario where proyecto.estado='Rechazado' and proyecto.id=participantes.proyecto and usuario.cedula=participantes.usuario and usuario.cedula=?1 and proyecto.tipo_proyecto='Grado'",nativeQuery = true)
+	List<JSONObject> trabajoGradoRechazados(String cedula);
 }
