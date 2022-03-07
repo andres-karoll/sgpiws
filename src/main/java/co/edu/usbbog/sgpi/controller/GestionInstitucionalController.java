@@ -410,8 +410,8 @@ public class GestionInstitucionalController {
 	@PostMapping(value = "/asignarsemilleroaprograma")
 	public JSONObject asignarSemilleroAPrograma(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		if(gestionInstitucionalService.asignarSemilleroAPrograma(Integer.parseInt(entrada.getAsString("programa")), Integer.parseInt(entrada.getAsString("semillero")))) {
-			salida.put("respuesta", "se asigno la facultad correctamente");
+		if(gestionInstitucionalService.asignarSemilleroAPrograma(Integer.parseInt(entrada.getAsString("programa")), Integer.parseInt(entrada.getAsString("semillero")))==true) {
+			salida.put("respuesta", "se asigno la programa correctamente");
 		}
 		else {
 			salida.put("respuesta", "no se pudo asignar la facultad");
