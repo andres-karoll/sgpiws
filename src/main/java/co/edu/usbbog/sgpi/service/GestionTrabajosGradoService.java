@@ -11,10 +11,8 @@ import org.springframework.stereotype.Service;
 
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
-import co.edu.usbbog.sgpi.model.MacroProyecto;
 import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.Producto;
-import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.TipoUsuario;
@@ -198,24 +196,6 @@ public class GestionTrabajosGradoService implements IGestionTrabajosGradoService
 		}
 		return comentarios;
 		
-	}
-
-	@Override
-	public boolean asignarCalificacion(double calificacion) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean eliminarCalificacion(Comentario comentario) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean asignarProgramaAcademico(Proyecto grado, Programa programa) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

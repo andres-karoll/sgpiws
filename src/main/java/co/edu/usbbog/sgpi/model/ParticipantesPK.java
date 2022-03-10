@@ -10,9 +10,6 @@ import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-
-import net.minidev.json.JSONObject;
-
 /**
  *
  * @author 57310

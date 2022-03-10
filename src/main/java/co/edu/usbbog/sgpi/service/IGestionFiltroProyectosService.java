@@ -1,25 +1,43 @@
 package co.edu.usbbog.sgpi.service;
 
 import java.util.List;
-
-import co.edu.usbbog.sgpi.model.AreaConocimiento;
-import co.edu.usbbog.sgpi.model.LineaInvestigacion;
 import co.edu.usbbog.sgpi.model.Proyecto;
-import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 public interface IGestionFiltroProyectosService {
-	
+	/**
+	 * todos los proyectos
+	 * @return
+	 */
 	public List<Proyecto> todosLosProyectos();
+	/**
+	 * todos los proyectos visibles 
+	 * @return
+	 */
 	public List<JSONObject> todosLosProyectosVisibles();
-	//listar por lugar?????????
-	public List<Proyecto> todosLosProyectosPorLugar();
+	/**
+	 * todos los proyectos por tipo de proyecto 
+	 * @param tipo_proyecto
+	 * @return
+	 */
 	public List<Proyecto> todosLosProyectosPorTipoProyecto(String tipo_proyecto);
+	/**
+	 * todos los proyectos por area de conocimiento 
+	 * @param areaConocimiento
+	 * @return
+	 */
 	public List<Proyecto> todosLosProyectosPorAreaConocimiento(int areaConocimiento);
+	/**
+	 * todps los proyectos por titulo 
+	 * @param titulo
+	 * @return
+	 */
 	public List<Proyecto> todosLosProyectosPorNombre(String titulo);
-	//El sistema deberá contar con un filtro que evidencie la línea de investigación a la cual se está aplicando el proyecto.
-	public List<Proyecto> todosLosProyectosPorLinea(String lineainvestigacion);
+
+	/**
+	 * todos los tipos de proyectos 
+	 * @return
+	 */
 	public List<TipoProyecto> todosLosTiposProyecto();
 }

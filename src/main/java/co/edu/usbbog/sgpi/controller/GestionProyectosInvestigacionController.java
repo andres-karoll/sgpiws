@@ -32,6 +32,11 @@ import net.minidev.json.JSONObject;
 public class GestionProyectosInvestigacionController {
 	@Autowired
 	private IGestionProyectosInvestigacionService iGestionProyectosInvestigacionService ;
+	/**
+	 * crear un proyecto 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/crearproyecto")
 	public JSONObject crearProyectoAulaIntegrador(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -48,6 +53,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
+	/**
+	 * verificar si se encuentra en un semillero 
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping("/verficarSemillero/{cedula}")
 	public JSONObject verficarSemillero(@PathVariable String cedula) {
 		JSONObject salida = new JSONObject();
@@ -58,7 +68,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-	
+	/**
+	 * agregar participante a un proyecto 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/agregarParticipante")
 	public JSONObject agregarParticipante(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -71,18 +85,32 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
+	/**
+	 * proyectos de tipo semillero por usuario  
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping(value = "/proyectossemillero/{cedula}")
 	public  List<JSONObject>  listaProyectos(@PathVariable String cedula	) {
 		 List<JSONObject> x = iGestionProyectosInvestigacionService.proyectosParticipanteSemillero(cedula);
 		 return x;
 		}
-
+	/**
+	 * proyectos de tipo semillero por usuario  
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping("/todosLosproyectosusuariosemillero/{cedula}")
 	public  List<JSONObject> todosLosProyectosUsuarioSemillero(@PathVariable String cedula) {
 		List<JSONObject> proyectos = iGestionProyectosInvestigacionService.todosLosProyectosUsuarioSemillero(cedula);
 		
 		return proyectos;
 	}
+	/**
+	 * eliminar proyecto 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/eliminarproyecto/{id}")
 	public JSONObject elinimarProyecto(@PathVariable String id) {
 		JSONObject salida = new JSONObject();
@@ -93,7 +121,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
+	/**
+	 * crear un producto  
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/crearproducto")
 	public JSONObject crearProducto(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -108,7 +140,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
+	/**
+	 * eliminar un producto 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/eliminarproducto/{id}")
 	public JSONObject elinimarProducto(@PathVariable String id) {
 		JSONObject salida = new JSONObject();
@@ -119,7 +155,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
+	/**
+	 * crear comentario 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/crearcomentario")
 	public JSONObject crearComentario(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -135,6 +175,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
+	/**
+	 * elimianr comentario 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/eliminarcomentario/{id}")
 	public JSONObject elinimarComentario(@PathVariable String id) {
 		JSONObject salida = new JSONObject();
@@ -145,7 +190,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
+	/**
+	 * comentarios por productos 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/comentariosproducto/{id}")
 	public JSONArray ComentariosPorProducto(@PathVariable String id) {
 		JSONArray salida = new JSONArray();
@@ -158,7 +207,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
+	/**
+	 * participar en un evento 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/participarevento")
 	public JSONObject participarEvento(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -174,7 +227,11 @@ public class GestionProyectosInvestigacionController {
 
 		return salida;
 	}
-
+	/**
+	 * lista de participaciones en eventos 
+	 * @param proyecto
+	 * @return
+	 */
 	@GetMapping("/participacionesproyecto/{proyecto}")
 	public JSONArray participacionesProyecto(@PathVariable String proyecto) {
 		JSONArray salida = new JSONArray();
@@ -186,7 +243,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
+	/**
+	 * agregar antecedente 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/agregarantecedente")
 	public JSONObject agregarAntecedente(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -211,7 +272,11 @@ public class GestionProyectosInvestigacionController {
 
 		return salida;
 	}
-
+	/**
+	 * agregar area de conocimiento 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/agregarareaconocimiento")
 	public JSONObject agregarAreaConocimiento(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -223,7 +288,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
+	/**
+	 * listar areas de conocimiento por proyecto 
+	 * @param proyecto
+	 * @return
+	 */
 	@GetMapping("/listarareasproyecto/{proyecto}")
 	public JSONArray listarAreasProyecto(@PathVariable String proyecto) {
 		JSONArray salida = new JSONArray();
@@ -235,6 +304,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
+	/**
+	 * listar antecedentes de un proyecto
+	 * @param proyecto
+	 * @return
+	 */
 	@GetMapping("/listarAntecedentes/{proyecto}")
 	public JSONArray listarAntecedenteProyecto(@PathVariable String proyecto) {
 		JSONArray salida = new JSONArray();
@@ -246,6 +320,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
+	/**
+	 * participar en una convocatoria 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/participarconvocatoria/")
 	public JSONObject participarconvocatoria(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -257,103 +336,182 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
+	/**
+	 * proyectos de un usuario de tipo convocatoria 
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping("/tusProyectosConvocatoria/{cedula}")
 	public List<JSONObject> tusProyectoConvocatoria(@PathVariable String cedula) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.tusProyectosConvocatoria(cedula);	
 		return pro;
 	}
+	/**
+	 * proyectos de semillero de un usuario 
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping("/tusProyectosSemillero/{cedula}")
 	public List<JSONObject> tusProyectoSemillero(@PathVariable String cedula) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.tusProyectoSemillero(cedula);	
 		return pro;
 	}
+	/**
+	 * dar aval a un proyecto 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/aval/")
 	public JSONObject darAval(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		ProyectosConvocatoria proyectoConvocatoria= new ProyectosConvocatoria(Integer.parseInt(entrada.getAsString("proyecto")),Integer.parseInt(entrada.getAsString("convocatoria")));
-		if (iGestionProyectosInvestigacionService.darAval(proyectoConvocatoria,entrada.getAsString("estado"))) {
+		if (iGestionProyectosInvestigacionService.darAval(proyectoConvocatoria,entrada.getAsString("estado"),entrada.getAsString("reconocimiento"))){
 			salida.put("respuesta", "Se realizo la validacion exitosamente");
 		} else {
 			salida.put("respuesta", "no se pudo realizar ");
 		}
 		return salida;
 	}
+	/**
+	 * lista de proyectos de convocatoria
+	 * @param proyecto
+	 * @return
+	 */
 	@GetMapping("/paticipacionesConvocatoria/{proyecto}")
 	public List<JSONObject> proyectoConvocatoria(@PathVariable String proyecto) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.paticipacionesConvocatoria(proyecto);
 		return pro;	
 	}
+	/**
+	 * lista de todos los proyectos de grado 
+	 * @return
+	 */
 	@GetMapping("/proyectosGrado")
 	public List<JSONObject> proyectoGrado() {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosGrado();	
 		return pro;
 	}
+	/**
+	 * proyectos de clase en estado propuesta 
+	 * @param curso
+	 * @return
+	 */
 	@GetMapping("/proyectosPropuestaClase/{curso}")
 	public List<JSONObject> proyectoPropuestaClase(@PathVariable int curso) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosPropuestaClase(curso);	
 		return pro;
 	}
+	/**
+	 * proyectos de clase en estado desarrollo
+	 * @param curso
+	 * @return
+	 */
 	@GetMapping("/proyectosDesarrolloClase/{curso}")
 	public List<JSONObject> proyectoDesarrolloClase(@PathVariable int curso) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosDesarrolloClase(curso);	
 		return pro;
 	}
+	/**
+	 * evaluar un proyecto 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/evaluar/")
 	public JSONObject Evaluar(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		
-		if (iGestionProyectosInvestigacionService.evaluar(Integer.parseInt(entrada.getAsString("proyecto")),entrada.getAsString("estado"))) {
+		if (iGestionProyectosInvestigacionService.evaluar(Integer.parseInt(entrada.getAsString("proyecto")),entrada.getAsString("estado"),entrada.getAsString("reconocimiento"))) {
 			salida.put("respuesta", "Se realizo la validacion exitosamente");
 		} else {
 			salida.put("respuesta", "no se pudo realizar ");
 		}
 		return salida;
 	}
-	@PostMapping("/evaluarConvocatoria/")
-	public JSONObject evaluarConvocatoria(@RequestBody JSONObject entrada) {
-		JSONObject salida = new JSONObject();
-		
-		if (iGestionProyectosInvestigacionService.evaluarConvocatoria(Integer.parseInt(entrada.getAsString("proyecto")),Integer.parseInt(entrada.getAsString("convocatoria")),entrada.getAsString("estado"))) {
-			salida.put("respuesta", "Se realizo la validacion exitosamente");
-		} else {
-			salida.put("respuesta", "no se pudo realizar ");
-		}
-		return salida;
-	}
+	/**
+	 * proyectos de clase en estado finalizado 
+	 * @param curso
+	 * @return
+	 */
 	@GetMapping("/proyectosFinalizadosClase/{curso}")
 	public List<JSONObject> proyectosFinalizadosClase(@PathVariable int curso) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosFinalizadosClase(curso);	
 		return pro;
 	}
+	/**
+	 * trabajos de grado en estado inicio
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping("/TrabajoGradoInicio/{cedula}")
 	public List<JSONObject> TrabajoGradoInicio(@PathVariable String cedula) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.trabajoGradoInicio(cedula);	
 		return pro;
 	}
+	/**
+	 * trabajos de grado en estado desarrollo 
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping("/TrabajoGradoDesarrollo/{cedula}")
 	public List<JSONObject> TrabajoGradoDesarrollo(@PathVariable String cedula) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.trabajoGradoDesarrollo(cedula);	
 		return pro;
 	}
+	/**
+	 * trabajos de grado en estado correciones 
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping("/TrabajoGradoJurado/{cedula}")
 	public List<JSONObject> TrabajoGradoJurado(@PathVariable String cedula) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.trabajoGradoJurado(cedula);	
 		return pro;
 	}
+	/**
+	 * trabajos de grado en estado finalizados 
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping("/TrabajoGradoFinalizados/{cedula}")
 	public List<JSONObject> TrabajoGradoFinalizados(@PathVariable String cedula) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.trabajoGradoFinalizados(cedula);	
 		return pro;
 	}
+	/**
+	 * trabajos de grado en estado rechazados
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping("/TrabajoGradoRechazados/{cedula}")
 	public List<JSONObject> TrabajoGradoRechazados(@PathVariable String cedula) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.trabajoGradoRechazados(cedula);	
 		return pro;
 	}
+	/**
+	 * cambiar el estado del proyecto de grado 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/cambiarEstadoTrabajoGrado/")
 	public JSONObject CambioEstadoTrabajoGrado(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		if (iGestionProyectosInvestigacionService.cambioEstadoTrabajoGrado(Integer.parseInt(entrada.getAsString("proyecto")),entrada.getAsString("estado"),entrada.getAsString("reconocimientos"))) {
+			salida.put("respuesta", "Se realizo la validacion exitosamente");
+		} else {
+		
+			salida.put("respuesta", "no se pudo realizar ");
+		}
+		return salida;
+	}
+	/**
+	 * salir de un semillero 
+	 * @param entrada
+	 * @return
+	 */
+	@PostMapping("/salirSemillero/")
+	public JSONObject SalirSemillero(@RequestBody JSONObject entrada) {
+		JSONObject salida = new JSONObject();
+		if (iGestionProyectosInvestigacionService.salirSemillero(entrada.getAsString("cedula"),Integer.parseInt(entrada.getAsString("semillero")))) {
 			salida.put("respuesta", "Se realizo la validacion exitosamente");
 		} else {
 			salida.put("respuesta", "no se pudo realizar ");
