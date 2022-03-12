@@ -3,11 +3,8 @@ package co.edu.usbbog.sgpi.service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
 import co.edu.usbbog.sgpi.model.Facultad;
 import co.edu.usbbog.sgpi.model.GrupoInvestigacion;
 import co.edu.usbbog.sgpi.model.Programa;
@@ -20,7 +17,6 @@ import co.edu.usbbog.sgpi.repository.IProgramaRepository;
 import co.edu.usbbog.sgpi.repository.ISemilleroRepository;
 import co.edu.usbbog.sgpi.repository.ITipoUsuarioRepository;
 import co.edu.usbbog.sgpi.repository.IUsuarioRepository;
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 @Service
@@ -83,6 +79,7 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		if (existeUsuario(usuario.getCedula())) {
 			return false;
 		}
+		System.out.println(tipousuario);
 		TipoUsuario tp = iTipoUsuarioRepository.getById(tipousuario);
 		Programa pro = iProgramaRepository.getById(Integer.parseInt(programa));
 		if (pro == null) {
@@ -430,12 +427,5 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	}
 
 
-	/*
-	@Override
-    public JSONArray nombreusuario(String cedula) {
-        JSONArray nombre = iUsuarioRepository.getNombre(cedula);
 
-
-        return nombre;
-    }*/
 }

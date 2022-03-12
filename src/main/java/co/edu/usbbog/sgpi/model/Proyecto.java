@@ -12,7 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -128,7 +127,6 @@ public class Proyecto implements Serializable {
     }
 
     public Proyecto( String titulo, String estado, String descripcion, LocalDate fechaInicio, short visibilidad, String ciudad, String metodologia, String justificacion) {
-        this.id = id;
         this.titulo = titulo;
         this.estado = estado;
         this.descripcion = descripcion; 

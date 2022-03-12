@@ -2,21 +2,13 @@ package co.edu.usbbog.sgpi.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import co.edu.usbbog.sgpi.model.AreaConocimiento;
-import co.edu.usbbog.sgpi.model.Comentario;
-import co.edu.usbbog.sgpi.model.LineaInvestigacion;
 import co.edu.usbbog.sgpi.model.Proyecto;
-import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.repository.IAreaConocimientoRepository;
 import co.edu.usbbog.sgpi.repository.IProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ITipoProyectoRepository;
-import co.edu.usbbog.sgpi.repository.ITipoUsuarioRepository;
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 
@@ -44,19 +36,6 @@ public class GestionFiltroProyectosService implements IGestionFiltroProyectosSer
 		List<JSONObject> proyectos = proyectoRepo.proyectosVisibles();
 		return proyectos;
 	}
-
-	@Override
-	public List<Proyecto> todosLosProyectosPorLugar() {
-		// TODO Auto-generated method stub
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		return null;}
-	
 
 	@Override
 	public List<Proyecto> todosLosProyectosPorTipoProyecto(String tipo_proyecto) {
@@ -92,11 +71,6 @@ public class GestionFiltroProyectosService implements IGestionFiltroProyectosSer
 		return proyectos;
 	}
 
-	@Override
-	public List<Proyecto> todosLosProyectosPorLinea(String lineainvestigacion) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<TipoProyecto> todosLosTiposProyecto() {

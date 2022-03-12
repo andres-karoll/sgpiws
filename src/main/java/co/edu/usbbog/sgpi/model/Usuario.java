@@ -23,8 +23,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 /**

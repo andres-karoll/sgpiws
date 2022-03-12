@@ -3,7 +3,6 @@ package co.edu.usbbog.sgpi.controller;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import co.edu.usbbog.sgpi.model.Comentario;
-import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Proyecto;
-import co.edu.usbbog.sgpi.service.IGestionProyectosAulaIntegradorService;
 import co.edu.usbbog.sgpi.service.IGestionTrabajosGradoService;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -27,6 +23,10 @@ import net.minidev.json.JSONObject;
 public class GestionTrabajosGradoController {
 	@Autowired
 	private IGestionTrabajosGradoService iGestionTrabajosGradoService;
+	/**
+	 * todos los proyetos 
+	 * @return
+	 */
 	@GetMapping("/todosLosproyectos")
 	public JSONArray todosLosProyectos() {
 		JSONArray salida = new JSONArray();
@@ -37,6 +37,11 @@ public class GestionTrabajosGradoController {
 		}
 		return salida;
 	}
+	/**
+	 * crear proyecto 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/crearproyecto")
 	public JSONObject crearProyectoAulaIntegrador(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -53,6 +58,11 @@ public class GestionTrabajosGradoController {
 		}
 		return salida;
 	}
+	/**
+	 * eliminar un proyecto 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/eliminarproyecto/{id}")
 	public JSONObject elinimarProyecto(@PathVariable String id) {
 		JSONObject salida = new JSONObject();
@@ -63,6 +73,11 @@ public class GestionTrabajosGradoController {
 		}
 		return salida;
 	}
+	/**
+	 * crear producto 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/crearproducto")
 	public JSONObject crearProducto(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -84,7 +99,11 @@ public class GestionTrabajosGradoController {
 			
 		return salida;
 	}
-
+	/**
+	 * elimiar un producto 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/eliminarproducto/{id}")
 	public JSONObject elinimarProducto(@PathVariable String id) {
 		JSONObject salida = new JSONObject();
@@ -95,6 +114,11 @@ public class GestionTrabajosGradoController {
 		}
 		return salida;
 	}
+	/**
+	 * crear comentario de un producto 
+	 * @param entrada
+	 * @return
+	 */
 	@PostMapping("/crearcomentario")
 	public JSONObject crearComentario(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
@@ -110,6 +134,11 @@ public class GestionTrabajosGradoController {
 		}
 		return salida;
 	}
+	/**
+	 * eliminar un comentario 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/eliminarcomentario/{id}")
 	public JSONObject elinimarComentario(@PathVariable String id) {
 		JSONObject salida = new JSONObject();
@@ -120,6 +149,10 @@ public class GestionTrabajosGradoController {
 		}
 		return salida;
 	}
+	/**
+	 * listar trabajos de grado terminados
+	 * @return
+	 */
 	@GetMapping(value = "/listarGradoTerminado")
 	public JSONArray listarGradoTerminado() {
 		JSONArray salida = new JSONArray();
@@ -129,6 +162,11 @@ public class GestionTrabajosGradoController {
 		}
 		return salida;
 	}
+	/**
+	 * lista de proyectos de tipo Grado de un usuario  
+	 * @param cedula
+	 * @return
+	 */
 	@GetMapping(value = "/proyectosgrado/{cedula}")
 	public  List<JSONObject>  poryectosParparticipante(@PathVariable String cedula	) {
 		 List<JSONObject> x = iGestionTrabajosGradoService.proyectosParticipante(cedula);

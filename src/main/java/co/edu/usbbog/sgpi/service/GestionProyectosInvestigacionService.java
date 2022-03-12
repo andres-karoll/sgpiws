@@ -2,31 +2,23 @@ package co.edu.usbbog.sgpi.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
 import co.edu.usbbog.sgpi.model.Compra;
-import co.edu.usbbog.sgpi.model.Convocatoria;
-import co.edu.usbbog.sgpi.model.Facultad;
 import co.edu.usbbog.sgpi.model.MacroProyecto;
 import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.Presupuesto;
 import co.edu.usbbog.sgpi.model.Producto;
-import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
-import co.edu.usbbog.sgpi.model.ProyectosConvocatoriaPK;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.TipoUsuario;
@@ -34,7 +26,6 @@ import co.edu.usbbog.sgpi.model.Usuario;
 import co.edu.usbbog.sgpi.repository.IAreaConocimientoRepository;
 import co.edu.usbbog.sgpi.repository.IComentarioRepository;
 import co.edu.usbbog.sgpi.repository.ICompraRepository;
-import co.edu.usbbog.sgpi.repository.IConvocatoriaRepository;
 import co.edu.usbbog.sgpi.repository.IMacroProyectoRepository;
 import co.edu.usbbog.sgpi.repository.IParticipacionesRepository;
 import co.edu.usbbog.sgpi.repository.IParticipantesRepository;
@@ -75,8 +66,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	@Autowired
 	private IAreaConocimientoRepository iAreaConocimientoRepository;
 	@Autowired
-	private IConvocatoriaRepository iConvocatoriaRepository;
-	@Autowired
 	private IProyectoConvocatoriaRepository iProyectoConvocatoriaRepository;
 	@Autowired
 	private IMacroProyectoRepository iMacroProyectoRepository;
@@ -103,19 +92,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		}
 		return proyectos;
 	}
-
-	@Override
-	public List<Proyecto> todosLosProyectosPorFacultad(Facultad facultad) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Proyecto> todosLosProyectosPorPrograma(Programa programa) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public boolean eliminarProyecto(int id) {
 		if (iProyectoRepository.existsById(id)) {
@@ -131,11 +107,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		return false;
 	}
 
-	@Override
-	public List<Producto> todosLosProductos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<Producto> todosLosProductos(Proyecto proyecto) {
@@ -182,11 +153,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		return iParticipantesRepository.existsById(participante.getParticipantesPK());
 	}
 
-	@Override
-	public boolean eliminarParticipante(LocalDate fecha_inicio) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public List<Comentario> ComentariosPorProducto(int productoid) {
@@ -296,11 +262,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		return iCompraRepository.existsById(compra.getId());
 	}
 
-	@Override
-	public boolean asignarMacroProyecto(MacroProyecto macroProyecto) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public boolean asignarCalificacion(int comentarioid, double calificacion) {
@@ -546,14 +507,13 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	}
 
 	@Override
-	public boolean darAval(ProyectosConvocatoria proyectoConvocatoria, String estado) {
+	public boolean darAval(ProyectosConvocatoria proyectoConvocatoria, String estado,String reconocimiento) {
 		proyectoConvocatoria.setIdProyecto(estado);
 		proyectoConvocatoria = iProyectoConvocatoriaRepository.save(proyectoConvocatoria);
 		Proyecto pro = iProyectoRepository
 				.getById(proyectoConvocatoria.getProyectosConvocatoriaPK().getProyectos());
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		if (estado.equals("Validacion 1")) {
-			
+		if (estado.equals("Validacion 1")) {			
 			List<Participantes> parti = pro.getParticipantes();
 			TipoUsuario tipo1 = iTipoUsuarioRepository.getById("Investigador formacion");
 			TipoUsuario tipo2 = iTipoUsuarioRepository.getById("Docente investigador");
@@ -597,6 +557,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 			pro.setEstado(estado);
 			iProyectoRepository.save(pro);
 		}else if (estado.equals("Finalizado")) {
+			pro.setRetroalimentacionFinal(reconocimiento);
 			pro.setEstado(estado);
 			pro.setFechaFin(LocalDate.parse(dtf.format(LocalDateTime.now())));
 			iProyectoRepository.save(pro);
@@ -636,18 +597,20 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	}
 
 	@Override
-	public boolean evaluar(int proyecto, String estado) {
+	public boolean evaluar(int proyecto, String estado,String reconocimiento) {
 		Proyecto pro = iProyectoRepository.getById(proyecto);
-		pro.setEstado(estado);
-		iProyectoRepository.save(pro);
-		return true; // TODO Auto-generated method stub
+		if(estado=="Finalizado") {
+			pro.setRetroalimentacionFinal(reconocimiento);
+			pro.setEstado(estado);
+			iProyectoRepository.save(pro);
+		}else {
+			pro.setEstado(estado);
+			iProyectoRepository.save(pro);
+		}
+		return iProyectoRepository.existsById(pro.getId()); // TODO Auto-generated method stub
 	}
 
-	@Override
-	public boolean evaluarConvocatoria(int proyecto, int convocatoria, String estado) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 	@Override
 	public List<JSONObject> trabajoGradoInicio(String cedula) {
@@ -699,5 +662,26 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 			est=true;
 		}
 		return est;
+	}
+
+	@Override
+	public boolean salirSemillero(String cedula, int semillero) {
+		Usuario usu=iUsuarioRepository.getById(cedula);
+		Semillero semi=iSemilleroRepository.getById(semillero);
+		if(semi.getId()==usu.getSemilleroId().getId()) {
+		int i=0;
+		usu.setSemilleroId(null);
+		List<TipoUsuario> tipo=usu.getTiposUsuario();
+		
+		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
+			TipoUsuario tipoUsuario = (TipoUsuario) iterator.next();
+			if(tipoUsuario.getNombre().equals("Semillerista")) {
+				iUsuarioRepository.quitarRol(cedula);	
+			}
+		}
+		
+		iUsuarioRepository.save(usu);
+		}
+		return iUsuarioRepository.existsById(cedula);
 	}
 }

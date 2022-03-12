@@ -1,16 +1,11 @@
 package co.edu.usbbog.sgpi.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Clase;
 import co.edu.usbbog.sgpi.model.Comentario;
@@ -18,13 +13,10 @@ import co.edu.usbbog.sgpi.model.Evento;
 import co.edu.usbbog.sgpi.model.MacroProyecto;
 import co.edu.usbbog.sgpi.model.Materia;
 import co.edu.usbbog.sgpi.model.Participaciones;
-import co.edu.usbbog.sgpi.model.ParticipacionesPK;
 import co.edu.usbbog.sgpi.model.Participantes;
-import co.edu.usbbog.sgpi.model.ParticipantesPK;
 import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Proyecto;
 import co.edu.usbbog.sgpi.model.ProyectosConvocatoria;
-import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoProyecto;
 import co.edu.usbbog.sgpi.model.TipoUsuario;
 import co.edu.usbbog.sgpi.model.Usuario;
@@ -38,11 +30,9 @@ import co.edu.usbbog.sgpi.repository.IParticipantesRepository;
 import co.edu.usbbog.sgpi.repository.IProductoRepository;
 import co.edu.usbbog.sgpi.repository.IProyectoConvocatoriaRepository;
 import co.edu.usbbog.sgpi.repository.IProyectoRepository;
-import co.edu.usbbog.sgpi.repository.ISemilleroRepository;
 import co.edu.usbbog.sgpi.repository.ITipoProyectoRepository;
 import co.edu.usbbog.sgpi.repository.ITipoUsuarioRepository;
 import co.edu.usbbog.sgpi.repository.IUsuarioRepository;
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 @Service
@@ -57,8 +47,6 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	private ITipoProyectoRepository iTipoProyectoRepository;
 	@Autowired
 	private IMacroProyectoRepository iMacroProyectoRepository;
-	@Autowired
-	private ISemilleroRepository iSemilleroRepository;
 	@Autowired
 	private IUsuarioRepository iUsuarioRepository;
 	@Autowired
@@ -150,37 +138,9 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 			iParticipantesRepository.save(par);
 		}
 		return iProyectoRepository.existsById(proyecto.getId());
-		/*
-		 * 
-		 * 
-		 * //if (iProyectoRepository.existsById(proyecto.getId())) { // return false;
-		 * //} TipoProyecto tp = iTipoProyectoRepository.getById(tipo); if (tp == null)
-		 * { return false; } try { proyecto.setSemillero(null);
-		 * proyecto.setMacroProyecto(null); } catch (Exception e) {
-		 * proyecto.setSemillero(null); proyecto.setMacroProyecto(null); }
-		 * 
-		 * proyecto.setTipoProyecto(tp); if (clas.getProyectos() == null) {
-		 * clas.setProyectos(new ArrayList<Proyecto>()); }
-		 * 
-		 * iProyectoRepository.save(proyecto); clas.getProyectos().add(proyecto);
-		 * iClaseRepository.save(clas);
-		 * 
-		 * Participantes participante = new Participantes(cedula,proyecto.getId(),
-		 * fecha); participante.setRol(rol);
-		 * iParticipantesRepository.save(participante); Usuario profesor=
-		 * clas.getProfesor(); if(profesor!=null) { Participantes par=new
-		 * Participantes(profesor.getCedula(), proyecto.getId(),
-		 * participante.getParticipantesPK().getFechaInicio()); par.setRol("Lider");
-		 * iParticipantesRepository.save(par); }
-		 */
-
 	}
 
-	@Override
-	public boolean asignarTipoProyecto(Proyecto proyecto, TipoProyecto aulaIntegrador) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 
 	@Override
 	public List<Producto> todosLosProductos(Proyecto proyecto) {
@@ -226,23 +186,10 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		return producto;
 	}
 
-	@Override
-	public List<Usuario> todosLosParticipantesPorProyecto(Proyecto proyecto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public boolean crearParticipante(Participantes participante, String rol, String cedula, int proyecto) {
-		/*
-		 * System.out.println(participante.getProyecto()); Proyecto pro=
-		 * iProyectoRepository.getById(proyecto); TipoUsuario tipos=
-		 * iTipoUsuarioRepository.getById("Estudiante activo"); Usuario
-		 * usu=iUsuarioRepository.getById(cedula); List<TipoUsuario> tipo=
-		 * usu.getTiposUsuario(); for (Iterator iterator = tipo.iterator();
-		 * iterator.hasNext();) { TipoUsuario tipoUsuario = (TipoUsuario)
-		 * iterator.next(); System.out.println(tipoUsuario); }
-		 */
+
 		Usuario usu = iUsuarioRepository.getById(cedula);
 		Proyecto pro = iProyectoRepository.getById(proyecto);
 		List<TipoUsuario> tipos= usu.getTiposUsuario();

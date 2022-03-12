@@ -4,12 +4,10 @@ import java.util.List;
 
 import co.edu.usbbog.sgpi.model.Facultad;
 import co.edu.usbbog.sgpi.model.GrupoInvestigacion;
-import co.edu.usbbog.sgpi.model.LineaInvestigacion;
 import co.edu.usbbog.sgpi.model.Programa;
 import co.edu.usbbog.sgpi.model.Semillero;
 import co.edu.usbbog.sgpi.model.TipoUsuario;
 import co.edu.usbbog.sgpi.model.Usuario;
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 public interface IGestionUsuariosService {
@@ -82,13 +80,31 @@ public interface IGestionUsuariosService {
 	public boolean cambiarContrasenaUsuario(String contrasena);
 	//crear metodos para asignar decano, coordinador de investigaciones y director de facultad
 	public List<TipoUsuario> roles(String cedula);
+	/**
+	 * modificar un usuario
+	 * @param cedula
+	 * @param telefono
+	 * @param clave
+	 * @param correoP
+	 * @return
+	 */
 	public boolean modificarUsuario(String cedula,String telefono,String clave, String correoP);
+	/**
+	 * listar todos los roles
+	 * @return
+	 */
 	public List<TipoUsuario> todosLosRoles();
+	/**
+	 * lista de usuarios por rol 
+	 * @param tipo
+	 * @return
+	 */
 	public List<Usuario> todosPorRol(String tipo);
-
-
-	//public JSONObject nombreusuario(String cedula);
-
-	
+	/**
+	 * asignar un rol a un usuario ES
+	 * @param usuario
+	 * @param tipoUsuario
+	 * @return
+	 */
 	String asignarRolUsuario(String usuario, String tipoUsuario);
 }
