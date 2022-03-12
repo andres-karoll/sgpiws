@@ -175,6 +175,44 @@ public interface IGestionProyectosInvestigacionService {
 	 * @return
 	 */
 	public boolean crearCompra(Compra compra);
+
+	//actualizar compra
+	
+	//El sistema debe permitir asociar proyectos que estén relacionados
+		public boolean asignarMacroProyecto(MacroProyecto macroProyecto);
+		public Proyecto buscarProyecto(int parseInt);
+		public Producto buscarProducto(int parseInt);
+		boolean eliminarProducto(int id);
+		boolean participarEvento(Participaciones participaciones, LocalDate fecha, String reconocimiento);
+		public List<Participaciones> buscarParticipaciones(int parseInt);
+		public boolean agregarAntecedente(Proyecto proyecto, Proyecto antecedente);
+		public boolean agregarAreaConocimiento(int parseInt, int parseInt2);
+		public List<AreaConocimiento> buscarAreasProyecto(int parseInt);
+		public boolean participarConvocatoria(ProyectosConvocatoria proyectosConvocatoria,String estado);
+		public boolean participarConvocatoriados(ProyectosConvocatoria proyectosConvocatoria, int proyecto, int convocatoria);
+		public List<JSONObject> todosLosProyectosUsuarioSemillero(String cedula);
+		public List<JSONObject> proyectosParticipanteSemillero(String cedula);
+		public boolean verificarSemillero(String cedula);
+		public List<Proyecto> buscarAntecedentes(int parseInt);
+		public boolean crearProyecto(Proyecto proyecto, String asString, String asString2, String asString3,
+				String asString4, LocalDate parse, String asString5,int macro);
+		public List<JSONObject> tusProyectosConvocatoria(String cedula);
+		public List<JSONObject> tusProyectoSemillero(String cedula);
+		public boolean darAval(ProyectosConvocatoria proyectoConvocatoria, String asString);
+		public List<JSONObject> paticipacionesConvocatoria(String proyecto);
+		public List<JSONObject> proyectosGrado();
+		public List<JSONObject>proyectosPropuestaClase(int curso);
+		public List<JSONObject> proyectosDesarrolloClase(int curso);
+		public List<JSONObject> proyectosFinalizadosClase(int curso);
+		public boolean evaluar(int proyecto, String asString);
+		public boolean evaluarConvocatoria(int proyecto, int convocatoria, String estado);
+		public List<JSONObject> trabajoGradoInicio(String cedula);
+		public List<JSONObject> trabajoGradoDesarrollo(String cedula);
+		public List<JSONObject> trabajoGradoJurado(String cedula);
+		public List<JSONObject> trabajoGradoFinalizados(String cedula);
+		public List<JSONObject> trabajoGradoRechazados(String cedula);
+		public boolean cambioEstadoTrabajoGrado(int proyecto, String estado,String reconocimiento);
+=======
 	/**
 	 * buscar un proyecto por su id 
 	 * @param parseInt
@@ -393,5 +431,6 @@ public interface IGestionProyectosInvestigacionService {
 	 * @return
 	 */
 	public boolean salirSemillero(String cedula, int semillero);
+
 
 }
