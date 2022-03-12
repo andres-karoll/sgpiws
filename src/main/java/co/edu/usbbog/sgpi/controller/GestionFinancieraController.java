@@ -1,6 +1,8 @@
 package co.edu.usbbog.sgpi.controller;
 
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbbog.sgpi.model.Compra;
 import co.edu.usbbog.sgpi.model.Presupuesto;
+import co.edu.usbbog.sgpi.model.Semillero;
+import co.edu.usbbog.sgpi.model.Usuario;
 import co.edu.usbbog.sgpi.service.IGestionFinancieraService;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -26,229 +30,251 @@ public class GestionFinancieraController {
 	@Autowired
 	private IGestionFinancieraService gestionFinancieraService;
 
-	// metodo que usa PresupuestoPorProyecto para listar el presupuesto asignado al
-	// proyecto
+	
 	@GetMapping(value = "/listarpresupuestoporproyecto/{id}")
 	public JSONArray listarPresupuestoPorProyecto(@PathVariable int id) {
-
-		JSONArray salida = new JSONArray();
+		
+		JSONArray salida = new JSONArray(); 
 		List<Presupuesto> pre = gestionFinancieraService.PresupuestoPorProyecto(id);
 		for (Presupuesto presupuesto : pre) {
-			salida.add(presupuesto.toJson());
+			salida.add(presupuesto.toJson()) ;
 		}
-		return salida;
+		return salida;		
 	}
-
-	// metodo para eliminar el presupuesto
+	
 	@GetMapping(value = "/eliminarpresupuesto/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String eliminarSemillero(@PathVariable int id) {
-		if (gestionFinancieraService.eliminarPresupuesto(id)) {
+	public String eliminarSemillero(@PathVariable int id) {	
+		if(gestionFinancieraService.eliminarPresupuesto(id)) {
 			return "Eliminado";
 		}
-
+		
 		return "No se puede eliminar";
 	}
-
-	// metodo para poder crear un presupuesto a un proyecto
+	
 	@PostMapping(value = "/crearpresupuesto")
 	public JSONObject crearSemilleros(@RequestBody Presupuesto presupuesto) {
 		JSONObject salida = new JSONObject();
-		if (gestionFinancieraService.crearPresupuesto(presupuesto)) {
-			salida.put("respuesta", "se creo");
-		} else {
+		if(gestionFinancieraService.crearPresupuesto(presupuesto)) {
+			salida.put("respuesta", "se creo");			
+		}else {
 			salida.put("respuesta", "NO se creo");
 		}
-
+		
 		return salida;
 	}
-
-	// metodo para modificar el presupuesto
+	
+	
 	@PostMapping("/modificarpresupuesto")
 	public JSONObject modificarPresupuesto(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		if (!gestionFinancieraService.modificarPresupuesto(Integer.parseInt(entrada.getAsString("id")),
-				entrada.getAsString("monto"), entrada.getAsString("fecha"), entrada.getAsString("descripcion"))) {
+		if(!gestionFinancieraService.modificarPresupuesto( Integer.parseInt(
+				entrada.getAsString("id")) 
+				, entrada.getAsString("monto")
+				, entrada.getAsString("fecha")
+				, entrada.getAsString("descripcion"))) {
 			salida.put("respuesta", "se actualizo el presupuesto");
-		} else {
+		}else {
 			salida.put("respuesta", "no se pudo actualizar el presupuesto");
 		}
 		return salida;
 	}
-
-	// metodo para traer la informacion de un presupuesto
+	
 	@GetMapping(value = "/presupuestoid/{id}")
 	public JSONObject presupuestolistarPorId(@PathVariable int id) {
 
-		JSONObject x = new JSONObject();
-		if (gestionFinancieraService.presupuestoporid(id) != null) {
+		JSONObject x= new JSONObject();	
+		if(gestionFinancieraService.presupuestoporid(id) !=null) {
 			Presupuesto presupuesto = gestionFinancieraService.presupuestoporid(id);
 			return presupuesto.toJson();
-		} else {
-			return x;
 		}
+		else {
+			return x;
+		}	
 
 	}
-
-	// metodo para modificar la compra
+	
 	@PostMapping("/modificarcompra")
 	public JSONObject modificarCompra(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		if (!gestionFinancieraService.modificarCompra(Integer.parseInt(entrada.getAsString("id")),
-				entrada.getAsString("nombre"), entrada.getAsString("tipo"), entrada.getAsString("link"),
+		if(!gestionFinancieraService.modificarCompra(Integer.parseInt(
+				entrada.getAsString("id")), 
+				entrada.getAsString("nombre"), 
+				entrada.getAsString("tipo"), 
+				entrada.getAsString("link"),
 				entrada.getAsString("descripcion"))) {
 			salida.put("respuesta", "se actualizo la compra");
-		} else {
+		}else {
 			salida.put("respuesta", "no se pudo actualizar la compra");
 		}
 		return salida;
 	}
-
-	// metodo para obtener la informacion de una compra
+	
 	@GetMapping(value = "/compraid/{id}")
 	public JSONObject compralistarPorId(@PathVariable int id) {
 
-		JSONObject x = new JSONObject();
-		if (gestionFinancieraService.compraporid(id) != null) {
+		JSONObject x= new JSONObject();	
+		if(gestionFinancieraService.compraporid(id) !=null) {
 			Compra compra = gestionFinancieraService.compraporid(id);
 			return compra.toJson();
-		} else {
-			return x;
 		}
+		else {
+			return x;
+		}	
 
 	}
-
-	// metodo para listar las compras de un presupuesto en especifico
+	
 	@GetMapping(value = "/listarcomprasdelpresupuesto/{id}")
 	public JSONArray listarComprasDelPresupuesto(@PathVariable int id) {
-
-		JSONArray salida = new JSONArray();
+		
+		JSONArray salida = new JSONArray(); 
 		List<Compra> com = gestionFinancieraService.CompraPorPresupuesto(id);
 		for (Compra compra : com) {
-			salida.add(compra.toJson());
+			salida.add(compra.toJson()) ;
 		}
-		return salida;
+		return salida;		
 	}
-
-	// metodo para eliminar la compra
+	
 	@GetMapping(value = "/eliminarcompra/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String eliminarCompra(@PathVariable int id) {
+	public String eliminarCompra(@PathVariable int id) {	
 		boolean x = gestionFinancieraService.eliminarCompra(id);
 		System.out.println(x);
-		if (x) {
+		if(x) {
 			return "Eliminado";
-		} else {
-			return "No se puede eliminar";
-
 		}
-
+		else {
+			return "No se puede eliminar";
+			
+		}
+		
 	}
-
-	// metodo para crear una compra
+	
 	@PostMapping(value = "/crearcompra")
 	public JSONObject crearCompra(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
+			
+			Compra compra = new Compra(
 
-		Compra compra = new Compra(
-
-				LocalDate.parse(entrada.getAsString("fecha_solicitud")), entrada.getAsString("nombre"),
-				entrada.getAsString("tipo"), Integer.parseInt(entrada.getAsString("estado")),
-				entrada.getAsString("descripcion"), entrada.getAsString("link"));
-
-		if (gestionFinancieraService.crearCompra(compra, Integer.parseInt(entrada.getAsString("presupuesto")))) {
-			salida.put("respuesta", "compra creada");
-		} else {
-			salida.put("respuesta", "no se pudo");
-		}
+					LocalDate.parse(entrada.getAsString("fecha_solicitud")), 
+					entrada.getAsString("nombre"),
+					entrada.getAsString("tipo"),
+					Integer.parseInt(entrada.getAsString("estado")),
+					entrada.getAsString("descripcion"),
+					entrada.getAsString("link"));
+			
+			
+			
+			if(gestionFinancieraService.crearCompra(
+					compra,
+					Integer.parseInt(entrada.getAsString("presupuesto")))) {
+				salida.put("respuesta", "compra creada");
+			}else{
+				salida.put("respuesta", "no se pudo");
+			}
+					
 
 		return salida;
-
+		
 	}
-
-	// metodo para realizar la compra previamente creada
+	
+	
+	
+	
 	@PostMapping(value = "/realizarcompra")
 	public JSONObject realziarCompra(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		if (gestionFinancieraService.realziarCompra(Integer.parseInt(entrada.getAsString("id")),
-				entrada.getAsString("codigo_compra"), LocalDate.parse(entrada.getAsString("fecha_compra")),
-				Double.parseDouble(entrada.getAsString("valor")),
-				Integer.parseInt(entrada.getAsString("estado"))) == "compra creada") {
+		if(gestionFinancieraService.realziarCompra(
+				Integer.parseInt(entrada.getAsString("id")),
+				entrada.getAsString("codigo_compra"),
+				LocalDate.parse(entrada.getAsString("fecha_compra")),
+				 Double.parseDouble(entrada.getAsString("valor")),
+						 Integer.parseInt(entrada.getAsString("estado"))
+			)=="compra creada") {
 			salida.put("respuesta", "se creo");
-		} else if (gestionFinancieraService.realziarCompra(Integer.parseInt(entrada.getAsString("id")),
-				entrada.getAsString("codigo_compra"), LocalDate.parse(entrada.getAsString("fecha_compra")),
-				Double.parseDouble(entrada.getAsString("valor")),
-				Integer.parseInt(entrada.getAsString("estado"))) == "la fecha debe ser mayor a la fecha de solicitud") {
+		}
+		else if(gestionFinancieraService.realziarCompra(
+				Integer.parseInt(entrada.getAsString("id")),
+				entrada.getAsString("codigo_compra"),
+				LocalDate.parse(entrada.getAsString("fecha_compra")),
+				 Double.parseDouble(entrada.getAsString("valor")),
+						 Integer.parseInt(entrada.getAsString("estado"))
+			)=="la fecha debe ser mayor a la fecha de solicitud") {
 			salida.put("respuesta", "la fecha debe ser mayor a la fecha de solicitud");
-		} else if (gestionFinancieraService.realziarCompra(Integer.parseInt(entrada.getAsString("id")),
-				entrada.getAsString("codigo_compra"), LocalDate.parse(entrada.getAsString("fecha_compra")),
-				Double.parseDouble(entrada.getAsString("valor")), Integer.parseInt(entrada
-						.getAsString("estado"))) == "no se puede realizar la compra, el presupuesto se a excedido") {
+		}else if(gestionFinancieraService.realziarCompra(
+				Integer.parseInt(entrada.getAsString("id")),
+				entrada.getAsString("codigo_compra"),
+				LocalDate.parse(entrada.getAsString("fecha_compra")),
+				 Double.parseDouble(entrada.getAsString("valor")),
+						 Integer.parseInt(entrada.getAsString("estado"))
+			)=="no se puede realizar la compra, el presupuesto se a excedido") {
 			salida.put("respuesta", "no se puede realizar la compra, el presupuesto se a excedido");
-		} else {
+		}else {
 			salida.put("respuesta", "NO se creo");
 		}
 		return salida;
 	}
-
-	// metodo para actualizar la compra
+	
 	@PostMapping(value = "/actualizarestadocompra")
 	public JSONObject actualizarEstadoCompra(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		if (gestionFinancieraService.actualizarestadoCompra(Integer.parseInt(entrada.getAsString("id_compra")),
-				Integer.parseInt(entrada.getAsString("estado")))) {
+		if(gestionFinancieraService.actualizarestadoCompra(
+				Integer.parseInt(entrada.getAsString("id_compra")),
+				Integer.parseInt(entrada.getAsString("estado"))
+			)) {
 			salida.put("respuesta", "se creo");
-		} else {
+		}else {
 			salida.put("respuesta", "NO se creo");
 		}
 		return salida;
 	}
-
-	// metodo para obtener las compras de un presupuesto
+	
 	@GetMapping(value = "/comprastotalesporpresupuesto/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject comprasTotales(@PathVariable int id) {
 		JSONObject salida = new JSONObject();
 		JSONObject comprastotales = gestionFinancieraService.comprasTotales(id);
-
-		if (comprastotales != null) {
-			salida.put("salida", "$" + comprastotales.getAsString("SUM(valor)"));
-
-		} else {
+		
+		if(comprastotales != null) {
+			salida.put("salida","$"+ comprastotales.getAsString("SUM(valor)"));
+			
+		}
+		else {
 			salida.put("salida", "no tiene compras realizadas");
-
+			
 		}
 		return salida;
-
-	}
-
-	// metodo para traer las comrpas que han sido solicitadas
+		
+		}
+	
+	
 	@GetMapping(value = "/comprassolicitadas/{presupuesto}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<JSONObject> compraCreadas(@PathVariable int presupuesto) {
-		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(1, presupuesto);
+		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(1,presupuesto);
 		return comprasestado;
-
-	}
-
-	// metodo para aceptar una compra
+		
+		}
+	
 	@GetMapping(value = "/comprasaceptadas/{presupuesto}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<JSONObject> comprasAceptadas(@PathVariable int presupuesto) {
-		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(2, presupuesto);
+		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(2,presupuesto);
 		return comprasestado;
-
-	}
-
-	// metodo para obtener las compras que ya fueron realizadas
+		
+		}
 	@GetMapping(value = "/comprasrealizadas/{presupuesto}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<JSONObject> comprasRealizadas(@PathVariable int presupuesto) {
-		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(3, presupuesto);
+		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(3,presupuesto);
 		return comprasestado;
-
-	}
-
-	// metodo para obtener las compras que fueron rechasadas
+		
+		}
 	@GetMapping(value = "/comprasrechazadas/{presupuesto}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<JSONObject> comprasRechadas(@PathVariable int presupuesto) {
-		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(4, presupuesto);
+		List<JSONObject> comprasestado = gestionFinancieraService.comprasPorEstado(4,presupuesto);
 		return comprasestado;
-
+		
+		}
+	
+	
+	
+	
+	
+			
 	}
 
-}

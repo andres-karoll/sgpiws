@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import co.edu.usbbog.sgpi.model.Comentario;
-import co.edu.usbbog.sgpi.model.Convocatoria;
 import co.edu.usbbog.sgpi.model.Participaciones;
 import co.edu.usbbog.sgpi.model.Participantes;
 import co.edu.usbbog.sgpi.model.Producto;
@@ -330,7 +329,6 @@ public class GestionProyectosInvestigacionController {
 	public JSONObject participarconvocatoria(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		ProyectosConvocatoria proyectoConvocatoria= new ProyectosConvocatoria(Integer.parseInt(entrada.getAsString("proyecto")),Integer.parseInt(entrada.getAsString("convocatoria")) );
-		
 		if (iGestionProyectosInvestigacionService.participarConvocatoria(proyectoConvocatoria,entrada.getAsString("proyecto_id"))) {
 			salida.put("respuesta", "se agrego exitosamente a la convocatoria");
 		} else {
@@ -338,28 +336,11 @@ public class GestionProyectosInvestigacionController {
 		}
 		return salida;
 	}
-
-	
-	@PostMapping("/participarconvocatoriados/")
-	public JSONObject participarconvocatoriados(@RequestBody JSONObject entrada) {
-		JSONObject salida = new JSONObject();
-		ProyectosConvocatoria proyectoConvocatoria= new ProyectosConvocatoria(Integer.parseInt(entrada.getAsString("proyecto")),Integer.parseInt(entrada.getAsString("convocatoria")) );
-	
-		
-		if (iGestionProyectosInvestigacionService.participarConvocatoriados(proyectoConvocatoria,Integer.parseInt(entrada.getAsString("proyecto")),Integer.parseInt(entrada.getAsString("convocatoria")))) {
-			salida.put("respuesta", "se agrego exitosamente a la convocatoria");
-		}else {
-			salida.put("respuesta", "verifique el limite de productos de la convocatoria o los campos ingresados");
-		}
-		return salida;
-	}
-
 	/**
 	 * proyectos de un usuario de tipo convocatoria 
 	 * @param cedula
 	 * @return
 	 */
-
 	@GetMapping("/tusProyectosConvocatoria/{cedula}")
 	public List<JSONObject> tusProyectoConvocatoria(@PathVariable String cedula) {
 		List<JSONObject> pro = iGestionProyectosInvestigacionService.tusProyectosConvocatoria(cedula);	
