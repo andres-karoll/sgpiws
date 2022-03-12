@@ -77,4 +77,8 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, String> {
 	void deleteTipo(String usuario, String tipo);
 	@Query(value = "SELECT nombres FROM sgpi_db.usuario where cedula =?1", nativeQuery = true)
 	JSONObject getNombre(String cedula);
+	@Modifying
+	@Transactional
+	@Query(value = "DELETE FROM `sgpi_db`.`usuarios` WHERE (`usuario` = ?1) and (`tipo_usuario` = 'Semillerista')", nativeQuery = true)
+	void quitarRol(String cedula);
 }

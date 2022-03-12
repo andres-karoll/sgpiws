@@ -18,11 +18,16 @@ import net.minidev.json.JSONObject;
 @RestController
 @CrossOrigin
 @RequestMapping("/gestionfiltroproyecto")
+
 public class GestionFiltroProyectoController {
 
 	@Autowired
 	private IGestionFiltroProyectosService gestionFiltroProyectosService;
 	
+	/**
+	 * lista todos los proyectos 
+	 * @return
+	 */
 	@GetMapping(value = "/listarproyectos")
 	public JSONArray listarProyectos() {
 		
@@ -33,7 +38,10 @@ public class GestionFiltroProyectoController {
 		}
 		return salida;	
 	}
-	
+	/**
+	 * listar todos los proyectos visibles 
+	 * @return
+	 */
 	@GetMapping(value = "/listarproyectosvisibles")
 	public List<JSONObject> listarProyectosVisibles() {
 		
@@ -41,7 +49,11 @@ public class GestionFiltroProyectoController {
 
 		return salida;
 	}
-	
+	/**
+	 * listar todos los 
+	 * @param tipo_proyecto
+	 * @return
+	 */
 	@GetMapping(value = "/listarproyectosportipo/{tipo_proyecto}")
 	public JSONArray listarProyectosPorTipo(@PathVariable String tipo_proyecto) {		
 		JSONArray salida = new JSONArray(); 
@@ -51,7 +63,11 @@ public class GestionFiltroProyectoController {
 		}
 		return salida;		
 	}
-	
+	/**
+	 * listae proyectos por areas de conocimiento 
+	 * @param area_conocimiento
+	 * @return
+	 */
 	@GetMapping(value = "/listarproyectosporarea/{area_conocimiento}")
 	public JSONArray listarProyectosPorArea(@PathVariable int area_conocimiento) {		
 		JSONArray salida = new JSONArray(); 
@@ -61,7 +77,11 @@ public class GestionFiltroProyectoController {
 		}
 		return salida;		
 	}
-	
+	/**
+	 * buscar proyecto por titulo 
+	 * @param titulo
+	 * @return
+	 */
 	@GetMapping(value = "/buscarportitulo/{titulo}")
 	public JSONArray listarProyectosPorArea(@PathVariable String titulo) {		
 		JSONArray salida = new JSONArray(); 
@@ -71,6 +91,10 @@ public class GestionFiltroProyectoController {
 		}
 		return salida;		
 	}
+	/**
+	 * todos los proyectos por titulo 
+	 * @return
+	 */
 	@GetMapping(value = "/todoslostiposproyecto")
 	public JSONArray todosLosTiposProyecto() {		
 		JSONArray salida = new JSONArray(); 
