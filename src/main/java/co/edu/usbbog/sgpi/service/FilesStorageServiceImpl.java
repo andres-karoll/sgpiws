@@ -12,21 +12,26 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
-
+//esta interfaz nos ayudara a conectarnos con el controlador y tener ciertos margenes al momento de ingresar un archivo
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
 
   private final Path root = Paths.get("uploads");
-
+//metodo que nos inidicara que no pudo iniciar la carpeta en donde se encuentra
+	// el archivo
   @Override
   public void init() {
     try {
-      Files.createDirectory(root);
+      
+      if(!Files.exists(root)) {
+    	  Files.createDirectory(root); 
+      }
+      
     } catch (IOException e) {
       throw new RuntimeException("Could not initialize folder for upload!");
     }
   }
-
+//metodo que indicara si no se pudo almancenar el archivo
   @Override
   public void save(MultipartFile file) {
     try {
@@ -35,7 +40,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
     }
   }
-
+//metodo que indicara si no fue posible leer el archivo
   @Override
   public Resource load(String filename) {
     try {
@@ -52,11 +57,8 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
   }
 
-  @Override
-  public void deleteAll() {
-    FileSystemUtils.deleteRecursively(root.toFile());
-  }
-
+  
+//metodo que indica que no fue posible cargar el archivo
   @Override
   public Stream<Path> loadAll() {
     try {

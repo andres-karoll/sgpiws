@@ -16,10 +16,10 @@ public class SpringBootUploadFilesApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(SpringBootUploadFilesApplication.class, args);
   }
-
+//iniciamos toda la logica del archivo
   @Override
   public void run(String... arg) throws Exception {
-    storageService.deleteAll();
+    
     storageService.init();
   }
 }
