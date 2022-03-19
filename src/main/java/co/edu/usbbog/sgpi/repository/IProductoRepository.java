@@ -9,7 +9,7 @@ import co.edu.usbbog.sgpi.model.Producto;
 import co.edu.usbbog.sgpi.model.Semillero;
 
 public interface IProductoRepository extends JpaRepository<Producto, Integer>{
-
+//metodo para lisatr productos de un proyecto
 	@Query(value = "SELECT * FROM sgpi_db.producto where proyecto = ?1", nativeQuery = true)
 	List<Producto> findByProyecto(int proyecto);
 }

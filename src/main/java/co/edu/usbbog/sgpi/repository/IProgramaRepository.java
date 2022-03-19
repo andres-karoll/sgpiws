@@ -11,21 +11,21 @@ import net.minidev.json.JSONObject;
 
 public interface IProgramaRepository extends JpaRepository<Programa, Integer>{
 
-	//solo para consultar por Facultad
+	//metodo para consultar los programas por Facultad
 		@Query(value = "select * from programa where facultad_id= ?1", nativeQuery = true)
 		List<Programa> findByFacultad(int facultad_id);
 		
-		//solo para consultar por Director
+		//metodo para consultar los programas por Director
 		@Query(value = "select * from programa where director= ?1", nativeQuery = true)
 		List<Programa> findByDirector(String director);
 		
-		//solo para consultar el grupo
+		//metodo para consultar los programas de un grupo de investigacion
 				@Query(value = "SELECT * FROM programas_grupos_inv where programa = ?1", nativeQuery = true)
 				List<JSONObject> findByGrupo(int programa);
-		//solo para consultar el semillero
+		//metodo para consultar los semilleros de un programa
 				@Query(value = "SELECT * FROM programas_semilleros where programa = ?1", nativeQuery = true)
 				List<JSONObject> findBySemillero(int programa);
-		//solo para consultar el semillero
+		//metodo para consultar los usuarios de un programa
 				@Query(value = "SELECT * FROM usuario where programa_id= ?1", nativeQuery = true)
 				List<JSONObject> findByUsuario(int programa_id);
 }

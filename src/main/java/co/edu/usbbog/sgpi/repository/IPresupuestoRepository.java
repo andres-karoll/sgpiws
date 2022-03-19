@@ -11,7 +11,7 @@ import co.edu.usbbog.sgpi.model.Semillero;
 public interface IPresupuestoRepository extends JpaRepository<Presupuesto, Integer>{
 
 	
-	//solo para consultar por grupo de investigacion
+	//metodo para consultar el presupuesto de un grupo de investigacion
 		@Query(value = "SELECT * FROM sgpi_db.presupuesto where proyecto = ?1", nativeQuery = true)
 		List<Presupuesto> findByProyecto(int proyecto);
 }

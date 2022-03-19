@@ -1485,7 +1485,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		evento.setSitioWeb(sitio_web);
 		evento.setUrlMemoria(url_memoria);
 		eventoRepo.save(evento);
-		return !eventoRepo.existsById(evento.getId());
+		return eventoRepo.existsById(evento.getId());
 	}
 
 //metodo para modificar un evento
@@ -1528,11 +1528,12 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	public boolean eliminarEvento(int id) {
 		List<JSONObject> participaciones = eventoRepo.findByParticipaciones(id);
 		boolean evento = eventoRepo.existsById(id);
-		if (participaciones.isEmpty() && evento == true) {
-			eventoRepo.deleteById(id);
-			return true;
+		if (!participaciones.isEmpty() || evento == false) {
+			
+			return false;
 		}
-		return false;
+		eventoRepo.deleteById(id);
+		return true;
 	}
 
 	// METODOS DE SI EXISTE

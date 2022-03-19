@@ -14,22 +14,22 @@ import co.edu.usbbog.sgpi.model.Usuario;
 import net.minidev.json.JSONObject;
 
 public interface IGrupoInvestigacionRepository extends JpaRepository<GrupoInvestigacion, Integer>{
-	//para programas
+	//metodo para obtener los programas de un grupo de investigacion
 	@Query(value = "SELECT * FROM programas_grupos_inv where grupo_investigacion = ?1", nativeQuery = true)
 	JSONObject findByPrograma(int grupo_investigacion);
 
 	
-	//para lineas
+	//metodo para obtener las lindeas de investigacion de un grupo de investigacion
 	@Query(value = "SELECT * FROM sgpi_db.grupo_inv_lineas_inv where grupo_investigacion = ?1", nativeQuery = true)
 	JSONObject findByLinea(int grupo_investigacion);
 	
-	//des asignar linea
+	//metodo para des-asignar linea
 	@Modifying
 	@Transactional
 	@Query(value = "DELETE FROM `sgpi_db`.`grupo_inv_lineas_inv` WHERE (`grupo_investigacion` = ?2) and (`linea_investigacion` = ?1)", nativeQuery = true)
 	void desAsignarLinea( String linea_investigacion, String grupo_investigacion);
 	
-	//des asignar programa
+	//metodo para des asignar programa
 			@Modifying
 			@Transactional
 			@Query(value = "DELETE FROM `sgpi_db`.`programas_grupos_inv` WHERE (`programa` = ?1) and (`grupo_investigacion` = ?2)", nativeQuery = true)
