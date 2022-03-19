@@ -446,6 +446,22 @@ public class GestionProyectosAulaIntegradorController {
 		}	
 	}
 	/**
+	 * buscar los detalles de un proyecto por el id 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(value = "/detallePorId/{id}")
+	public JSONObject detallePorId(@PathVariable int id) {
+		JSONObject x= new JSONObject();
+		if(iGestionProyectosAulaIntegradorService.detallesProyecto(id) !=null) {
+			JSONObject pro = iGestionProyectosAulaIntegradorService.detallesProyecto(id);
+			return pro;
+		}
+		else {
+			return x;
+		}	
+	}
+	/**
 	 * lista de eventos  
 	 * @return
 	 */
@@ -473,7 +489,7 @@ public class GestionProyectosAulaIntegradorController {
 	public  JSONObject ActualizarProyecto(@RequestBody JSONObject entrada	) {
 		JSONObject salida=new JSONObject();
 		
-		if(iGestionProyectosAulaIntegradorService.actualizarProyecto(Integer.parseInt( entrada.getAsString("id")),entrada.getAsString("titulo"),entrada.getAsString("descripcion"),entrada.getAsString("metodologia"),entrada.getAsString("justificacion"))) {
+		if(iGestionProyectosAulaIntegradorService.actualizarProyecto(Integer.parseInt( entrada.getAsString("id")),entrada.getAsString("titulo"),entrada.getAsString("descripcion"),entrada.getAsString("metodologia"),entrada.getAsString("justificacion"),entrada.getAsString("conclusiones"))) {
 			salida.put("respuesta", "el proyecto fue actualizado");
 			
 		}else {

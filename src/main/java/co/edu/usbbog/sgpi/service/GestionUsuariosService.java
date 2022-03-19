@@ -79,7 +79,7 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		if (existeUsuario(usuario.getCedula())) {
 			return false;
 		}
-		System.out.println(tipousuario);
+	
 		TipoUsuario tp = iTipoUsuarioRepository.getById(tipousuario);
 		Programa pro = iProgramaRepository.getById(Integer.parseInt(programa));
 		if (pro == null) {
@@ -326,6 +326,12 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 
 	@Override
 	public boolean asignarTipoUsuario(Usuario usuario, TipoUsuario tipoUsuario) {
+		if(tipoUsuario.getNombre().equals("Egresado")||tipoUsuario.getNombre().equals("Estudiante inactivo")){
+			iTipoUsuarioRepository.desasignarRoles(usuario.getCedula());
+			tipoUsuario.getUsuarios().add(usuario);
+			iTipoUsuarioRepository.save(tipoUsuario);
+			return true;
+		}
 		tipoUsuario.getUsuarios().add(usuario);
 		usuario.getTiposUsuario().add(tipoUsuario);
 		iUsuarioRepository.save(usuario);
@@ -336,9 +342,7 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	@Override
 	public String asignarRolUsuario(String usuario, String tipoUsuario) {
 		Usuario usua = iUsuarioRepository.getById(usuario);
-		
 		TipoUsuario tipousuario = iTipoUsuarioRepository.getById(tipoUsuario);
-		
 		if(!iUsuarioRepository.existsById(usua.getCedula())) {
 			return "el usuario no existe";
 		}
@@ -346,22 +350,29 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 			return "el rol no existe";
 		}
 		int i =0;
+		System.out.println(tipoUsuario.equals("Egresado")+" "+"  "+tipoUsuario.equals("Estudiante inactivo"));
+		if(tipoUsuario.equals("Egresado")||tipoUsuario.equals("Estudiante inactivo")){
+			//iTipoUsuarioRepository.desasignarRoles(usuario);
+			tipousuario.getUsuarios().add(usua);
+			iTipoUsuarioRepository.save(tipousuario);
+			return "Se asigno el rol "+ tipoUsuario + "";
+		}else {
+		
 		List<TipoUsuario> tipo = usua.getTiposUsuario();
-	
 		for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
 			TipoUsuario tipoUsuario2 = (TipoUsuario) iterator.next();
 			if(tipoUsuario2.getNombre().equals(tipousuario.getNombre())) {
 				i=i+1;
-				
 			}
 		}
-			
+		}
 			if(i>0) {
 				System.out.println("ya tiene ese rol");
 				return "ya tiene ese rol";
 			}
 			else {
 				System.out.println("NO tenia el rol");
+				
 				tipousuario.getUsuarios().add(usua);
 				iTipoUsuarioRepository.save(tipousuario);
 			}
@@ -393,14 +404,17 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	@Override
 	public boolean modificarUsuario(String cedula, String telefono, String clave, String correoP) {
 		Usuario usuario=iUsuarioRepository.getById(cedula);
-		if(clave!=null) {
+		if(clave!="") {
 		usuario.setContrasena(clave);
 		}
-		if(correoP!=null){
+		if(correoP!=""){
 		usuario.setCorreoPersonal(correoP);
 		}
-		if(telefono!=null) {
+		if(telefono!="") {
 			usuario.setTelefono(telefono);
+		}
+		if(clave!="") {
+			usuario.setContrasena(clave);
 		}
 		iUsuarioRepository.save(usuario);	
 		return iUsuarioRepository.existsById(usuario.getCedula());

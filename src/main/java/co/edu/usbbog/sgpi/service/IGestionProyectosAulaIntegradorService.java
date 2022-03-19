@@ -150,6 +150,10 @@ public interface IGestionProyectosAulaIntegradorService {
 	 */
 	public Proyecto buscarProyecto(int proyectoId);
 	/**
+	 * detalles proyecto
+	 */
+	public JSONObject detallesProyecto(int proyectoId);
+	/**
 	 * buscar un producto 
 	 * @param productoId
 	 * @return
@@ -218,7 +222,7 @@ public interface IGestionProyectosAulaIntegradorService {
 	 * @return
 	 */
 	public boolean actualizarProyecto(int id, String titulo, String descripcion, String metodologia,
-			String justificacion);
+			String justificacion,String conclusiones);
 	/**
 	 * listar participantes de un proyecto 
 	 * @param id

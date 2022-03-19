@@ -1,5 +1,6 @@
 package co.edu.usbbog.sgpi.controller;
 
+import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,8 +95,11 @@ public class GestionUsuarioController {
 	public JSONObject guardarUsuario(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		String tipoUsuario = "";
+		BigInteger nbumero= new BigInteger(entrada.getAsString("codUniversitario"));
+		
+		String num= entrada.getAsString("codUniversitario");
 		Usuario usuario = new Usuario(entrada.getAsString("cedula"),
-				Integer.parseInt(entrada.getAsString("codUniversitario")), entrada.getAsString("correoEst"),
+				nbumero, entrada.getAsString("correoEst"),
 				entrada.getAsString("contrasena"), entrada.getAsString("nombres"), entrada.getAsString("apellidos"),
 				entrada.getAsString("visibilidad"));
 		usuario.setTelefono(entrada.getAsString("telefono"));
@@ -271,8 +275,8 @@ public class GestionUsuarioController {
 	@PostMapping("/asignartipousuario")
 	public JSONObject asignarTipoUsuario(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		Usuario usuario = iGestionUsuariosService.buscarUsuario(entrada.getAsString("idUsuario"));
-		TipoUsuario tipoUsuario = iGestionUsuariosService.buscarTipoUsuario(entrada.getAsString("idTipoUsuario"));
+		Usuario usuario = iGestionUsuariosService.buscarUsuario(entrada.getAsString("cedula"));
+		TipoUsuario tipoUsuario = iGestionUsuariosService.buscarTipoUsuario(entrada.getAsString("rol"));
 		if (usuario != null && tipoUsuario != null) {
 			iGestionUsuariosService.asignarTipoUsuario(usuario, tipoUsuario);
 			salida.put("respuesta", "ingresado correctamente");

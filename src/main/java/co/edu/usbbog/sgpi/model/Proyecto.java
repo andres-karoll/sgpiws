@@ -136,7 +136,7 @@ public class Proyecto implements Serializable {
         this.metodologia = metodologia;
         this.justificacion = justificacion;
     }
-
+    
     public Integer getId() {
         return id;
     }
