@@ -417,7 +417,7 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 
 	@Override
 	public boolean actualizarProyecto(int id, String titulo, String descripcion, String metodologia,
-			String justificacion) {
+			String justificacion,String conclusiones) {
 
 		Proyecto pro = iProyectoRepository.getById(id);
 		if (titulo != "") {
@@ -431,6 +431,8 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		}
 		if (justificacion != "") {
 			pro.setJustificacion(justificacion);
+		}if (conclusiones != "") {
+			pro.setConclusiones(conclusiones);
 		}
 		iProyectoRepository.save(pro);
 		return iProyectoRepository.existsById(pro.getId());
@@ -535,6 +537,12 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 	public List<JSONObject> tusProyectosConvocatoria(int convocatoria,int id) {
 		List<JSONObject> x = iProyectoRepository.tusProyectosConvocatoria(convocatoria,id);
 		return x;
+	}
+
+	@Override
+	public JSONObject detallesProyecto(int proyectoId) {
+		JSONObject proyecto=iProyectoRepository.buscarProyecto(proyectoId);
+		return proyecto;
 	}
 
 }

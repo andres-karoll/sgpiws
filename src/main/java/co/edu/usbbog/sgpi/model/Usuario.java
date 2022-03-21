@@ -6,6 +6,7 @@
 package co.edu.usbbog.sgpi.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -53,8 +54,8 @@ public class Usuario implements Serializable {
     @Column(nullable = false, length = 20)
     private String cedula;
     @Basic(optional = false)
-    @Column(name = "cod_universitario", nullable = false)
-    private int codUniversitario;
+    @Column(name = "cod_universitario", nullable = false, length = 100)
+    private BigInteger codUniversitario;
     @Basic(optional = false, fetch = FetchType.LAZY)
     @Column(name = "correo_est", nullable = true, length = 45)
     private String correoEst;
@@ -104,7 +105,7 @@ public class Usuario implements Serializable {
         this.cedula = cedula;
     }
 
-    public Usuario(String cedula, int codUniversitario, String correoEst, String contrasena, String nombres, String apellidos, String visiblidad) {
+    public Usuario(String cedula, BigInteger codUniversitario, String correoEst, String contrasena, String nombres, String apellidos, String visiblidad) {
         this.cedula = cedula;
         this.codUniversitario = codUniversitario;
         this.correoEst = correoEst;
@@ -122,11 +123,11 @@ public class Usuario implements Serializable {
         this.cedula = cedula;
     }
 
-    public int getCodUniversitario() {
+    public BigInteger getCodUniversitario() {
         return codUniversitario;
     }
 
-    public void setCodUniversitario(int codUniversitario) {
+    public void setCodUniversitario(BigInteger codUniversitario) {
         this.codUniversitario = codUniversitario;
     }
 
