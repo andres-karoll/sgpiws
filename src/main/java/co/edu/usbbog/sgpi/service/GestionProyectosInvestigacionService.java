@@ -578,7 +578,10 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	@Override
 	public boolean evaluar(int proyecto, String estado,String reconocimiento) {
 		Proyecto pro = iProyectoRepository.getById(proyecto);
-		if(estado=="Finalizado") {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		if(estado.equals("Finalizado")) {
+			System.out.println(LocalDate.parse(dtf.format(LocalDateTime.now())));
+			pro.setFechaFin(LocalDate.parse(dtf.format(LocalDateTime.now())));
 			pro.setRetroalimentacionFinal(reconocimiento);
 			pro.setEstado(estado);
 			iProyectoRepository.save(pro);
@@ -662,5 +665,11 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		iUsuarioRepository.save(usu);
 		}
 		return iUsuarioRepository.existsById(cedula);
+	}
+
+	@Override
+	public List<JSONObject> proyectosFinalizados() {
+		List<JSONObject> x = iProyectoRepository.proyectosFinalizados();
+		return x;
 	}
 }

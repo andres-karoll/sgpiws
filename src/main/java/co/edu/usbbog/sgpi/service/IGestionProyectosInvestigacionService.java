@@ -394,4 +394,6 @@ public interface IGestionProyectosInvestigacionService {
 	 */
 	public boolean salirSemillero(String cedula, int semillero);
 
+	public List<JSONObject> proyectosFinalizados();
+
 }
