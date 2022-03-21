@@ -404,16 +404,13 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	@Override
 	public boolean modificarUsuario(String cedula, String telefono, String clave, String correoP) {
 		Usuario usuario=iUsuarioRepository.getById(cedula);
-		if(clave!="") {
-		usuario.setContrasena(clave);
-		}
-		if(correoP!=""){
+		if(correoP.equals("")){
 		usuario.setCorreoPersonal(correoP);
 		}
-		if(telefono!="") {
+		if(telefono.equals("")) {
 			usuario.setTelefono(telefono);
 		}
-		if(clave!="") {
+		if(clave.equals("")) {
 			usuario.setContrasena(clave);
 		}
 		iUsuarioRepository.save(usuario);	
