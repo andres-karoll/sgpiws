@@ -25,18 +25,19 @@ public class GestionFiltroProyectosService implements IGestionFiltroProyectosSer
 	private IAreaConocimientoRepository areaRepo;
 	@Autowired
 	private ITipoProyectoRepository iTipoProyectoRepository;
-	
+	//metodo para obtener todos los proyectos
 	@Override
 	public List<Proyecto> todosLosProyectos() {
 		List<Proyecto> proyectos = proyectoRepo.findAll();
 		return proyectos;
 	}
+	//metodo para obtener los proyectos que se encuentren visibles y puedan mostrarse de manera publica
 	@Override
 	public List<JSONObject> todosLosProyectosVisibles() {
 		List<JSONObject> proyectos = proyectoRepo.proyectosVisibles();
 		return proyectos;
 	}
-
+//metodo para obtener proyectos segun un tipo en especifico
 	@Override
 	public List<Proyecto> todosLosProyectosPorTipoProyecto(String tipo_proyecto) {
 		List<Proyecto> x = new ArrayList<>();
@@ -48,7 +49,7 @@ public class GestionFiltroProyectosService implements IGestionFiltroProyectosSer
 	}
 
 
-
+//metodo para obtener los proyectos por un area en especifico
 	@Override
 	public List<Proyecto> todosLosProyectosPorAreaConocimiento(int areaConocimiento) {
 		List<Proyecto> x = new ArrayList<>();
@@ -60,7 +61,7 @@ public class GestionFiltroProyectosService implements IGestionFiltroProyectosSer
 		return proyectos;
 	}
 	
-	
+	//metodo para obtener un proyecto por nombre
 	@Override
 	public List<Proyecto> todosLosProyectosPorNombre(String titulo) {
 		List<Proyecto> x = new ArrayList<>();
@@ -71,7 +72,7 @@ public class GestionFiltroProyectosService implements IGestionFiltroProyectosSer
 		return proyectos;
 	}
 
-
+//metodo para obtener los tipos de proyecto
 	@Override
 	public List<TipoProyecto> todosLosTiposProyecto() {
 		List<TipoProyecto> tipo=iTipoProyectoRepository.findAll();
