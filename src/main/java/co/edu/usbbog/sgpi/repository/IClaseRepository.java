@@ -11,30 +11,18 @@ import co.edu.usbbog.sgpi.model.Clase;
 import net.minidev.json.JSONObject;
 
 public interface IClaseRepository extends JpaRepository<Clase, Integer>{
-	/**
-	 * lista de clases por profesor
-	 * @param profesor
-	 * @return
-	 */
+ //metodo para obtener las clases de un profesor
 	@Query(value = "SELECT * FROM clase WHERE profesor = ?1", nativeQuery = true)
 	List<Clase> findByProfesor(String profesor);
-	/**
-	 * lista de clases por materias 
-	 * @param materia
-	 * @return
-	 */
+	//metodo para obtener las clases de una materia
 	@Query(value = "SELECT * FROM clase WHERE materia = ?1", nativeQuery = true)
 	List<Clase> findByMateria(String materia);
-	/**
-	 * lista de proyectos de clase por clase 
-	 * @param clase
-	 * @return
-	 */
 	
+	//metodo para obtener los proyectos de una clase
 	@Query(value = "SELECT * FROM proyectos_clase where clase = ?1", nativeQuery = true)
 	List<JSONObject> findByProyecto(int clase);
 	
-	//des asignar proyecto a clase
+	//des asignar proyecto a una clase
 			@Modifying
 			@Transactional
 			@Query(value = "DELETE FROM `sgpi_db`.`proyectos_clase` WHERE (`clase` = ?1) and (`proyecto` = ?2)", nativeQuery = true)

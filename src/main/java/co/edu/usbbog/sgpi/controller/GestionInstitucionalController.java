@@ -1231,8 +1231,8 @@ public class GestionInstitucionalController {
 //metodo para eliminar un evento
 	@GetMapping(value = "/eliminarevento/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String eliminarEvento(@PathVariable int id) {
-		if (gestionInstitucionalService.eliminarEvento(id)) {
-			return "eliminado con Exito";
+		if (gestionInstitucionalService.eliminarEvento(id)==true) {
+			return "Eliminado";
 		}
 		return "no se pudo eliminar";
 	}

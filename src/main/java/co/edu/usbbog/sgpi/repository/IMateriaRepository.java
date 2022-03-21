@@ -11,11 +11,11 @@ import net.minidev.json.JSONObject;
 
 public interface IMateriaRepository extends JpaRepository<Materia, String>{
 
-	//solo para consultar por Facultad
+	//metodo para para consultar las materias por Facultad
 			@Query(value = "SELECT * FROM materia where programa = ?1", nativeQuery = true)
 			List<Materia> findByPrograma(int programa);
 			
-			//solo para consultar la clase
+			//metodo consultar las clases de una materia
 			@Query(value = "SELECT * FROM clase where materia = ?1", nativeQuery = true)
 			List<JSONObject> findByClase(String materia);
 }

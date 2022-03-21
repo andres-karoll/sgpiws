@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import co.edu.usbbog.sgpi.model.AreaConocimiento;
 import net.minidev.json.JSONObject;
-
+//metodo para obtener los proyectos de un area en especifico
 public interface IAreaConocimientoRepository extends JpaRepository<AreaConocimiento, Integer> {
 	/**
 	 * lista de ares de conocimiento por proyectos 
