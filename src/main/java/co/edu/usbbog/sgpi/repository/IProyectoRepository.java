@@ -202,4 +202,11 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	 */
 	@Query(value= "SELECT * FROM sgpi_db.proyecto where id=?1",nativeQuery = true)
 	JSONObject buscarProyecto(int proyectoId);
+	/**
+	 * busqueda de proyectos finalizados
+	 * @param proyectoId
+	 * @return
+	 */
+	@Query(value= "SELECT * FROM sgpi_db.proyecto where estado='Finalizado'",nativeQuery = true)
+	List<JSONObject> proyectosFinalizados();
 }

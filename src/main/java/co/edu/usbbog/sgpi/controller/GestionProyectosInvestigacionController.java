@@ -251,14 +251,15 @@ public class GestionProyectosInvestigacionController {
 	@PostMapping("/agregarantecedente")
 	public JSONObject agregarAntecedente(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
+		System.out.println(entrada);
 		Proyecto proyecto = iGestionProyectosInvestigacionService
 				.buscarProyecto(Integer.parseInt(entrada.getAsString("proyecto")));
 		Proyecto antecedente = iGestionProyectosInvestigacionService
 				.buscarProyecto(Integer.parseInt(entrada.getAsString("antecedente")));
-		if (antecedente.getFechaFin() == null) {
+		if (antecedente.getFechaFin().equals(null)) {
 			salida.put("respuesta ", "el antecedente aun no a terminado");
 		} else {
-			if (proyecto == antecedente) {
+			if (proyecto.equals(antecedente)) {
 				salida.put("respuesta", "el proyecto no puede ser antedente de si mismo");
 			} else {
 
@@ -419,7 +420,7 @@ public class GestionProyectosInvestigacionController {
 	@PostMapping("/evaluar/")
 	public JSONObject Evaluar(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		
+		System.out.println(entrada);
 		if (iGestionProyectosInvestigacionService.evaluar(Integer.parseInt(entrada.getAsString("proyecto")),entrada.getAsString("estado"),entrada.getAsString("reconocimiento"))) {
 			salida.put("respuesta", "Se realizo la validacion exitosamente");
 		} else {
@@ -517,6 +518,11 @@ public class GestionProyectosInvestigacionController {
 			salida.put("respuesta", "no se pudo realizar ");
 		}
 		return salida;
+	}
+	@GetMapping("/ProyectosFinalizas/")
+	public List<JSONObject> proyectosFinalizados() {
+	List<JSONObject> pro = iGestionProyectosInvestigacionService.proyectosFinalizados();
+	return pro;
 	}
 }
 
