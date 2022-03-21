@@ -739,14 +739,12 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		TipoUsuario tipousuariodos = iTipoUsuarioRepository.getById("Coordinador investigacion facultad");
 
 		Facultad facultad = facultadRepo.getById(id);
-		System.out.println("decano" + facultad.getDecano().getCedula());
-		System.out.println("coordinador" + facultad.getCoorInv().getCedula());
 
-		if (nombre != " ") {
+		if (!nombre.equals("")) {
 			facultad.setNombre(nombre);
 		}
 		// seleccion de roles que no pueden ser decano o coordinador
-		if (decano != " ") {
+		if (!decano.equals("")) {
 			usuarioRepo.deleteTipo(facultad.getDecano().getCedula(), "Lider investigacion facultad");
 
 			List<TipoUsuario> tipouno = deca.getTiposUsuario();
@@ -781,7 +779,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			facultad.setDecano(deca);
 		}
 		// seleccion de roles que no pueden ser decano o coordinador
-		if (coordinador != " ") {
+		if (!coordinador.equals("")) {
 			usuarioRepo.deleteTipo(facultad.getCoorInv().getCedula(), "Coordinador investigacion facultad");
 
 			List<TipoUsuario> tipodos = coor.getTiposUsuario();
@@ -956,13 +954,13 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		Programa programa = programaRepo.getById(id);
 		Facultad facul = facultadRepo.getById(Integer.parseInt(facultad));
 
-		if (nombre != "") {
+		if (!nombre.equals("")) {
 			programa.setNombre(nombre);
 		}
-		if (facultad != "") {
+		if (!facultad.equals("")) {
 			programa.setFacultadId(facul);
 		}
-		if (director != "") {
+		if (!director.equals("")) {
 			usuarioRepo.deleteTipo(programa.getDirector().getCedula(), "Director programa");
 			// seleccion de roles que no pueden directores
 			List<TipoUsuario> tipo = direc.getTiposUsuario();
@@ -1082,15 +1080,15 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 		Materia materia = materiaRepo.getById(catalogo);
 
-		if (catalogo != "") {
+		if (!catalogo.equals("")) {
 			materia.setCatalogo(catalogo);
 		}
 
-		if (nombre != "") {
+		if (!nombre.equals("")) {
 			materia.setNombre(nombre);
 		}
 
-		if (programa != "") {
+		if (!programa.equals("")) {
 			materia.setPrograma(pro);
 		}
 		materiaRepo.save(materia);
@@ -1231,19 +1229,19 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		Clase clase = claseRepo.getById(numero);
 		Materia mate = materiaRepo.getById(materia);
 
-		if (nombre != "") {
+		if (!nombre.equals("")) {
 			clase.setNombre(nombre);
 		}
 
-		if (semestre != "") {
+		if (!semestre.equals("")) {
 			clase.setSemestre(semestre);
 		}
 
-		if (materia != "") {
+		if (!materia.equals("")) {
 			clase.setMateria(mate);
 		}
 
-		if (profesor != "") {
+		if (!profesor.equals("")) {
 			// seleccion de roles que no pueden ser profesores
 			List<TipoUsuario> tipo = profe.getTiposUsuario();
 			for (Iterator iterator = tipo.iterator(); iterator.hasNext();) {
@@ -1376,11 +1374,11 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	public boolean modificarLinea(String nombre, String descripcion, String fecha) {
 		LineaInvestigacion linea = lineaRepo.getById(nombre);
 
-		if (descripcion != "") {
+		if (!descripcion.equals("")) {
 			linea.setDescripcion(descripcion);
 		}
 
-		if (fecha != "") {
+		if (!fecha.equals("")) {
 			linea.setFecha(LocalDate.parse(fecha));
 		}
 		lineaRepo.save(linea);
@@ -1429,15 +1427,15 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public boolean modificarArea(int id, String nombre, String gran_area, String descripcion) {
 		AreaConocimiento area = areaRepo.getById(id);
-		if (nombre != "") {
+		if (!nombre.equals("")) {
 			area.setNombre(nombre);
 		}
 
-		if (gran_area != "") {
+		if (!gran_area.equals("")) {
 			area.setGranArea(gran_area);
 		}
 
-		if (descripcion != "") {
+		if (!descripcion.equals("")) {
 			area.setDescripcion(descripcion);
 		}
 		areaRepo.save(area);
@@ -1493,23 +1491,23 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	public boolean modificarEvento(int id, String nombre, String fecha, String entidad, String estado, String sitio_web,
 			String url_memoria) {
 		Evento evento = eventoRepo.getById(id);
-		if (nombre != "") {
+		if (!nombre.equals("")) {
 			evento.setNombre(nombre);
 		}
-		if (fecha != "") {
+		if (!fecha.equals("")) {
 			evento.setFecha(LocalDate.parse(fecha));
 			;
 		}
-		if (entidad != "") {
+		if (!entidad.equals("")) {
 			evento.setEntidad(entidad);
 		}
-		if (estado != "") {
+		if (!estado.equals("")) {
 			evento.setEstado(estado);
 		}
-		if (sitio_web != "") {
+		if (!sitio_web.equals("")) {
 			evento.setSitioWeb(sitio_web);
 		}
-		if (url_memoria != "") {
+		if (!url_memoria.equals("")) {
 			evento.setUrlMemoria(url_memoria);
 		}
 		eventoRepo.save(evento);
@@ -1606,28 +1604,28 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			String contexto, String numero_productos, String estado, String tipo, String entidad) {
 
 		Convocatoria convocatoria = convocatoriaRepo.getById(id);
-		if (nombre_convocatoria != "") {
+		if (!nombre_convocatoria.equals("")) {
 			convocatoria.setNombreConvocatoria(nombre_convocatoria);
 		}
-		if (fecha_inicio != "") {
+		if (!fecha_inicio.equals("")) {
 			convocatoria.setFechaInicio(LocalDate.parse(fecha_inicio));
 		}
-		if (fecha_final != "") {
+		if (!fecha_final.equals("")) {
 			convocatoria.setFechaFinal(LocalDate.parse(fecha_final));
 		}
-		if (contexto != "") {
+		if (!contexto.equals("")) {
 			convocatoria.setContexto(contexto);
 		}
-		if (numero_productos != "") {
+		if (!numero_productos.equals("")) {
 			convocatoria.setNumeroProductos(numero_productos);
 		}
-		if (estado != "") {
+		if (!estado.equals("")) {
 			convocatoria.setEstado(estado);
 		}
-		if (tipo != "") {
+		if (!tipo.equals("")) {
 			convocatoria.setTipo(tipo);
 		}
-		if (entidad != "") {
+		if (!entidad.equals("")) {
 			convocatoria.setEntidad(entidad);
 		}
 		convocatoriaRepo.save(convocatoria);
