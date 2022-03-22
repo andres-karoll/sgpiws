@@ -437,7 +437,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			tipousuario.getUsuarios().add(lid);
 			iTipoUsuarioRepository.save(tipousuario);
 		}
-
+		lid.setSemilleroId(semillero);
 		semillero.setLiderSemillero(lid);
 		semillero.setGrupoInvestigacion(gru);
 		semillero.setLineaInvestigacion(lin);
