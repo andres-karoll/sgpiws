@@ -222,7 +222,7 @@ public interface IGestionProyectosAulaIntegradorService {
 	 * @return
 	 */
 	public boolean actualizarProyecto(int id, String titulo, String descripcion, String metodologia,
-			String justificacion,String conclusiones);
+			String justificacion,String conclusiones,String visualizacion);
 	/**
 	 * listar participantes de un proyecto 
 	 * @param id

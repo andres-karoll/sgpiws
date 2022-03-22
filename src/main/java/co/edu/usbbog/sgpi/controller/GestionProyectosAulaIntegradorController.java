@@ -488,8 +488,8 @@ public class GestionProyectosAulaIntegradorController {
 	@PostMapping(value = "/actualizarproyecto")
 	public  JSONObject ActualizarProyecto(@RequestBody JSONObject entrada	) {
 		JSONObject salida=new JSONObject();
-		
-		if(iGestionProyectosAulaIntegradorService.actualizarProyecto(Integer.parseInt( entrada.getAsString("id")),entrada.getAsString("titulo"),entrada.getAsString("descripcion"),entrada.getAsString("metodologia"),entrada.getAsString("justificacion"),entrada.getAsString("conclusiones"))) {
+		System.out.println(entrada);
+		if(iGestionProyectosAulaIntegradorService.actualizarProyecto(Integer.parseInt( entrada.getAsString("id")),entrada.getAsString("titulo"),entrada.getAsString("descripcion"),entrada.getAsString("metodologia"),entrada.getAsString("justificacion"),entrada.getAsString("conclusiones"),entrada.getAsString("visibilidad"))) {
 			salida.put("respuesta", "el proyecto fue actualizado");
 			
 		}else {

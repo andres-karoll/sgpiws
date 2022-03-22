@@ -417,22 +417,24 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 
 	@Override
 	public boolean actualizarProyecto(int id, String titulo, String descripcion, String metodologia,
-			String justificacion,String conclusiones) {
+			String justificacion,String conclusiones,String visualizacion) {
 
 		Proyecto pro = iProyectoRepository.getById(id);
-		if (titulo != "") {
+		if (titulo.equals("")) {
 			pro.setTitulo(titulo);
 		}
-		if (descripcion != "") {
+		if (descripcion.equals("")){
 			pro.setDescripcion(descripcion);
 		}
-		if (metodologia != " ") {
+		if (metodologia.equals("")) {
 			pro.setMetodologia(metodologia);
 		}
-		if (justificacion != "") {
+		if (justificacion.equals("")) {
 			pro.setJustificacion(justificacion);
-		}if (conclusiones != "") {
+		}if (conclusiones.equals("")) {
 			pro.setConclusiones(conclusiones);
+		}if(!visualizacion.equals("")) {
+			pro.setVisibilidad((short) Integer.parseInt(visualizacion));
 		}
 		iProyectoRepository.save(pro);
 		return iProyectoRepository.existsById(pro.getId());
