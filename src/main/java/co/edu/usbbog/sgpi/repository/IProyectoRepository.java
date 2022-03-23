@@ -142,8 +142,10 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	 * @param id
 	 * @return
 	 */
-	@Query(value="select distinct proyecto.id, proyecto.titulo, proyecto.descripcion,proyectos_convocatoria.id_proyecto , convocatoria.nombre_convocatoria from proyectos_convocatoria,proyecto, participantes,convocatoria where proyectos_convocatoria.proyectos=proyecto.id \r\n"
-			+ "and proyectos_convocatoria.convocatoria=?1 and participantes.proyecto=proyecto.id and participantes.usuario=?2 and convocatoria.id=proyectos_convocatoria.convocatoria",nativeQuery = true)
+	@Query(value="select distinct proyecto.id, proyecto.titulo, proyecto.descripcion,proyectos_convocatoria.id_proyecto ,\r\n"
+			+ " convocatoria.nombre_convocatoria from proyectos_convocatoria,proyecto, \r\n"
+			+ "participantes,convocatoria where proyectos_convocatoria.proyectos=proyecto.id and convocatoria.id=?1 and\r\n"
+			+ "convocatoria.id=proyectos_convocatoria.convocatoria and participantes.usuario=?2",nativeQuery = true)
 	List<JSONObject> tusProyectosConvocatoria(int convocatoria,int id);
 	/**
 	 * lista de proyectos de convocatoria en postulacion 
