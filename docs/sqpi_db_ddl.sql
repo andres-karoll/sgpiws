@@ -21,7 +21,7 @@ USE `sgpi_db` ;
 -- Table `sgpi_db`.`macro_proyecto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`macro_proyecto` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `descripcion` LONGTEXT NOT NULL,
   `fecha_inicio` DATE NOT NULL,
@@ -37,7 +37,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`facultad`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`facultad` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `decano` VARCHAR(20) NULL DEFAULT NULL,
   `coor_inv` VARCHAR(20) NULL DEFAULT NULL,
@@ -55,7 +55,6 @@ CREATE TABLE IF NOT EXISTS `sgpi_db`.`facultad` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -63,7 +62,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`programa`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`programa` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `facultad_id` INT(11) NOT NULL,
   `director` VARCHAR(50) NULL DEFAULT NULL,
@@ -81,7 +80,6 @@ CREATE TABLE IF NOT EXISTS `sgpi_db`.`programa` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -123,7 +121,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`grupo_investigacion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`grupo_investigacion` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `fecha_fun` DATE NOT NULL,
   `categoria` VARCHAR(45) NOT NULL,
@@ -137,7 +135,6 @@ CREATE TABLE IF NOT EXISTS `sgpi_db`.`grupo_investigacion` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -146,7 +143,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`linea_investigacion` (
   `nombre` VARCHAR(50) NOT NULL,
-  `descripcion` VARCHAR(1000) NOT NULL,
+  `descripcion` VARCHAR(150) NOT NULL,
   `fecha` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`nombre`))
 ENGINE = InnoDB
@@ -157,9 +154,9 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`semillero`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`semillero` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
-  `descripcion` VARCHAR(1000) NOT NULL,
+  `descripcion` VARCHAR(45) NOT NULL,
   `fecha_fun` DATE NOT NULL,
   `grupo_investigacion` INT(11) NOT NULL,
   `lider_semillero` VARCHAR(20) NULL DEFAULT NULL,
@@ -184,7 +181,6 @@ CREATE TABLE IF NOT EXISTS `sgpi_db`.`semillero` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -203,7 +199,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`proyecto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`proyecto` (
-  `id` INT(6) NOT NULL AUTO_INCREMENT,
+  `id` INT(6) NOT NULL,
   `titulo` VARCHAR(100) NOT NULL,
   `estado` VARCHAR(45) NOT NULL,
   `descripcion` LONGTEXT NOT NULL,
@@ -238,7 +234,6 @@ CREATE TABLE IF NOT EXISTS `sgpi_db`.`proyecto` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 47
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -269,13 +264,12 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`area_conocimiento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`area_conocimiento` (
-  `id` INT(6) NOT NULL AUTO_INCREMENT,
+  `id` INT(6) NOT NULL,
   `nombre` VARCHAR(100) NOT NULL,
   `gran_area` VARCHAR(45) NULL DEFAULT NULL,
   `descripcion` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -350,7 +344,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`producto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`producto` (
-  `id` INT(6) NOT NULL AUTO_INCREMENT,
+  `id` INT(6) NOT NULL,
   `titulo_producto` VARCHAR(100) NOT NULL,
   `tipo_producto` VARCHAR(100) NOT NULL,
   `url_repo` VARCHAR(150) NOT NULL,
@@ -364,7 +358,6 @@ CREATE TABLE IF NOT EXISTS `sgpi_db`.`producto` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 10
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -387,7 +380,6 @@ CREATE TABLE IF NOT EXISTS `sgpi_db`.`comentario` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 9
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -395,7 +387,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`presupuesto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`presupuesto` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL,
   `monto` DOUBLE NOT NULL,
   `fecha` DATE NOT NULL,
   `proyecto` INT(100) NOT NULL,
@@ -415,7 +407,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`compra`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`compra` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL,
   `fecha_solicitud` DATE NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `tipo` VARCHAR(45) NOT NULL,
@@ -441,7 +433,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`convocatoria`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`convocatoria` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL,
   `nombre_convocatoria` VARCHAR(45) NOT NULL,
   `fecha_inicio` DATE NOT NULL,
   `fecha_final` DATE NOT NULL,
@@ -452,7 +444,6 @@ CREATE TABLE IF NOT EXISTS `sgpi_db`.`convocatoria` (
   `entidad` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -460,7 +451,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`detalle_convocatoria`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`detalle_convocatoria` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL,
   `objetivos_convocatoria` VARCHAR(45) NOT NULL,
   `requisitos` VARCHAR(45) NOT NULL,
   `modalidade` VARCHAR(45) NOT NULL,
@@ -480,16 +471,15 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `sgpi_db`.`evento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sgpi_db`.`evento` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `fecha` DATETIME NOT NULL,
-  `entidad` VARCHAR(200) NULL DEFAULT NULL,
-  `estado` VARCHAR(200) NOT NULL,
-  `sitio_web` VARCHAR(200) NULL DEFAULT NULL,
-  `url_memoria` VARCHAR(200) NULL DEFAULT NULL,
+  `entidad` VARCHAR(45) NULL DEFAULT NULL,
+  `estado` VARCHAR(45) NOT NULL,
+  `sitio_web` VARCHAR(45) NULL DEFAULT NULL,
+  `url_memoria` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -523,7 +513,7 @@ CREATE TABLE IF NOT EXISTS `sgpi_db`.`participaciones` (
   `evento_id` INT(11) NOT NULL,
   `proyecto_id_proyecto` INT(6) NOT NULL,
   `fecha_part` DATE NOT NULL,
-  `reconocimientos` VARCHAR(1000) NULL DEFAULT NULL,
+  `reconocimientos` VARCHAR(10) NULL DEFAULT NULL,
   PRIMARY KEY (`evento_id`, `proyecto_id_proyecto`),
   INDEX `fk_participaciones_proyecto_idx` (`proyecto_id_proyecto` ASC),
   INDEX `fk_participaciones_evento_idx` (`evento_id` ASC),
