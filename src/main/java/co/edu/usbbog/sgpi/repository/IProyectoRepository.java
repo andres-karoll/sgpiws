@@ -57,7 +57,7 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	 * @param cedula
 	 * @return
 	 */
-	@Query(value="SELECT usuario.cedula as \"cedula\", proyecto.id, proyecto.titulo, proyecto.estado, proyecto.descripcion, proyecto.fecha_inicio, proyecto.fecha_fin, proyecto.metodologia, proyecto.visibilidad from participantes inner join usuario on participantes.usuario =  usuario.cedula inner join proyecto on proyecto.id = participantes.proyecto where participantes.usuario=?1 and proyecto.tipo_proyecto=\"Aula\" ",nativeQuery = true)
+	@Query(value="SELECT usuario.cedula as \"cedula\", proyecto.id, proyecto.titulo, proyecto.estado, proyecto.descripcion, proyecto.fecha_inicio, proyecto.fecha_fin, proyecto.metodologia, proyecto.visibilidad, proyecto.tipo_proyecto from participantes inner join usuario on participantes.usuario =  usuario.cedula inner join proyecto on proyecto.id = participantes.proyecto where participantes.usuario=?1 and (proyecto.tipo_proyecto='Aula' or proyecto.tipo_proyecto='Grado') ",nativeQuery = true)
 	List<JSONObject> proyectosParticipaClase(String cedula);
 	/**
 	 * datos de un proyecto de semillero 

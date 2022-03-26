@@ -114,8 +114,7 @@ public class GestionUsuarioController {
 		} else if (entrada.getAsString("correoEst").contains("@usbbog.edu.co")) {
 			tipoUsuario = entrada.getAsString("tipo");
 		}
-
-		if (iGestionUsuariosService.crearUsuario(usuario, entrada.getAsString("programa"), tipoUsuario)) {
+		if (iGestionUsuariosService.crearUsuario(usuario, entrada.getAsString("programa"), entrada.getAsString("tipo"))) {
 			salida.put("respuesta", "usuario creado");
 
 		} else {

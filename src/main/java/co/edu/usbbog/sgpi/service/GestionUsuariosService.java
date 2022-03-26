@@ -79,7 +79,6 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		if (existeUsuario(usuario.getCedula())) {
 			return false;
 		}
-	
 		TipoUsuario tp = iTipoUsuarioRepository.getById(tipousuario);
 		Programa pro = iProgramaRepository.getById(Integer.parseInt(programa));
 		if (pro == null) {

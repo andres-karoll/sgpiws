@@ -420,18 +420,18 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 			String justificacion,String conclusiones,String visualizacion) {
 
 		Proyecto pro = iProyectoRepository.getById(id);
-		if (titulo.equals("")) {
+		if (!titulo.equals("")) {
 			pro.setTitulo(titulo);
 		}
-		if (descripcion.equals("")){
+		if (!descripcion.equals("")){
 			pro.setDescripcion(descripcion);
 		}
-		if (metodologia.equals("")) {
+		if (!metodologia.equals("")) {
 			pro.setMetodologia(metodologia);
 		}
-		if (justificacion.equals("")) {
+		if (!justificacion.equals("")) {
 			pro.setJustificacion(justificacion);
-		}if (conclusiones.equals("")) {
+		}if (!conclusiones.equals("")) {
 			pro.setConclusiones(conclusiones);
 		}if(!visualizacion.equals("")) {
 			pro.setVisibilidad((short) Integer.parseInt(visualizacion));
