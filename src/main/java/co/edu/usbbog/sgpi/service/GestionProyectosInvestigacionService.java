@@ -340,7 +340,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	@Override
 	public boolean agregarAntecedente(Proyecto proyecto, Proyecto antecedente) {
 		if (antecedente != null && proyecto != null) {
-			if (proyecto.getFechaInicio().isAfter(antecedente.getFechaFin())) {
+			//if (proyecto.getFechaInicio().isAfter(antecedente.getFechaFin())) {
 				if (proyecto.getAntecedentes().isEmpty()) {
 					proyecto.setAntecedentes(new ArrayList<Proyecto>());
 					proyecto.getAntecedentes().add(antecedente);
@@ -353,9 +353,9 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 						iProyectoRepository.save(proyecto);
 					}
 				}
-			} else {
+			/*} else {
 				return false;
-			}
+			}*/
 			return !proyecto.getAntecedentes().contains(antecedente);
 		} else {
 			return false;
