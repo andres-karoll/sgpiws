@@ -1468,6 +1468,11 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		List<Evento> eventos = eventoRepo.findAll();
 		return eventos;
 	}
+	@Override
+	public List<Evento> todosLosEventosInternos() {
+		List<Evento> eventos = eventoRepo.listarEventoInternos();
+		return eventos;
+	}
 
 	// metodo que cuenta los eventos creados en el aplicativo
 	@Override

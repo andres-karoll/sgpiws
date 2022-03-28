@@ -1177,6 +1177,16 @@ public class GestionInstitucionalController {
 		}
 		return salida;
 	}
+	@GetMapping(value = "/listareventosInternos")
+	public JSONArray listarEventosInternos() {
+
+		JSONArray salida = new JSONArray();
+		List<Evento> eve = gestionInstitucionalService.todosLosEventosInternos();
+		for (Evento evento : eve) {
+			salida.add(evento.toJson());
+		}
+		return salida;
+	}
 //metodo para contar los eventos creados en la aplicacion
 	@GetMapping(value = "/contareventos")
 	public List<JSONObject> contarEventos() {

@@ -160,5 +160,8 @@ public interface IGestionInstitucionalService {
 
 	public List<JSONObject> datosProyectoConvocatoria(int id);
 
+
+	public List<Evento> todosLosEventosInternos();
+
 	
 }

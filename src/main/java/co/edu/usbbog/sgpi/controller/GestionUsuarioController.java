@@ -275,10 +275,16 @@ public class GestionUsuarioController {
 	public JSONObject asignarTipoUsuario(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		Usuario usuario = iGestionUsuariosService.buscarUsuario(entrada.getAsString("cedula"));
+		System.out.println(iGestionUsuariosService.buscarUsuario(entrada.getAsString("cedula"))==null);
 		TipoUsuario tipoUsuario = iGestionUsuariosService.buscarTipoUsuario(entrada.getAsString("rol"));
 		if (usuario != null && tipoUsuario != null) {
-			iGestionUsuariosService.asignarTipoUsuario(usuario, tipoUsuario);
-			salida.put("respuesta", "ingresado correctamente");
+			if(iGestionUsuariosService.asignarTipoUsuario(usuario, tipoUsuario)) {
+				
+				salida.put("respuesta", "ingresado correctamente");	
+			}else {
+				salida.put("respuesta", "el usuario o el tipo de usuario no existe");
+			}
+			
 		} else {
 			salida.put("respuesta", "el usuario o el tipo de usuario no existe");
 		}

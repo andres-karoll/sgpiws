@@ -325,6 +325,8 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 
 	@Override
 	public boolean asignarTipoUsuario(Usuario usuario, TipoUsuario tipoUsuario) {
+		if(iUsuarioRepository.existsById(usuario.getCedula())) {
+			System.out.println(iUsuarioRepository.existsById(usuario.getCedula()));
 		if(tipoUsuario.getNombre().equals("Egresado")||tipoUsuario.getNombre().equals("Estudiante inactivo")){
 			iTipoUsuarioRepository.desasignarRoles(usuario.getCedula());
 			tipoUsuario.getUsuarios().add(usuario);
@@ -337,6 +339,10 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		iTipoUsuarioRepository.save(tipoUsuario);
 		List<Usuario> usuarios = iTipoUsuarioRepository.getById(tipoUsuario.getNombre()).getUsuarios();
 		return usuarios.contains(usuario);
+	}else {
+				return false;
+				}
+		
 	}
 	@Override
 	public String asignarRolUsuario(String usuario, String tipoUsuario) {
