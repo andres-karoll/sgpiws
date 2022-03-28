@@ -157,7 +157,7 @@ public class Facultad implements Serializable {
     	}
     	if(this.getDecano()==null) {
 
-    		facultadJson.put("coor_inv","no tiene un Decano asignado");
+    		facultadJson.put("decano","no tiene un Decano asignado");
     	}else {
     			facultadJson.put("decano",this.getDecano().getNombres());
     	}
