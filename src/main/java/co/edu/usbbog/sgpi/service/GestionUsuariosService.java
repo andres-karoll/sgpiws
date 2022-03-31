@@ -442,6 +442,17 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		return usu;
 	}
 
+	@Override
+	public boolean desasignarRol(String cedula) {
+		Usuario usuario=iUsuarioRepository.getById(cedula);
+		if(iUsuarioRepository.existsById(cedula)) {
+		iTipoUsuarioRepository.desasignarRoles(usuario.getCedula());
+		return true;
+		}else {
+			return false;
+		}
+		}
+
 
 
 }

@@ -290,6 +290,16 @@ public class GestionUsuarioController {
 		}
 		return salida;
 	}
+	@GetMapping("/desasignarRoles/{cedula}")
+	public JSONObject desasignarRoles(@PathVariable String cedula) {
+		JSONObject salida = new JSONObject();
+		if(iGestionUsuariosService.desasignarRol(cedula)) {
+			salida.put("respuesta", "Se desabilito tu cuenta");
+		}else {
+			salida.put("respuesta","error");
+		}
+		return salida;
+	}
 
 	/**
 	 * asignar tipo de usuario

@@ -107,4 +107,5 @@ public interface IGestionUsuariosService {
 	 * @return
 	 */
 	String asignarRolUsuario(String usuario, String tipoUsuario);
+	public boolean desasignarRol(String cedula);
 }
