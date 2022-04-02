@@ -292,4 +292,6 @@ public interface IGestionProyectosAulaIntegradorService {
 	 * @return
 	 */
 	public List<JSONObject> tusProyectosConvocatoria(int convocatoria, int id);
+
+	public List<JSONObject> proyectosConvocatoriaUsuario(String cedula);
 }

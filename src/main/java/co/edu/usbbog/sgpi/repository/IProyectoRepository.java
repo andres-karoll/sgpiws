@@ -211,4 +211,8 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	 */
 	@Query(value= "SELECT * FROM sgpi_db.proyecto where estado='Finalizado'",nativeQuery = true)
 	List<JSONObject> proyectosFinalizados();
+	@Query(value= "select distinct proyecto.id, proyecto.titulo, proyecto.descripcion,proyectos_convocatoria.id_proyecto ,convocatoria.nombre_convocatoria from proyectos_convocatoria,proyecto, \r\n"
+			+ "			participantes,convocatoria where proyectos_convocatoria.proyectos=proyecto.id and \r\n"
+			+ "            convocatoria.id=proyectos_convocatoria.convocatoria and participantes.usuario=?1",nativeQuery = true)
+	List<JSONObject> proyectosConvocatoriaUsuario(String cedula);
 }

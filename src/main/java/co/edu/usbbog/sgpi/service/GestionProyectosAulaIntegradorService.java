@@ -547,4 +547,11 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 		return proyecto;
 	}
 
+	@Override
+	public List<JSONObject> proyectosConvocatoriaUsuario(String cedula) {
+		List<JSONObject> x = iProyectoRepository.proyectosConvocatoriaUsuario(cedula);
+		return x;
+	
+	}
+
 }

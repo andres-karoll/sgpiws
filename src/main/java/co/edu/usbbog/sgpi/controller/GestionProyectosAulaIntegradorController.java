@@ -523,6 +523,11 @@ public class GestionProyectosAulaIntegradorController {
 		 List<JSONObject> x = iGestionProyectosAulaIntegradorService.tusProyectosConvocatoria(Integer.parseInt(entrada.getAsString("convocatoria")),Integer.parseInt(entrada.getAsString("id")));
 		 return x;
 		}
+	@GetMapping(value = "/ProyectosConvocatoriaUsuario/{cedula}")
+	public   List<JSONObject> proyectosConvocatoriaUsuario(@PathVariable String cedula	) {
+		 List<JSONObject> x = iGestionProyectosAulaIntegradorService.proyectosConvocatoriaUsuario(cedula);
+		 return x;
+		}
 	/**
 	 * modificar macro proyecto 
 	 * @param entrada
