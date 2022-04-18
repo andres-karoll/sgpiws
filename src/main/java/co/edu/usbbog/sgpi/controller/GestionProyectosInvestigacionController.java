@@ -103,7 +103,6 @@ public class GestionProyectosInvestigacionController {
 	@GetMapping("/todosLosproyectosusuariosemillero/{cedula}")
 	public  List<JSONObject> todosLosProyectosUsuarioSemillero(@PathVariable String cedula) {
 		List<JSONObject> proyectos = iGestionProyectosInvestigacionService.todosLosProyectosUsuarioSemillero(cedula);
-		
 		return proyectos;
 	}
 	/**
