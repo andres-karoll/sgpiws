@@ -399,14 +399,10 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	@Override
 	public List<JSONObject> todosLosProyectosUsuarioSemillero(String cedula) {
 		Usuario usu=iUsuarioRepository.getById(cedula); 
-		if(iProyectoRepository.proyectosParticipaSemillero(usu.getSemilleroId().getId())==null) {
+		
 		List<JSONObject> proyectos = iProyectoRepository.proyectosParticipaSemillero(usu.getSemilleroId().getId());
 		return proyectos;
-		}else {
-			List<JSONObject> proyectos=null;
-			return proyectos;
-		}
-	
+		
 	}
 
 	@Override
