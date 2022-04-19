@@ -638,7 +638,9 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	public boolean cambioEstadoTrabajoGrado(int proyecto, String estado,String reconocimiento) {
 		Proyecto pro=iProyectoRepository.getById(proyecto);
 		boolean est=false;
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		if(estado.equals("Finalizado")) {
+		pro.setFechaFin(LocalDate.parse(dtf.format(LocalDateTime.now())));
 		pro.setEstado(estado);
 		pro.setRetroalimentacionFinal(reconocimiento);
 		iProyectoRepository.save(pro);
