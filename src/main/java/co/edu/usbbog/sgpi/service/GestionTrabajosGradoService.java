@@ -161,7 +161,6 @@ public class GestionTrabajosGradoService implements IGestionTrabajosGradoService
 	@Override
 	public boolean eliminarComentario(int id) {
 		Comentario comentario = iComentarioRepository.getById(id);
-		System.out.println(comentario.getId());
 		if (comentario.equals(null)) {
 			return false;
 		} else {

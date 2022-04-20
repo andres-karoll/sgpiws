@@ -240,7 +240,6 @@ public class GestionUsuarioController {
 	 */
 	@GetMapping("/eliminartipousuarioausuario")
 	public String quitarTipoUsuarioAUsuario(@RequestBody JSONObject entrada) {
-		System.out.println(entrada);
 		if (iGestionUsuariosService.eliminarTipoUsuarioAUsuario(entrada.getAsString("cedula"),
 				entrada.getAsString("nombre"))) {
 			return "elimino";
@@ -275,7 +274,6 @@ public class GestionUsuarioController {
 	public JSONObject asignarTipoUsuario(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
 		Usuario usuario = iGestionUsuariosService.buscarUsuario(entrada.getAsString("cedula"));
-		System.out.println(iGestionUsuariosService.buscarUsuario(entrada.getAsString("cedula"))==null);
 		TipoUsuario tipoUsuario = iGestionUsuariosService.buscarTipoUsuario(entrada.getAsString("rol"));
 		if (usuario != null && tipoUsuario != null) {
 			if(iGestionUsuariosService.asignarTipoUsuario(usuario, tipoUsuario)) {
@@ -347,7 +345,6 @@ public class GestionUsuarioController {
 				salida.put("respuesta", "el usuario no tiene el rol necesario para ser decano ");
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage() + " v " + e.getStackTrace());
 			salida.put("respuesta", "el id del decano tiene un error");
 		}
 		return salida;
@@ -384,7 +381,6 @@ public class GestionUsuarioController {
 				salida.put("respuesta", "el usuario no fue asignado existosamente");
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage() + " v " + e.getStackTrace());
 			salida.put("respuesta", "el id del coorInv tiene un error");
 		}
 		return salida;
@@ -436,7 +432,6 @@ public class GestionUsuarioController {
 				salida.put("respuesta", "el director de progrma no fue asignado existosamente");
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage() + " v " + e.getStackTrace());
 			salida.put("respuesta", "el id del director de progrma tiene un error");
 		}
 		return salida;
@@ -460,7 +455,6 @@ public class GestionUsuarioController {
 				salida.put("respuesta", "el director de grupo no fue asignado existosamente");
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage() + " v " + e.getStackTrace());
 			salida.put("respuesta", "el id del director de grupo tiene un error");
 		}
 		return salida;
@@ -496,7 +490,6 @@ public class GestionUsuarioController {
 				salida.put("respuesta", "el lider de semillero no fue asignado existosamente");
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage() + " v " + e.getStackTrace());
 			salida.put("respuesta", "el id del lider de semillero tiene un error");
 		}
 		return salida;

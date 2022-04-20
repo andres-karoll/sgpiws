@@ -216,7 +216,6 @@ public class GestionProyectosInvestigacionController {
 		JSONObject salida = new JSONObject();
 		Participaciones participaciones = new Participaciones(Integer.parseInt(entrada.getAsString("evento")),
 				Integer.parseInt(entrada.getAsString("proyecto")));
-		System.out.println("holass");
 		if (iGestionProyectosInvestigacionService.participarEvento(participaciones,
 				LocalDate.parse(entrada.getAsString("fecha")), entrada.getAsString("reconocimiento"))) {
 			salida.put("respuesta", "se unio al evento exitosamente");
@@ -250,7 +249,6 @@ public class GestionProyectosInvestigacionController {
 	@PostMapping("/agregarantecedente")
 	public JSONObject agregarAntecedente(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		System.out.println(entrada);
 		Proyecto proyecto = iGestionProyectosInvestigacionService
 				.buscarProyecto(Integer.parseInt(entrada.getAsString("proyecto")));
 		Proyecto antecedente = iGestionProyectosInvestigacionService
@@ -419,7 +417,6 @@ public class GestionProyectosInvestigacionController {
 	@PostMapping("/evaluar/")
 	public JSONObject Evaluar(@RequestBody JSONObject entrada) {
 		JSONObject salida = new JSONObject();
-		System.out.println(entrada);
 		if (iGestionProyectosInvestigacionService.evaluar(Integer.parseInt(entrada.getAsString("proyecto")),entrada.getAsString("estado"),entrada.getAsString("reconocimiento"))) {
 			salida.put("respuesta", "Se realizo la validacion exitosamente");
 		} else {

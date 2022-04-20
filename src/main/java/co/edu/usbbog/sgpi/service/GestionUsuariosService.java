@@ -122,7 +122,6 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		}
 		usu.setSemilleroId(semi);
 		if(i>0) {
-			System.out.println("este usuario ya tiene el rol");
 		}else{
 			tipo2.getUsuarios().add(usu);
 			iTipoUsuarioRepository.save(tipo2);
@@ -135,7 +134,6 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	public boolean eliminarUsuarioSemillero(String cedula) {
 
 		if (iUsuarioRepository.existsById(cedula)) {
-			System.out.println(cedula);
 			iUsuarioRepository.setSemilleroById(cedula);
 			return true;
 		} else {
@@ -186,7 +184,6 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 	@Override
 	public boolean eliminarTipoUsuarioAUsuario(String cedula, String nombre) {
 		if (iUsuarioRepository.existsById(cedula)) {
-			System.out.println(nombre + " " + cedula);
 			iUsuarioRepository.deleteUsuariosById(cedula, nombre);
 			return true;
 		}
@@ -220,7 +217,6 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 
 	@Override
 	public boolean eliminarDecanoFacultad(String cedula, String facultad) {
-		System.out.println(cedula + " " + facultad);
 		if (iUsuarioRepository.existsById(cedula) && iFacultadRepository.existsById(Integer.parseInt(facultad))) {
 			iFacultadRepository.deleteDecanoById(facultad);
 			return true;
@@ -315,7 +311,6 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 
 	@Override
 	public boolean eliminarLiderSemillero(String cedula, String semillero) {
-		System.out.println(cedula + " " + semillero);
 		if (iUsuarioRepository.existsById(cedula) && iSemilleroRepository.existsById(Integer.parseInt(semillero))) {
 			iSemilleroRepository.deleteLiderSemilleroById(semillero);
 			return true;
@@ -355,7 +350,6 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 			return "el rol no existe";
 		}
 		int i =0;
-		System.out.println(tipoUsuario.equals("Egresado")+" "+"  "+tipoUsuario.equals("Estudiante inactivo"));
 		if(tipoUsuario.equals("Egresado")||tipoUsuario.equals("Estudiante inactivo")){
 			//iTipoUsuarioRepository.desasignarRoles(usuario);
 			tipousuario.getUsuarios().add(usua);
@@ -372,11 +366,9 @@ public class GestionUsuariosService implements IGestionUsuariosService {
 		}
 		}
 			if(i>0) {
-				System.out.println("ya tiene ese rol");
 				return "ya tiene ese rol";
 			}
 			else {
-				System.out.println("NO tenia el rol");
 				
 				tipousuario.getUsuarios().add(usua);
 				iTipoUsuarioRepository.save(tipousuario);

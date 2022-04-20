@@ -522,7 +522,6 @@ public class GestionProyectosAulaIntegradorService implements IGestionProyectosA
 			macroP.setDescripcion(detalle);
 		}
 		iMacroProyectoRepository.save(macroP);
-		System.out.println( iMacroProyectoRepository.existsById(macroP.getId()));
 		return iMacroProyectoRepository.existsById(macroP.getId());
 	}
 
