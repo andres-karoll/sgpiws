@@ -137,7 +137,6 @@ public class GestionFinancieraController {
 	@GetMapping(value = "/eliminarcompra/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String eliminarCompra(@PathVariable int id) {	
 		boolean x = gestionFinancieraService.eliminarCompra(id);
-		System.out.println(x);
 		if(x) {
 			return "Eliminado";
 		}

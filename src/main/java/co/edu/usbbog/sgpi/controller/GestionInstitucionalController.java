@@ -71,8 +71,6 @@ public class GestionInstitucionalController {
 
 				entrada.getAsString("nombre"), LocalDate.parse(entrada.getAsString("fechaFun")),
 				entrada.getAsString("categoria"), LocalDate.parse(entrada.getAsString("fechaCat")));
-
-		System.out.println(entrada);
 		if (gestionInstitucionalService.crearGrupoInvestigacion(grupoInvestigacion,
 				entrada.getAsString("director")) == "se creo el grupo") {
 
@@ -805,8 +803,6 @@ public class GestionInstitucionalController {
 
 		JSONArray salida = new JSONArray();
 		List<Clase> cla = gestionInstitucionalService.todasLasClases();
-		System.out.println(gestionInstitucionalService.todasLasClases());
-
 		for (Clase clase : cla) {
 			salida.add(clase.toJson());
 		}
@@ -1048,7 +1044,6 @@ public class GestionInstitucionalController {
 		JSONObject salida = new JSONObject();
 		LineaInvestigacion linea = new LineaInvestigacion(entrada.getAsString("nombre"),
 				entrada.getAsString("descripcion"));
-		System.out.println(linea.getDescripcion());
 		if (gestionInstitucionalService.crearLinea(linea, LocalDate.parse(entrada.getAsString("fecha")))) {
 			salida.put("respuesta", "se creo la linea");
 		} else {

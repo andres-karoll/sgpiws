@@ -224,7 +224,6 @@ public class GestionProyectosAulaIntegradorController {
 	@PostMapping("/eliminarArea")
 	public JSONObject elinimarArea(@RequestBody JSONObject entrada) {
 		JSONObject salida= new JSONObject();
-		System.out.println(entrada);
 		if (iGestionProyectosAulaIntegradorService.eliminarArea(Integer.parseInt(entrada.getAsString("areasConocimiento")),Integer.parseInt(entrada.getAsString("proyecto")))) {
 			salida.put("respuesta", "Se eliminado la area");
 		} else {
@@ -488,7 +487,6 @@ public class GestionProyectosAulaIntegradorController {
 	@PostMapping(value = "/actualizarproyecto")
 	public  JSONObject ActualizarProyecto(@RequestBody JSONObject entrada	) {
 		JSONObject salida=new JSONObject();
-		System.out.println(entrada);
 		if(iGestionProyectosAulaIntegradorService.actualizarProyecto(Integer.parseInt( entrada.getAsString("id")),entrada.getAsString("titulo"),entrada.getAsString("descripcion"),entrada.getAsString("metodologia"),entrada.getAsString("justificacion"),entrada.getAsString("conclusiones"),entrada.getAsString("visibilidad"))) {
 			salida.put("respuesta", "el proyecto fue actualizado");
 			

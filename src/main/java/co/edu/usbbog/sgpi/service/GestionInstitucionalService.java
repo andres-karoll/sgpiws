@@ -140,9 +140,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}
 
 		if (i > 0) {
-			System.out.println("ya tiene ese rol");
-		} else {
-			System.out.println("NO tenia el rol");
+			} else {
 			tipousuario.getUsuarios().add(dir);
 			iTipoUsuarioRepository.save(tipousuario);
 		}
@@ -203,9 +201,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			}
 
 			if (i > 0) {
-				System.out.println("ya tiene ese rol");
 			} else {
-				System.out.println("NO tenia el rol");
 				tipousuariouno.getUsuarios().add(direc);
 				iTipoUsuarioRepository.save(tipousuariouno);
 			}
@@ -230,16 +226,13 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public boolean asignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion) {
 		if (!grupoIRepo.existsById(grupo_investigacion)) {
-			System.out.println("no existe el grupo");
 			return false;
 		}
 		if (!programaRepo.existsById(programa)) {
-			System.out.println("no existe el programa con id: " + programa);
 			return false;
 		}
 		Programa pro = programaRepo.getById(programa);
 		GrupoInvestigacion grupoInvestigacion = grupoIRepo.getById(grupo_investigacion);
-		System.out.println(grupoInvestigacion);
 		// grupoInvestigacion.setProgramas(new ArrayList<>());
 		grupoInvestigacion.getProgramas().add(pro);
 		grupoIRepo.save(grupoInvestigacion);
@@ -250,11 +243,9 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public boolean desasignarProgramaAGrupoInvestigacion(int programa, int grupo_investigacion) {
 		if (!grupoIRepo.existsById(grupo_investigacion)) {
-			System.out.println("no existe el grupo");
 			return false;
 		}
 		if (!programaRepo.existsById(programa)) {
-			System.out.println("no existe el programa con id: " + programa);
 			return false;
 		}
 		grupoIRepo.desAsignarPrograma(programa + "", grupo_investigacion + "");
@@ -276,12 +267,10 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public boolean asignarLineaAGrupoInvestigacion(String linea_investigacion, int grupo_investigacion) {
 		if (!grupoIRepo.existsById(grupo_investigacion)) {
-			System.out.println("no existe el grupo");
 			return false;
 		}
 		if (!lineaRepo.existsById(linea_investigacion)) {
-			System.out.println("no existe la linea");
-			return false;
+				return false;
 		}
 		LineaInvestigacion linea = lineaRepo.getById(linea_investigacion);
 		GrupoInvestigacion grupoInvestigacion = grupoIRepo.getById(grupo_investigacion);
@@ -308,16 +297,12 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public boolean desasignarLineaAGrupoInvestigacion(String linea_investigacion, int grupo_investigacion) {
 		if (!grupoIRepo.existsById(grupo_investigacion)) {
-			System.out.println("no existe el grupo");
-			return false;
+				return false;
 		}
 		if (!lineaRepo.existsById(linea_investigacion)) {
-			System.out.println("no existe la linea");
 			return false;
 		}
-		System.out.println(linea_investigacion);
-		System.out.println(grupo_investigacion);
-		grupoIRepo.desAsignarLinea(linea_investigacion, grupo_investigacion + "");
+			grupoIRepo.desAsignarLinea(linea_investigacion, grupo_investigacion + "");
 
 		return true;
 	}
@@ -337,11 +322,9 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		GrupoInvestigacion sem = grupoIRepo.getById(grupoInvestigacion);
 		List<Semillero> x = new ArrayList<>();
 		if (sem != null) {
-			System.out.println("if");
 			List<Semillero> semillero = semilleroRepo.findByGrupoInvestigacion(grupoInvestigacion);
 			return semillero;
 		} else {
-			System.out.println("else");
 			return x;
 		}
 	}
@@ -431,9 +414,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}
 
 		if (i > 0) {
-			System.out.println("ya tiene ese rol");
 		} else {
-			System.out.println("NO tenia el rol");
 			tipousuario.getUsuarios().add(lid);
 			iTipoUsuarioRepository.save(tipousuario);
 		}
@@ -502,10 +483,8 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			}
 
 			if (i > 0) {
-				System.out.println("ya tiene ese rol");
-			} else {
-				System.out.println("NO tenia el rol");
-				tipousuariouno.getUsuarios().add(lider);
+				} else {
+					tipousuariouno.getUsuarios().add(lider);
 				iTipoUsuarioRepository.save(tipousuariouno);
 			}
 
@@ -536,11 +515,9 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public boolean asignarSemilleroAPrograma(int programa, int semillero) {
 		if (!semilleroRepo.existsById(semillero)) {
-			System.out.println("no existe el semillero");
 			return false;
 		}
 		if (!programaRepo.existsById(programa)) {
-			System.out.println("no existe el programa");
 			return false;
 		}
 		Programa pro = programaRepo.getById(programa);
@@ -555,11 +532,9 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public boolean desasignarSemilleroAPrograma(int programa, int semillero) {
 		if (!semilleroRepo.existsById(semillero)) {
-			System.out.println("no existe el semillero" + semillero);
 			return false;
 		}
 		if (!programaRepo.existsById(programa)) {
-			System.out.println("no existe el programa" + programa);
 			return false;
 		}
 		semilleroRepo.desAsignarPrograma(programa + "", semillero + "");
@@ -594,7 +569,6 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}
 		usu.setSemilleroId(semi);
 		if (i > 0) {
-			System.out.println("este usuario ya tiene el rol");
 		} else {
 			tipo2.getUsuarios().add(usu);
 			iTipoUsuarioRepository.save(tipo2);
@@ -684,9 +658,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			}
 		}
 		if (i > 0) {
-			System.out.println("ya tiene ese rol director");
 		} else {
-			System.out.println("NO tenia el rol");
 			tipousuariouno.getUsuarios().add(deca);
 			iTipoUsuarioRepository.save(tipousuariouno);
 		}
@@ -714,10 +686,8 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			}
 		}
 		if (j > 0) {
-			System.out.println("ya tiene ese rol coordinador");
 		} else {
-			System.out.println("NO tenia el rol");
-			tipousuariodos.getUsuarios().add(coor);
+				tipousuariodos.getUsuarios().add(coor);
 			iTipoUsuarioRepository.save(tipousuariodos);
 		}
 
@@ -770,10 +740,8 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			}
 
 			if (i > 0) {
-				System.out.println("ya tiene ese rol");
 			} else {
-				System.out.println("NO tenia el rol");
-				tipousuariouno.getUsuarios().add(deca);
+					tipousuariouno.getUsuarios().add(deca);
 				iTipoUsuarioRepository.save(tipousuariouno);
 			}
 			facultad.setDecano(deca);
@@ -806,9 +774,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			}
 
 			if (i > 0) {
-				System.out.println("ya tiene ese rol");
 			} else {
-				System.out.println("NO tenia el rol");
 				tipousuariodos.getUsuarios().add(coor);
 				iTipoUsuarioRepository.save(tipousuariouno);
 			}
@@ -844,7 +810,6 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 
 		Programa pro = programaRepo.getById(id);
 		List<Usuario> usuarios = pro.getUsuarios();
-		System.out.println(usuarios);
 		return usuarios;
 	}
 
@@ -877,9 +842,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		List<JSONObject> semillero = programaRepo.findBySemillero(id);
 		List<JSONObject> usuario = programaRepo.findByUsuario(id);
 		boolean programa = programaRepo.existsById(id);
-		System.out.println(grupo.isEmpty() + " " + semillero.isEmpty() + " " + usuario.isEmpty() + " " + programa);
-		System.out.println(usuario);
-		if (grupo.isEmpty() && semillero.isEmpty() && usuario.isEmpty() && programa == true) {
+			if (grupo.isEmpty() && semillero.isEmpty() && usuario.isEmpty() && programa == true) {
 			programaRepo.deleteById(id);
 			return true;
 		}
@@ -929,9 +892,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}
 
 		if (i > 0) {
-			System.out.println("ya tiene ese rol");
 		} else {
-			System.out.println("NO tenia el rol");
 			tipousuario.getUsuarios().add(direc);
 			iTipoUsuarioRepository.save(tipousuario);
 		}
@@ -986,9 +947,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			}
 
 			if (i > 0) {
-				System.out.println("ya tiene ese rol");
-			} else {
-				System.out.println("NO tenia el rol");
+				} else {
 				tipousuariouno.getUsuarios().add(direc);
 				iTipoUsuarioRepository.save(tipousuariouno);
 			}
@@ -1052,7 +1011,6 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	@Override
 	public boolean eliminarMateria(String catalogo) {
 		List<JSONObject> clase = materiaRepo.findByClase(catalogo);
-		System.out.println(clase);
 		boolean materia = materiaRepo.existsById(catalogo);
 		if (clase.isEmpty() && materia == true) {
 			materiaRepo.deleteById(catalogo);
@@ -1100,7 +1058,6 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 	public Materia materiaporid(String catalogo) {
 
 		Materia materia = materiaRepo.getById(catalogo);
-		System.out.println(catalogo);
 		return materia;
 	}
 
@@ -1193,14 +1150,11 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 		}
 
 		if (i > 0) {
-			System.out.println("ya tiene ese rol");
 		} else {
-			System.out.println("NO tenia el rol");
 			tipousuario.getUsuarios().add(profe);
 			iTipoUsuarioRepository.save(tipousuario);
 		}
 
-		System.out.println(rol);
 		if (rol.equals("Estudiante inactivo")) {
 			return "esta persona es usuario inactivo";
 		} else if (rol.equals("Estudiante activo")) {
@@ -1268,9 +1222,7 @@ public class GestionInstitucionalService implements IGestionInstitucionalService
 			}
 
 			if (i > 0) {
-				System.out.println("ya tiene ese rol");
 			} else {
-				System.out.println("NO tenia el rol");
 				tipousuariouno.getUsuarios().add(profe);
 				iTipoUsuarioRepository.save(tipousuariouno);
 			}

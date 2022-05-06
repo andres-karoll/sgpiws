@@ -38,7 +38,6 @@ public class GestionProductosController {
 		for (Producto producto : pro) {
 			salida.add(producto.toJson());
 		}
-		System.out.println(salida);
 		return salida;
 	}
 

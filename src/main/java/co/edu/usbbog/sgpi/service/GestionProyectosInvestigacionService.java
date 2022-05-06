@@ -515,7 +515,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 						}
 					}
 					if(i>0) {
-						System.out.println("ya tiene el rol");
 					} else {
 						tipo1.getUsuarios().add(usu);
 						iTipoUsuarioRepository.save(tipo1);
@@ -529,7 +528,6 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 						} 
 					}
 					if(i>0) {
-						System.out.println("ya tiene el rol");
 					}
 					else {
 						tipo2.getUsuarios().add(usu);
@@ -585,8 +583,7 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 		Proyecto pro = iProyectoRepository.getById(proyecto);
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		if(estado.equals("Finalizado")) {
-			System.out.println(LocalDate.parse(dtf.format(LocalDateTime.now())));
-			pro.setFechaFin(LocalDate.parse(dtf.format(LocalDateTime.now())));
+				pro.setFechaFin(LocalDate.parse(dtf.format(LocalDateTime.now())));
 			pro.setRetroalimentacionFinal(reconocimiento);
 			pro.setEstado(estado);
 			iProyectoRepository.save(pro);
@@ -638,7 +635,9 @@ public class GestionProyectosInvestigacionService implements IGestionProyectosIn
 	public boolean cambioEstadoTrabajoGrado(int proyecto, String estado,String reconocimiento) {
 		Proyecto pro=iProyectoRepository.getById(proyecto);
 		boolean est=false;
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		if(estado.equals("Finalizado")) {
+		pro.setFechaFin(LocalDate.parse(dtf.format(LocalDateTime.now())));
 		pro.setEstado(estado);
 		pro.setRetroalimentacionFinal(reconocimiento);
 		iProyectoRepository.save(pro);
