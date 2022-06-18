@@ -77,7 +77,7 @@ public interface IProyectoRepository extends JpaRepository<Proyecto, Integer> {
 	 * lista de proyectos visibles 
 	 * @return
 	 */
-	@Query(value="select area_conocimiento.nombre, proyecto.id, proyecto.titulo, proyecto.estado, proyecto.descripcion, proyecto.fecha_inicio, proyecto.fecha_fin, proyecto.metodologia, proyecto.visibilidad from areas_conocimiento inner join area_conocimiento on areas_conocimiento.area_conocimiento = area_conocimiento.id inner join proyecto on areas_conocimiento.proyecto = proyecto.id where proyecto.visibilidad = 1",nativeQuery = true)
+	@Query(value="select * from  proyecto where visibilidad = 1",nativeQuery = true)
 	List<JSONObject> proyectosVisibles();
 	/**
 	 * metodo para eliminar un area de conocimiento de un proyecto 
